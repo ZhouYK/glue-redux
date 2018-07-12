@@ -1,12 +1,14 @@
 {
   "name": "redux-glue",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "combination actions and reducers with the shape of object",
-  "main": "./dist/index.js",
+  "main": "./es/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config webpack/webpack.config.dev.babel.js",
-    "build": "webpack --config webpack/webpack.config.prod.babel.js --json > stat.json"
+    "build": "webpack --config webpack/webpack.config.prod.babel.js --json > stat.json",
+    "postbuild": "npm run es",
+    "es": "babel src --out-dir es"
   },
   "dependencies": {
     "babel-cli": "^6.23.0",
@@ -56,7 +58,8 @@
     "dist",
     "src",
     "package.json",
-    "README.md"
+    "README.md",
+    "es"
   ],
   "keywords": [
     "redux",

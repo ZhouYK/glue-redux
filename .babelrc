@@ -2,7 +2,7 @@
   "presets": [
     "react",
     ["env", {
-//      "modules": false,
+      "modules": "commonjs",
       "targets": {
         "chrome": 48,
         "ie": 9,
