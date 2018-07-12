@@ -9,7 +9,7 @@ const publicPath = './'; // 可自定义
 const config = {
   mode: 'production',
   devtool: 'source-map',
-  entry: { ...commonConfig.entry, index: ['babel-polyfill', './src/index.js']},
+  entry: { ...commonConfig.entry, index: ['./src/index.js'] },
   output: Object.assign({}, commonConfig.output, {
     path: contentPath,
     publicPath,
@@ -57,8 +57,7 @@ const config = {
         cache: true,
         sourceMap: false,
       }),
-      new OptimizeCssPlugin(),
-    ]
+    ],
   },
   plugins: [
     new webpack.DefinePlugin({

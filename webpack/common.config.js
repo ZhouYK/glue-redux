@@ -2,8 +2,7 @@
  * Created by ink on 2018/4/4.
  */
 import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import packageObj from '../package.json';
+
 
 export const contentPath = path.resolve(__dirname, '../dist');
 // 这里可以路径前一个名称作为页面区分
@@ -25,12 +24,7 @@ const rules = [{
   use: ['babel-loader'],
 }];
 const plugins = [
-  new HtmlWebpackPlugin({
-    title: packageObj.name,
-    template: './example/index.html',
-    filename: 'index.html',
-    inject: true,
-  }),
+
 ];
 const config = {
   entry,

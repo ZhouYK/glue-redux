@@ -1,5 +1,7 @@
 import webpack from 'webpack';
 import commonConfig, { contentPath } from './common.config';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import packageObj from '../package.json';
 
 const publicPath = '/'; // 可自定义
 const entry = Object.assign({
@@ -44,6 +46,12 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
+    new HtmlWebpackPlugin({
+      title: packageObj.name,
+      template: './example/index.html',
+      filename: 'index.html',
+      inject: true,
     }),
     ...commonConfig.plugins,
   ],
