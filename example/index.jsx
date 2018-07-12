@@ -1,72 +1,34 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { render } from 'react-dom';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { Provider, connect } from 'react-redux';
-import PT from 'prop-types';
+import {
+  createStore, combineReducers, applyMiddleware, compose,
+} from 'redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-
+import App from './components/App';
+import DevTool from './components/DevTool';
 import appGlue from './glue';
 import { destruct } from '../src';
 
-const store = createStore(() => {}, {}, applyMiddleware(thunk));
+const store = createStore(() => {}, {}, compose(applyMiddleware(thunk), DevTool.instrument()));
 const { dispatch } = store;
-// 处理
+// 传入一个对象，键自定义，值为glue对象
+// 会返回一个对象 包含 和传入同结构的reducers和actions
+// reducers 的结构形同 { app: f(state, action) }，
+// actions 的结构形同 { app: <appGlue>{ name: action fn(), getName: action fn() } }
+// appGlue对象一但被destruct过后，会被转化为action的调用对象
+// 后续使用action有两种途径：1，从destruct返回的actions里去调用，或者从对应的模块的glue对象调用
 const { reducers } = destruct({ dispatch })({ app: appGlue });
+// reducers直接传给combineReducers
 store.replaceReducer(combineReducers(reducers));
 
 const root = document.getElementById('bd');
 
-// const { app: appAction } = actions;
-class App extends PureComponent {
-  static propTypes = {
-    name: PT.string.isRequired,
-  }
-
-  constructor(props) {
-    super(props);
-    this.ref = React.createRef();
-  }
-
-  handleClick = (evt) => {
-    evt.preventDefault();
-    console.log('getName：', appGlue);
-    appGlue.getName(this.ref.current.value);
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <form action="/" method="get">
-          <label htmlFor="name">
-            输入名字：
-            <input ref={this.ref} type="text" id="name" />
-          </label>
-          <button type="button" onClick={this.handleClick}>
-              提交
-          </button>
-        </form>
-        输入的名字为：
-        { this.props.name }
-      </Fragment>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  console.log('默认值：', state);
-  const { app } = state;
-  const { name } = app;
-  return {
-    name,
-  };
-};
-
-const WrappedApp = connect(mapStateToProps)(App);
-
-WrappedApp.displayName = 'App';
-
 render(
   <Provider store={store}>
-    <WrappedApp />
+    <Fragment>
+      <App />
+      <DevTool />
+    </Fragment>
   </Provider>, root,
 );
