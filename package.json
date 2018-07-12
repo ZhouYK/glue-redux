@@ -2,7 +2,7 @@
   "name": "redux-glue",
   "version": "1.0.2",
   "description": "combination actions and reducers with the shape of object",
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config webpack/webpack.config.dev.babel.js",

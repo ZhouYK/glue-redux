@@ -1,21 +1,22 @@
 import React, { PureComponent, Fragment } from 'react';
 import { render } from 'react-dom';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
 import PT from 'prop-types';
+import thunk from 'redux-thunk';
 
 import appGlue from './glue';
 import { destruct } from '../src';
 
-const store = createStore(() => {});
+const store = createStore(() => {}, {}, applyMiddleware(thunk));
 const { dispatch } = store;
 // 处理
-const { reducers, actions } = destruct({ dispatch })({ app: appGlue });
+const { reducers } = destruct({ dispatch })({ app: appGlue });
 store.replaceReducer(combineReducers(reducers));
 
 const root = document.getElementById('bd');
 
-const { app: appAction } = actions;
+// const { app: appAction } = actions;
 class App extends PureComponent {
   static propTypes = {
     name: PT.string.isRequired,
@@ -28,7 +29,8 @@ class App extends PureComponent {
 
   handleClick = (evt) => {
     evt.preventDefault();
-    appAction.name(this.ref.current.value);
+    console.log('getName：', appGlue);
+    appGlue.getName(this.ref.current.value);
   }
 
   render() {

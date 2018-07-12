@@ -10,13 +10,12 @@ const nameReducer = (state = '初始值', action) => {
   }
   return state;
 };
-const app = {
+const app = createGlue({
   name: gluePair(nameAction, nameReducer),
-  sex: '男',
-  homemade: {
-    name: 123,
-    height: 190,
+  getName: (name = '小明') => () => {
+    console.log('app.name：', app.name.toString());
+    return app.name(name);
   },
-};
+});
 
-export default createGlue(app);
+export default app;
