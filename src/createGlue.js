@@ -17,7 +17,6 @@ const createGlue = (module, defaultValue = {}) => {
     };
     return pre;
   }, {}));
-  console.log('新对象', no);
   return no;
 };
 
