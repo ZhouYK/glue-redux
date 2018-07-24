@@ -18,6 +18,12 @@
     "transform-class-properties", // 解析类属性，静态和实例的属性
     "syntax-dynamic-import", // 不解析动态加载标识符 import()
     "transform-object-rest-spread", // 支持对象 rest
-    "syntax-async-functions" // 支持async await
+    "syntax-async-functions", // 支持async await
+    ["transform-runtime", {
+      "helpers": true,
+      "polyfill": true,
+      "regenerator": true,
+      "moduleName": "babel-runtime"
+    }], // polyfill新语法
   ]
 }
