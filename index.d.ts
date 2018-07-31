@@ -1,4 +1,5 @@
-interface Glue {
+
+export interface Glue {
   [index:string]: any;
 }
 
@@ -15,11 +16,9 @@ interface CreateGlue<T> {
   <T>(module: T, defaultValue?: T): T;
 }
 
-type Generator = () => Iterator;
-
 interface GluePair {
   (actionCreator: ActionCreator, reducer: Reducer): Generator;
 }
-declare const createGlue: CreateGlue<Glue>;
+export const createGlue: CreateGlue<Glue>;
 
-declare const gluePair:GluePair;
+export const gluePair:GluePair;
