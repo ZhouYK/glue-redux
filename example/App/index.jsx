@@ -1,9 +1,9 @@
 import PT from 'prop-types';
 import { connect } from 'react-redux';
 import React, { PureComponent, Fragment } from 'react';
-import appGlue from '../glue';
+import appGlue from './glue';
 
-class App extends PureComponent {
+class Index extends PureComponent {
   static propTypes = {
     name: PT.string.isRequired,
   }
@@ -15,7 +15,6 @@ class App extends PureComponent {
 
   handleClick = (evt) => {
     evt.preventDefault();
-    // 直接从对应的glue对象调用action
     appGlue.getName(this.ref.current.value);
   }
 
@@ -24,14 +23,14 @@ class App extends PureComponent {
       <Fragment>
         <form action="/" method="get">
           <label htmlFor="name">
-            输入名字：
+            Input your name：
             <input ref={this.ref} type="text" id="name" />
           </label>
           <button type="button" onClick={this.handleClick}>
-            提交
+            Submit
           </button>
         </form>
-        输入的名字为：
+        your name is：
         { this.props.name }
       </Fragment>
     );
@@ -46,4 +45,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(Index);

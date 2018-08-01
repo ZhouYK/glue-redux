@@ -79,7 +79,6 @@ const degrade = (dispatch) => {
             const action = (...args) => {
               const actionEntity = actionFn(...args);
               if (getType(actionEntity) === '[object Function]') {
-                console.log('actionEntity', actionEntity.toString());
                 return dispatch(actionEntity);
               }
               // 组装action实体，触发action

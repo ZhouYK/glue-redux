@@ -1,19 +1,18 @@
-import { gluePair, createGlue } from '../src';
+import { gluePair, createGlue } from '../../src/index';
 
 const nameAction = (name) => {
-  console.log('name：', name);
   return name;
 };
-const nameReducer = (state = '初始值', action) => {
+const nameReducer = (state = 'Initial value', action) => {
   if (action) {
     return action.data;
   }
   return state;
 };
+
 const app = createGlue({
   name: gluePair(nameAction, nameReducer),
-  getName: (name = '小明') => () => {
-    console.log('app.name：', app.name.toString());
+  getName: (name = 'andrew') => () => {
     return app.name(name);
   },
 });
