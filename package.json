@@ -1,6 +1,6 @@
 {
-  "name": "glue-redux",
-  "version": "1.0.6",
+  "name": "redux-glue",
+  "version": "1.0.7",
   "description": "combination actions and reducers with the shape of object",
   "main": "./dist/index.js",
   "types": "./index.d.ts",
