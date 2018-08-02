@@ -1,3 +1,4 @@
+import {Dispatch} from "redux";
 
 export interface Glue {
   [index:string]: any;
@@ -19,6 +20,19 @@ interface CreateGlue<T> {
 interface GluePair {
   (actionCreator: ActionCreator, reducer: Reducer): Generator;
 }
+
+interface DestructParms {
+  dispatch: Dispatch;
+}
+interface DestructReturn {
+  (structure: Glue): Glue;
+}
+interface Destruct {
+  (p: DestructParms): DestructReturn;
+}
+
 export const createGlue: CreateGlue<Glue>;
 
 export const gluePair:GluePair;
+
+export const destruct:Destruct;
