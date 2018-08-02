@@ -1,4 +1,4 @@
-# redux-glue
+# glue-redux
 
 结构化redux数据模型。
 
@@ -46,7 +46,7 @@ redux-glue推荐以模块为单位，对模块的数据模型进行定义；
  * gluePair 绑定action creator和对应的reducer
  * createGlue 创建Glue对象
 */
- import { gluePair, createGlue } from 'redux-glue';
+ import { gluePair, createGlue } from 'glue-redux';
  
  
  const nameAction = (name) => {
@@ -88,7 +88,7 @@ redux-glue推荐以模块为单位，对模块的数据模型进行定义；
   import DevTool from './DevTool';
   import appGlue from './App/glue';
   // 用来注入store以及结构Glue对象，返回 { actions, reducers }
-  import { destruct } from 'redux-glue';
+  import { destruct } from 'glue-redux';
   const store = createStore(() => {}, {}, compose(applyMiddleware(thunk), DevTool.instrument()));
   const { dispatch } = store;
   
@@ -173,4 +173,4 @@ export default connect(mapStateToProps)(Index);
 . [ZhouYK](https://github.com/ZhouYK)
 
 ## License
-[MIT licensed](https://github.com/ZhouYK/redux-glue/blob/master/LICENSE) 
+[MIT licensed](https://github.com/ZhouYK/glue-redux/blob/master/LICENSE) 

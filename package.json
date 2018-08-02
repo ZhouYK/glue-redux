@@ -72,7 +72,7 @@
     "action",
     "reducer"
   ],
-  "repository": "https://github.com/ZhouYK/redux-glue.git",
+  "repository": "https://github.com/ZhouYK/glue-redux.git",
   "author": "ink",
   "license": "MIT"
 }
