@@ -1,18 +1,18 @@
 {
   "name": "glue-redux",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "combination actions and reducers with the shape of object",
-  "main": "./dist/index.js",
+  "main": "./es/index.js",
   "types": "./index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --config webpack/webpack.config.dev.babel.js",
-    "build": "webpack --config webpack/webpack.config.prod.babel.js --json > stat.json",
-    "postbuild": "npm run es",
-    "es": "babel src --out-dir es"
+    "start": "webpack-dev-server --config webpack/webpack.config.dev.js",
+    "build:es": "babel src --out-dir es",
+    "build:cj": "cross-env BABEL_ENV=cj babel src --out-dir cj",
+    "build": "webpack --config webpack/webpack.config.prod.js && npm run build:es && npm run build:cj"
   },
   "dependencies": {
-    "redux": "^3.5.2"
+    "babel-runtime": "^6.26.0"
   },
   "devDependencies": {
     "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
@@ -31,14 +31,11 @@
     "babel-cli": "^6.23.0",
     "babel-eslint": "^8.2.5",
     "babel-loader": "^7.1.4",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "babel-runtime": "^6.26.0",
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
@@ -57,14 +54,15 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "redux": "^3.5.2"
   },
   "files": [
-    "dist",
+    "umd",
     "src",
     "package.json",
     "README.md",
-    "es",
+    "lib",
     "index.d.ts"
   ],
   "keywords": [

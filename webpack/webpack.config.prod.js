@@ -1,8 +1,8 @@
-import path from 'path';
-import webpack from 'webpack';
-import CleanWebpackPlugin from 'clean-webpack-plugin';
-import UglifyjsWebpackPlugin from 'uglifyjs-webpack-plugin';
-import commonConfig, { contentPath } from './common.config';
+const path = require('path');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
+const { commonConfig, contentPath } = require('./common.config');
 
 const publicPath = './'; // 可自定义
 
@@ -63,7 +63,7 @@ const config = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new CleanWebpackPlugin(['dist'], {
+    new CleanWebpackPlugin(['lib'], {
       root: path.resolve(__dirname, '../'),
       exclude: [],
       verbose: true,
@@ -72,4 +72,4 @@ const config = {
     ...commonConfig.plugins,
   ],
 };
-export default config;
+module.exports = config;

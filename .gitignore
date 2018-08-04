@@ -2,8 +2,9 @@
 .DS_Store/
 .git/
 node_modules/
-dist/*
+umd/
 package-lock.json
 stat.json
 es/
+cj/
 .npmrc

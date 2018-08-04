@@ -2,28 +2,32 @@
   "presets": [
     "react",
     ["env", {
-      "modules": "commonjs",
+      "modules": false,
       "targets": {
-        "chrome": 48,
-        "ie": 9,
         "browsers": [
           "> 1%",
           "last 5 versions"
         ]
       },
-      "useBuiltIns": "entry"
     }]
   ],
   "plugins": [
-    "transform-class-properties", // 解析类属性，静态和实例的属性
-    "syntax-dynamic-import", // 不解析动态加载标识符 import()
-    "transform-object-rest-spread", // 支持对象 rest
-    "syntax-async-functions", // 支持async await
+    "transform-object-rest-spread",
+    "transform-class-properties",
     ["transform-runtime", {
       "helpers": true,
       "polyfill": true,
       "regenerator": true,
       "moduleName": "babel-runtime"
-    }], // polyfill新语法
-  ]
+    }] // polyfill新语法
+  ],
+  "env": {
+    "cj": {
+      "presets": [
+        ["env", {
+          "modules": "commonjs"
+        }]
+      ]
+    }
+  }
 }

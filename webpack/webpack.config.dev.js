@@ -1,7 +1,7 @@
-import webpack from 'webpack';
-import commonConfig, { contentPath } from './common.config';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import packageObj from '../package.json';
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { commonConfig, contentPath } = require('./common.config');
+const packageObj = require('../package.json');
 
 const publicPath = '/'; // 可自定义
 const entry = Object.assign({
@@ -56,4 +56,4 @@ const config = {
     ...commonConfig.plugins,
   ],
 };
-export default config;
+module.exports = config;

@@ -1,10 +1,10 @@
 /**
  * Created by ink on 2018/4/4.
  */
-import path from 'path';
+const path = require('path');
 
 
-export const contentPath = path.resolve(__dirname, '../dist');
+const contentPath = path.resolve(__dirname, '../umd');
 // 这里可以路径前一个名称作为页面区分
 const entry = {
 };
@@ -48,4 +48,4 @@ const config = {
   },
   plugins,
 };
-export default config;
+module.exports = { commonConfig: config, contentPath };

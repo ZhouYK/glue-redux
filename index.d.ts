@@ -1,5 +1,3 @@
-import {Dispatch} from "redux";
-
 export interface Glue {
   [index:string]: any;
 }
@@ -7,6 +5,10 @@ export interface Glue {
 interface Action {
   type: string,
   data: any
+}
+
+interface Dispatch {
+  (p: any): any;
 }
 
 type ActionCreator = (data: any) => any;
