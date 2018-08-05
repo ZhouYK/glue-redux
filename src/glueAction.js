@@ -1,7 +1,7 @@
 import { glueActionFnFlag, glueActionFnFlagValue } from './contants';
 
 const glueAction = (actionCreator) => {
-  if (typeof actionCreator) throw new Error('请传入action生成函数');
+  if (typeof actionCreator !== 'function') throw new Error('请传入action生成函数');
   Object.defineProperty(actionCreator, glueActionFnFlag, {
     value: glueActionFnFlagValue,
     configurable: false,
