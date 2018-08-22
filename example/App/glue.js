@@ -1,6 +1,5 @@
-import { gluePair, createGlue } from '../../src/index';
+import { gluer, createGlue } from '../../src/index';
 
-const nameAction = name => name;
 const nameReducer = (state = 'Initial value', action) => {
   if (action) {
     return action.data;
@@ -9,8 +8,9 @@ const nameReducer = (state = 'Initial value', action) => {
 };
 
 const app = createGlue({
-  name: gluePair(nameAction, nameReducer),
+  name: gluer(nameReducer),
   getName: (name = 'andrew') => () => app.name(name),
+  age: 10,
 });
 
 export default app;

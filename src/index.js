@@ -9,6 +9,7 @@ import { degrade } from './degrade';
 const destruct = ({ dispatch }) => {
   /**
    * 复制并删除原始对象中的衍生属性，保留原生属性
+   * 这里衍生属性主要是type和对应的reducer
    * @param obj
    * @param tk
    * @returns {*}
@@ -31,6 +32,7 @@ const destruct = ({ dispatch }) => {
     const targetGlue = originReducer[key];
     let fnc;
     if (typeof targetGlue === 'function') {
+      // todo 顶层节点为函数时会被作为reducer，此reducer没有特定的action，会被所有的触发
       fnc = targetGlue;
     } else if (typeof targetGlue === 'object') {
       const value = { ...targetGlue };
@@ -38,10 +40,12 @@ const destruct = ({ dispatch }) => {
       // 定义顶层reducer，根据action type调用对应的子reducer
       fnc = (state = defaultValue, ac) => {
         const { type } = ac;
-        const acFnc = value[type];
-        if (acFnc) {
+        // 顶层节点存储着每个叶子节点的reducer
+        // 每个叶子节点的action保留着对应的type
+        const reducerFnc = value[type];
+        if (reducerFnc) {
           // 一但调用，会返回新的值
-          return acFnc(state, ac);
+          return reducerFnc(state, ac);
         }
         // 没有对应的reducer，直接返回原值
         return state;
@@ -68,5 +72,6 @@ const destruct = ({ dispatch }) => {
 
 export { default as createGlue } from './createGlue';
 export { default as gluePair } from './gluePair';
+export { default as gluer } from './gluer';
 export { destruct };
 export default destruct;

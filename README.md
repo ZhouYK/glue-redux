@@ -43,15 +43,12 @@ glue-redux推荐以模块为单位，对模块的数据模型进行定义；
 - 1，创建模块数据模型
  ```js
  /**
- * gluePair 绑定action creator和对应的reducer
+ * gluer 绑定reducer和actionCreator
+ * actionCreator可不传，默认值为 data => data
  * createGlue 创建Glue对象
 */
- import { gluePair, createGlue } from 'glue-redux';
+ import { gluer, createGlue } from '../../src/index';
  
- 
- const nameAction = (name) => {
-   return name;
- };
  const nameReducer = (state = 'Initial value', action) => {
    if (action) {
      return action.data;
@@ -60,15 +57,15 @@ glue-redux推荐以模块为单位，对模块的数据模型进行定义；
  };
  
  const app = createGlue({
-   name: gluePair(nameAction, nameReducer),
-   getName: (name = 'andrew') => () => {
-     return app.name(name);
-   },
-   age: 10
+   name: gluer(nameReducer),
+   getName: (name = 'andrew') => () => app.name(name),
+   age: 10,
  });
+ 
+ export default app;
  // 传入createGlue的对象
  // 属性值为函数直接量的，会被当做action creator处理，可以直接调用触发action
- // 属性值为gluePair返回的，会被当做state的结构，值为传入reducer的返回；可以直接调用触发action，从而调用reducer改变数据
+ // 属性值为gluer生成的，会被当做state的结构，值为传入reducer的返回；可以直接调用触发action，从而调用reducer改变数据
  // 属性值为其他的，会直接作为state的数据，不会改变
  // app最终会在state中呈现的数据结构为: { name: 'Initial value', age: 10 }
  // app最终的结构为：{ name: action creator function, getName: async actionCreator function }
