@@ -1,29 +1,30 @@
 import { forPurposeKey, forPurposeValue } from './contants';
 
 /**
- * @deprecated 请使用gluer替代
+ * gluePair升级版
  * 生成一对action和reducer
- * @param actionCreator
- * @param reducerFnc
+ * @param reducerFnc 必需
+ * @param actionCreator 非必需
  * @returns {function(): {action: *, reducer: *}}
  */
-const gluePair = (actionCreator, reducerFnc) => {
+const gluer = (reducerFnc, actionCreator = data => data) => {
   const gf = function* () {
     let errorMsg = '';
-    if (typeof actionCreator !== 'function') {
-      errorMsg = 'actionCreator必须为函数';
-    }
     if (typeof reducerFnc !== 'function') {
-      errorMsg = `${errorMsg}，reducer必须为函数`;
+      errorMsg = '第一个参数reducer必须为函数';
+    }
+    if (typeof actionCreator !== 'function') {
+      errorMsg = `${errorMsg}，第二个参数actionCreator必须为函数`;
     }
     if (errorMsg) {
+      console.trace();
       throw new Error(errorMsg);
     }
-    const action = yield actionCreator;
     const reducer = yield reducerFnc;
+    const action = yield actionCreator;
     return {
-      action,
       reducer,
+      action,
     };
   };
   Object.defineProperty(gf, forPurposeKey, {
@@ -34,4 +35,4 @@ const gluePair = (actionCreator, reducerFnc) => {
   });
   return gf;
 };
-export default gluePair;
+export default gluer;
