@@ -1,6 +1,13 @@
 import { getType } from './getType';
 
+/**
+ * @deprecated 造成性能额外的消耗，作用不大，在未来版本会去掉
+ * @param module
+ * @param defaultValue
+ * @returns {any}
+ */
 const createGlue = (module, defaultValue = {}) => {
+  console.warn('通过createGlue传入的defaultValue将不会生效，请在reducer里面设置State的默认值');
   if (getType(module) !== '[object Object]') throw new Error('请传入结构对象');
   const no = Object.create({
     defaultValue,

@@ -105,15 +105,10 @@ const degrade = (dispatch) => {
           let deValue = df;
           let nextDefaultValue;
           if (!p && !deValue) {
-            // 不允许在顶层节点中使用defaultValue这个键值
-            if (key === 'defaultValue') {
-              throw new Error('不能在顶层节点的属性中，使用defaultValue键值');
-            }
-            // 顶层节点由createGlue创建
             // 顶层节点引用
             p = value;
-            // 顶层节点默认值
-            deValue = p.defaultValue;
+            // 顶层节点的默认值
+            deValue = {};
             nextDefaultValue = deValue;
           } else {
             if (!deValue[key]) {
