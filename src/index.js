@@ -1,4 +1,4 @@
-import { uniqueTypeConnect } from './contants';
+import { uniqueTypeConnect, defaultValueKey } from './contants';
 import { degrade } from './degrade';
 
 /**
@@ -36,7 +36,7 @@ const destruct = ({ dispatch }) => {
       fnc = targetGlue;
     } else if (typeof targetGlue === 'object') {
       const value = { ...targetGlue };
-      const { defaultValue } = targetGlue;
+      const defaultValue = targetGlue[defaultValueKey];
       // 定义顶层reducer，根据action type调用对应的子reducer
       fnc = (state = defaultValue, ac) => {
         const { type } = ac;
@@ -70,8 +70,8 @@ const destruct = ({ dispatch }) => {
   return deriveActionsAndReducers;
 };
 
-export { default as createGlue } from './createGlue';
-export { default as gluePair } from './gluePair';
+export { default as createGlue } from './deprecated/createGlue';
+export { default as gluePair } from './deprecated/gluePair';
 export { default as gluer } from './gluer';
 export { destruct };
 export default destruct;

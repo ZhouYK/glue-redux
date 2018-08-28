@@ -1,4 +1,4 @@
-import { gluer, createGlue } from '../../src/index';
+import { gluer } from '../../src/index';
 
 const nameReducer = (state = 'Initial value', action) => {
   if (action) {
@@ -7,10 +7,10 @@ const nameReducer = (state = 'Initial value', action) => {
   return state;
 };
 
-const app = createGlue({
+const app = {
   name: gluer(nameReducer),
   getName: (name = 'andrew') => () => app.name(name),
   age: 10,
-});
+};
 
 export default app;

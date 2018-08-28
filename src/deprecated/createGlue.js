@@ -1,4 +1,4 @@
-import { getType } from './getType';
+import { getType } from '../getType';
 
 /**
  * @deprecated 造成性能额外的消耗，作用不大，在未来版本会去掉

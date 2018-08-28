@@ -1,4 +1,6 @@
-import { forPurposeKey, forPurposeValue, uniqueTypeConnect } from './contants';
+import {
+  forPurposeKey, forPurposeValue, uniqueTypeConnect, defaultValueKey,
+} from './contants';
 import { getType } from './getType';
 
 /**
@@ -69,6 +71,14 @@ const degrade = (dispatch) => {
               const { action, reducer } = stepThree.value;
               actionFn = action;
               reducerFn = reducer;
+              if (typeof action !== 'function') {
+                console.trace();
+                throw new Error('传入的action必须是函数');
+              }
+              if (typeof reducerFn !== 'function') {
+                console.trace();
+                throw new Error('传入的reducer必须是函数');
+              }
             } else {
               // 普通函数会被当成单纯的action
               actionFn = value;
@@ -89,11 +99,7 @@ const degrade = (dispatch) => {
               // 如果为reducer，则直接用属性联结行程的字符串作为对象键值赋值
               // parent为顶层对象引用
               /* eslint-disable no-param-reassign */
-              try {
-                df[key] = reducerFn();
-              } catch (err) {
-                throw new Error(`传入的reducer函数需要有一个默认返回值，${err}`);
-              }
+              df[key] = reducerFn();
               parent[str] = transformReducerToNestFnc(str, reducerFn);
             }
           }
@@ -109,6 +115,12 @@ const degrade = (dispatch) => {
             p = value;
             // 顶层节点的默认值
             deValue = {};
+            Object.defineProperty(p, defaultValueKey, {
+              value: deValue,
+              enumerable: false,
+              writable: false,
+              configurable: false,
+            });
             nextDefaultValue = deValue;
           } else {
             if (!deValue[key]) {

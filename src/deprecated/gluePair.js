@@ -1,4 +1,4 @@
-import { forPurposeKey, forPurposeValue } from './contants';
+import { forPurposeKey, forPurposeValue } from '../contants';
 
 /**
  * @deprecated 请使用gluer替代
