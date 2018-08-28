@@ -1,15 +1,15 @@
 import { gluer } from '../../src/index';
 
-const nameReducer = (state = 'Initial value', action) => {
+const name = gluer((state = 'Initial value', action) => {
   if (action) {
     return action.data;
   }
   return state;
-};
+});
 
 const app = {
-  name: gluer(nameReducer),
-  getName: (name = 'andrew') => () => app.name(name),
+  name,
+  getName: (n = 'andrew') => () => app.name(n),
   age: 10,
 };
 
