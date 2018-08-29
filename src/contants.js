@@ -1,6 +1,8 @@
 export const uniqueTypeConnect = '-@@thisisglue$$-';
 export const forPurposeValue = 'gluePair';
 export const forPurposeKey = 'handleActionAndReducer';
+export const glueActionFnFlag = 'glueActionFnFlag';
+export const glueActionFnFlagValue = 'glueActionFnFlagValue';
 export const defaultValueKey = '__initialDefaultValue__';
 
 export default {
@@ -8,4 +10,6 @@ export default {
   forPurposeValue,
   forPurposeKey,
   defaultValueKey,
+  glueActionFnFlag,
+  glueActionFnFlagValue,
 };

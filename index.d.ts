@@ -37,8 +37,13 @@ interface Destruct {
   (p: DestructParms): DestructReturn;
 }
 
+/**
+ * @deprecated
+ */
 export const createGlue: CreateGlue<Glue>;
-
+/**
+ * @deprecated
+ */
 export const gluePair:GluePair;
 
 export const gluer:Gluer;

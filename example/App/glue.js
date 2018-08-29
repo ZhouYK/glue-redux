@@ -1,4 +1,5 @@
 import { gluer } from '../../src/index';
+import sub from './Sub/glue';
 
 const name = gluer((state = 'Initial value', action) => {
   if (action) {
@@ -9,8 +10,10 @@ const name = gluer((state = 'Initial value', action) => {
 
 const app = {
   name,
-  getName: (n = 'andrew') => () => app.name(n),
+  asyncGetName: (n = 'andrew') => () => app.name(n),
   age: 10,
+  sub,
+  ...sub,
 };
 
 export default app;

@@ -1,7 +1,13 @@
 import {
-  forPurposeKey, forPurposeValue, uniqueTypeConnect, defaultValueKey,
+  forPurposeKey,
+  forPurposeValue,
+  uniqueTypeConnect,
+  defaultValueKey,
+  glueActionFnFlag,
+  glueActionFnFlagValue,
 } from './contants';
 import { getType } from './getType';
+import { glueAction } from './glueAction';
 
 /**
  * 获取倒数第二层对象
@@ -29,16 +35,18 @@ const transformReducerToNestFnc = (k, redu) => {
   kArr.shift();
   return kArr.reduceRight((pre, cur) => (state, ac) => ({ ...state, [`${cur}`]: pre(state[`${cur}`], ac) }), redu);
 };
-/**
- * 判断是否是处于中间处理状态的glue对象
- * @param glueKeysStr
- * @returns {*}
- */
-const isMidGlue = glueKeysStr => glueKeysStr.includes(uniqueTypeConnect);
 
-const midGlueError = (keys, p) => {
-  if (isMidGlue(keys.join('')) && !p) {
-    throw new Error('不能传递处于处理中间态的glue对象');
+/**
+ * 判断action creator是否已经处理过
+ * @param actionFn
+ * @returns {boolean}
+ */
+const isGlueAction = actionFn => actionFn[glueActionFnFlag] === glueActionFnFlagValue;
+const actionError = (actionFn, obj) => {
+  if (isGlueAction(actionFn)) {
+    console.trace();
+    console.error(obj);
+    throw new Error('action creator 重复处理，请勿将同一对象应用到两个或者两个以上地方');
   }
 };
 /**
@@ -51,7 +59,6 @@ const degrade = (dispatch) => {
   const fn = (obj, keyStr = [], parent, df) => {
     if (getType(obj) === '[object Object]') {
       const keys = Object.keys(obj);
-      midGlueError(keys, parent);
       keys.forEach((key) => {
         const value = obj[key];
         keyStr.push(key);
@@ -59,6 +66,7 @@ const degrade = (dispatch) => {
         // 如果是generator函数则检索中止
         if (typeof value === 'function') {
           if (parent) {
+            actionError(value, obj);
             const str = keyStr.join(uniqueTypeConnect);
             let actionFn;
             let reducerFn;
@@ -86,14 +94,14 @@ const degrade = (dispatch) => {
             // 找到原始actions对象中，当前key值所在的对象
             const upperNode = findActionParent(keyStr, parent);
             // 如果为action，则进行类似bindActionCreators的动作
-            const action = (...args) => {
+            const action = glueAction((...args) => {
               const actionEntity = actionFn(...args);
               if (getType(actionEntity) === '[object Function]') {
                 return dispatch(actionEntity);
               }
               // 组装action实体，触发action
               return dispatch({ type: str, data: actionEntity });
-            };
+            });
             upperNode[key] = action;
             if (reducerFn) {
               // 如果为reducer，则直接用属性联结行程的字符串作为对象键值赋值
@@ -115,12 +123,18 @@ const degrade = (dispatch) => {
             p = value;
             // 顶层节点的默认值
             deValue = {};
-            Object.defineProperty(p, defaultValueKey, {
-              value: deValue,
-              enumerable: false,
-              writable: false,
-              configurable: false,
-            });
+            try {
+              Object.defineProperty(p, defaultValueKey, {
+                value: deValue,
+                enumerable: false,
+                writable: false,
+                configurable: false,
+              });
+            } catch (e) {
+              console.trace();
+              console.error(p);
+              throw new Error('该对象已被引用，请勿将同一对象应用到两个或者两个以上地方');
+            }
             nextDefaultValue = deValue;
           } else {
             if (!deValue[key]) {
