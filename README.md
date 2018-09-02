@@ -1,173 +1,126 @@
 # glue-redux
 
-结构化redux数据模型。
+可组合的redux数据模型
 
-## 当我们使用redux时，我们需要做什么？
-```
-  1，定义type，创建action creator
-  2，创建reducer，并且判断action type进行数据处理
-  3，定义组织全局store的state结构
-  4，将组件与redux连接，获取属性
-  5，组件内触发action，需要显示调用dispatch或者bindActionCreators来将action对象注入
-```
-以上步骤中，
-```
-  1，定义type，创建action creator
-```
-> 需要定义很多唯一type，维护和命名会有一些负担；
+## 可组合,实现同一数据结构的复用
 
-```
-  2，创建reducer，并且判断action type进行数据处理
-```
-> 会有很多模板代码，需要根据action type处理数据，这里会有第二次对action type的认知负担
-```
-  3，定义组织全局store的state结构
-```
-> 这里需要清楚reducer的返回，将reducer进行组织，这又增加了对reducer和state的认知负担
-
-```
-  5，组件内触发action，需要显示调用dispatch或者bindActionCreators来将action对象注入
-```
-> 组件内触发action需要做包装和注入，这些代码也是一类的模板代码
-
-## 使用glue-redux会减少哪些事？
-
-glue-redux推荐以模块为单位，对模块的数据模型进行定义；
-
-- 不用自定义action type了，再也不用在一堆字符串变量中找对应关系
-- reducer专一化，不再在内部与action type关联，代码会变得很纯净
-- 数据模型即为模块在state中的数据结构，一目了然
-- 需要触发action，只用导入数据模型，像调用方法一样即可触发
-
-## 如何使用？
-- 1，创建模块数据模型
- ```js
- /**
- * gluer 绑定reducer和actionCreator
- * actionCreator可不传，默认值为 data => data
- * createGlue 创建Glue对象
-*/
- import { gluer, createGlue } from '../../src/index';
- 
- const nameReducer = (state = 'Initial value', action) => {
-   if (action) {
-     return action.data;
-   }
-   return state;
- };
- 
- const app = createGlue({
-   name: gluer(nameReducer),
-   getName: (name = 'andrew') => () => app.name(name),
-   age: 10,
- });
- 
- export default app;
- // 传入createGlue的对象
- // 属性值为函数直接量的，会被当做action creator处理，可以直接调用触发action
- // 属性值为gluer生成的，会被当做state的结构，值为传入reducer的返回；可以直接调用触发action，从而调用reducer改变数据
- // 属性值为其他的，会直接作为state的数据，不会改变
- // app最终会在state中呈现的数据结构为: { name: 'Initial value', age: 10 }
- // app最终的结构为：{ name: action creator function, getName: async actionCreator function }
- 
- export default app;
- ```
-- 2，传入store
+> 需要注意的是，这里复用指的是结构，不是具体的某一个对象。一个对象只能被应用于一处，比如下例中的Sub模块的数据模型对象。
 ```jsx harmony
-  import React, { Fragment } from 'react';
-  import { render } from 'react-dom';
-  import {
-    createStore, combineReducers, applyMiddleware, compose,
-  } from 'redux';
-  import { Provider } from 'react-redux';
-  import thunk from 'redux-thunk';
-  import App from './App/index';
-  import DevTool from './DevTool';
+  // 定义一个Sub模块的数据模型
+  import { gluer } from '../../../src/index';
+  
+  const height = gluer((state = 100, action) => {
+    if (action) {
+      return Number(action.data);
+    }
+    return state;
+  });
+  
+  const sex = gluer((state = '薛定谔的猫', action) => {
+    if (action) {
+      return action.data;
+    }
+    return state;
+  });
+  
+  const sub = {
+    height,
+    sex,
+    asyncGetHeight: (params = { height: 100 }) => () => {
+      setTimeout(() => {
+        sub.height(params.height);
+      }, 2000);
+    },
+  };
+  
+  export default sub;
+  
+  // 定义一个App模块的数据模型，其中包含Sub的数据
+  import { gluer } from '../../src/index';
+  import sub from './Sub/glue';
+  
+  const name = gluer((state = 'Initial value', action) => {
+    if (action) {
+      return action.data;
+    }
+    return state;
+  });
+  
+  const app = {
+    name,
+    asyncGetName: (n = 'andrew') => () => app.name(n),
+    age: 10,
+    sub,
+  };
+  
+  export default app;
+  
+  // 把数据模型传入store中
   import appGlue from './App/glue';
-  // 用来注入store以及结构Glue对象，返回 { actions, reducers }
-  import { destruct } from 'glue-redux';
   const store = createStore(() => {}, {}, compose(applyMiddleware(thunk), DevTool.instrument()));
+  
   const { dispatch } = store;
   
-  // 定义store state结构，解构Glue对象
-  // 最终 state的结构会是 { app: { name: 'Initial value', age: 10 } }
-  const { reducers } = destruct({ dispatch })({
-   app: appGlue
-  });
+  const { reducers } = destruct({ dispatch })({ app: appGlue });
   store.replaceReducer(combineReducers(reducers));
-  const root = document.getElementById('bd');
-  
-  render(
-    <Provider store={store}>
-      <Fragment>
-        <App />
-        <DevTool />
-      </Fragment>
-    </Provider>, root,
-  );
 
-``` 
-
-- 3，在组件内使用
-```jsx harmony
-import PT from 'prop-types';
-import { connect } from 'react-redux';
-import React, { PureComponent, Fragment } from 'react';
-import appGlue from './glue';
-
-class Index extends PureComponent {
-  static propTypes = {
-    name: PT.string.isRequired,
+  // 最后我们会得到这样的state数据结构
+  {
+    app: {
+      name: 'Initial value',
+      age: 10,
+      sub: {
+        sex: '薛定谔的猫',
+        height: 100
+      },
+      height: 100,
+      sex: "薛定谔的猫"
+    }
   }
-
-  constructor(props) {
-    super(props);
-    this.ref = React.createRef();
-  }
-
-  handleClick = (evt) => {
-    evt.preventDefault();
-    appGlue.getName(this.ref.current.value);
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <form action="/" method="get">
-          <label htmlFor="name">
-            Input your name：
-            <input ref={this.ref} type="text" id="name" />
-          </label>
-          <button type="button" onClick={this.handleClick}>
-            Submit
-          </button>
-        </form>
-        your name is：
-        { this.props.name }
-      </Fragment>
-    );
-  }
-}
-
-/**
-* 
-* @param state { app: { name: 'Initial value', age: 10 } }
-* @returns {{name: *}}
-*/
-const mapStateToProps = (state) => {
-  const { app } = state;
-  const { name } = app;
-  return {
-    name,
-  };
-};
-
-export default connect(mapStateToProps)(Index);
-
 ```
+## 设计原理
+
+> 把对象看成一棵树，利用从顶层节点到叶子节点路径的唯一性，来替代action type。每个叶子节点自带reducer函数，即通过gluer传入。
+> 在叶子节点内部，会内嵌生成返回自身路径type的action creator函数。同时叶子节点自身的reducer函数，将作为该叶子节点的顶层节点的属性值：
+> 以叶子节点路径type作为索引。
+> 经过处理的对象模型，会得到一个封闭且完整的reducer函数，可使用于redux的任何地方。
+
+## 数据对象模型的一些约定
+以Sub模块的数据模型为例：
+```jsx harmony
+ const height = gluer((state = 100, action) => {
+    if (action) {
+      return Number(action.data);
+    }
+    return state;
+  });
+  
+  const sex = gluer((state = '薛定谔的猫', action) => {
+    if (action) {
+      return action.data;
+    }
+    return state;
+  });
+const sub = {
+    height,
+    sex,
+    asyncGetHeight: (params = { height: 100 }) => () => {
+      setTimeout(() => {
+        sub.height(params.height);
+      }, 2000);
+    },
+  };
+```
+- 1，对象中某个节点需要进行数据维护，即需要有reducer来改变其值。那么可直接定义reducer函数，并且用gluer包装，赋值给该节点。
+  - a，reducer需要遵守：当action为undefined，返回默认值state的约定。此举是为了得到初始化的state。
+  - b，gluer函数针对传入的reducer函数进行包装，区别于普通函数
+  - c，经过destruct后数据模型对象节点的值将变为action creator，在内部被包装为(params) => dispatch({type, data: params})
+- 2，如果节点的值是函数fn，没有用gluer进行包装，那么将会被认为是一个action creator函数，经过destruct后会被包装成(...args) => dispatch(fn(...args));
+- 3，节点其他的值，将原样输出，不做任何处理 
+- 4，例子中sub经过destruct后，之前节点值为函数的，都可直接调用触发对应的action
 
 ## Author
-. [ZhouYK](https://github.com/ZhouYK)
+[ZhouYK](https://github.com/ZhouYK)
 
 ## License
 [MIT licensed](https://github.com/ZhouYK/glue-redux/blob/master/LICENSE) 

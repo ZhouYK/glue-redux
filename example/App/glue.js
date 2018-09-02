@@ -9,8 +9,8 @@ const name = gluer((state = 'Initial value', action) => {
 });
 
 const app = {
-  name,
   asyncGetName: (n = 'andrew') => () => app.name(n),
+  name,
   age: 10,
   sub,
   ...sub,
