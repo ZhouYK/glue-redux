@@ -122,7 +122,7 @@ const degrade = (dispatch) => {
             // 顶层节点引用
             p = value;
             // 顶层节点的默认值
-            deValue = {};
+            deValue = p.defaultValue || {};
             try {
               Object.defineProperty(p, defaultValueKey, {
                 value: deValue,
@@ -132,7 +132,6 @@ const degrade = (dispatch) => {
               });
             } catch (e) {
               console.trace();
-              console.error(p);
               throw new Error('该对象已被引用，请勿将同一对象应用到两个或者两个以上地方');
             }
             nextDefaultValue = deValue;

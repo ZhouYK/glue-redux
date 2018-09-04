@@ -11,6 +11,10 @@ interface Dispatch {
   (p: any): any;
 }
 
+interface GluerReturn {
+  (p:any): any;
+}
+
 type ActionCreator = (data: any) => any;
 
 type Reducer = (state: any, action:Action ) => any;
@@ -20,21 +24,21 @@ interface CreateGlue<T> {
 }
 
 interface GluePair {
-  (actionCreator: ActionCreator, reducer: Reducer): Generator;
+  (actionCreator: ActionCreator, reducer: Reducer): GluerReturn;
 }
 
 interface Gluer {
-  (reducer: Reducer, actionCreator?: ActionCreator): Generator;
+  (reducer: Reducer, actionCreator?: ActionCreator): GluerReturn;
 }
 
-interface DestructParms {
+interface DestructParams {
   dispatch: Dispatch;
 }
 interface DestructReturn {
   (structure: Glue): Glue;
 }
 interface Destruct {
-  (p: DestructParms): DestructReturn;
+  (p: DestructParams): DestructReturn;
 }
 
 /**
