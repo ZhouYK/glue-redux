@@ -59,6 +59,7 @@
     asyncGetName: (n = 'andrew') => () => app.name(n),
     age: 10,
     sub,
+    ...sub,
   };
   
   export default app;
