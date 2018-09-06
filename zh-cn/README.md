@@ -1,4 +1,4 @@
-# glue-redux | [en](https://github.com/ZhouYK/glue-redux/README.md)
+# glue-redux | [en](https://github.com/ZhouYK/glue-redux)
 
 可组合的redux数据模型
 > 每个模块对应自身数据模型对象
