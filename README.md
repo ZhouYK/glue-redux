@@ -1,4 +1,4 @@
-# glue-redux | [中文](https://github.com/ZhouYK/glue-redux/zh-cn/README.md)
+# glue-redux | [中文](https://github.com/ZhouYK/glue-redux/blob/master/zh-cn/README.md)
 
 composible model for redux
 > one model to one module
