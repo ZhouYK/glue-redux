@@ -1,20 +1,19 @@
-# glue-redux
+# glue-redux | [中文](https://github.com/ZhouYK/glue-redux/zh-cn/README.md)
 
-可组合的redux数据模型
-> 每个模块对应自身数据模型对象
+composible model for redux
+> one model to one module
 
-## 设计原理
+## Design principle
 
-> 每一个模块有自己的数据模型对象，把这个对象看成一棵树，利用从顶层节点到叶子节点路径的唯一性，来替代action type。每个叶子节点自带reducer函数，即通过gluer传入。
-> 在叶子节点内部，会内嵌生成返回自身路径type的action creator函数。同时叶子节点自身的reducer函数，将作为该叶子节点的顶层节点的属性值：
-> 以叶子节点路径type作为索引。
-> 经过处理的对象模型，会得到一个封闭且完整的reducer函数，可使用于redux的任何地方。
+> Each module has its own data model object,think of this model object as a tree.Take advantage of the uniqueness of the path from the top node to the leaf node to substitute action type.Each leaf node is provided with the reducer function,which passed in through gluer.
+> Inside the leaf node,the generation returns its own path as the type of action creator function.Meanwhile,the reducer function of the leaf node itself will be the attribute value of the top node of the leaf node,whose key is the leaf node path.
+> The processed object model by destruct will produce a closed and full reducer function that can be used anywhere in redux.
 
-## 可组合,实现同一数据结构的复用
+## It can be combined to realize the reuse of the same data structure
 
-> 需要注意的是，这里复用指的是结构，不是具体的某一个对象。一个对象只能被应用于一处，比如下例中的Sub模块的数据模型对象。
+> It is important to note that reuse here refers to structure, not to a specific object. An object can only be applied to one place, such as the data model object of the Sub module in the example below
 ```jsx harmony
-  // 定义一个Sub模块的数据模型
+  // Define a data model of a Sub module
   import { gluer } from '../../../src/index';
   
   const height = gluer((state = 100, action) => {
@@ -43,7 +42,7 @@
   
   export default sub;
   
-  // 定义一个App模块的数据模型，其中包含Sub的数据
+  // Define the data model of an App module, which contains data of Sub
   import { gluer } from '../../src/index';
   import sub from './Sub/glue';
   
@@ -64,32 +63,33 @@
   
   export default app;
   
-  // 把数据模型传入store中
+  // Pass the data model into the store
   import appGlue from './App/glue';
   const store = createStore(() => {}, {}, compose(applyMiddleware(thunk), DevTool.instrument()));
   
   const { dispatch } = store;
   
+  // destruct data model
   const { reducers } = destruct({ dispatch })({ app: appGlue });
   store.replaceReducer(combineReducers(reducers));
 
-  // 最后我们会得到这样的state数据结构
+  // Finally, we get state data structures like this
   {
     app: {
-      name: 'Initial value',
+      name: "Initial value",
       age: 10,
       sub: {
         sex: '薛定谔的猫',
         height: 100
       },
       height: 100,
-      sex: "薛定谔的猫"
+      sex: '薛定谔的猫'
     }
   }
 ```
 
-## 数据对象模型的一些约定
-以Sub模块的数据模型为例：
+## Some conventions of the data object model
+Take data model of Sub module as an example:
 ```jsx harmony
  const height = gluer((state = 100, action) => {
     if (action) {
@@ -114,13 +114,13 @@ const sub = {
     },
   };
 ```
-- 1，对象中某个节点需要进行数据维护，即需要有reducer来改变其值。那么可直接定义reducer函数，并且用gluer包装，赋值给该节点。
-  - a，reducer需要遵守：当action为undefined，返回默认值state的约定。此举是为了得到初始化的state。
-  - b，gluer函数针对传入的reducer函数进行包装，区别于普通函数
-  - c，经过destruct后数据模型对象节点的值将变为action creator，在内部被包装为(params) => dispatch({type, data: params})
-- 2，如果节点的值是函数fn，没有用gluer进行包装，那么将会被认为是一个action creator函数，经过destruct后会被包装成(...args) => dispatch(fn(...args));
-- 3，节点其他类型的值，将原样输出，不做任何处理 
-- 4，例子中sub经过destruct后，之前节点值为函数的，都可直接调用触发对应的action
+- 1，A node in an object requires data maintenance, which requires the reducer to change its value. Then you can define the reducer function directly, and assign it to the node using the gluer wrapper.
+  - a，Reducer needs to follow the convention that returns the default state when action is undefined. This is to get the state initialized.
+  - b，The gluer function is packaged for the incoming reducer function, unlike the regular function.
+  - c，After the destruct, the value of the data model object node will become action creator, which is internally wrapped as (params) => dispatch({type, data: params}).
+- 2，If the value of the node is the function fn and not packed with gluer, it will be considered as an action creator function and will be packed with (... The args) = > dispatch (fn (... The args)).
+- 3，Values of other types of nodes will be output as is without any processing.
+- 4，In the example, after the sub passes the destruct, if the node value is a function before, the corresponding action can be triggered directly.
 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
