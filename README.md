@@ -33,7 +33,7 @@ composible model for redux
   const sub = {
     height,
     sex,
-    asyncGetHeight: (params = { height: 100 }) => () => {
+    asyncGetHeight: (params = { height: 100 }) => {
       setTimeout(() => {
         sub.height(params.height);
       }, 2000);
@@ -55,7 +55,7 @@ composible model for redux
   
   const app = {
     name,
-    asyncGetName: (n = 'andrew') => () => app.name(n),
+    asyncGetName: (n = 'andrew') => app.name(n),
     age: 10,
     sub,
     ...sub,
@@ -107,7 +107,7 @@ Take data model of Sub module as an example:
 const sub = {
     height,
     sex,
-    asyncGetHeight: (params = { height: 100 }) => () => {
+    asyncGetHeight: (params = { height: 100 }) => {
       setTimeout(() => {
         sub.height(params.height);
       }, 2000);
