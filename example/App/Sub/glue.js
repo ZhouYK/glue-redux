@@ -17,7 +17,7 @@ const sex = gluer((state = '薛定谔的猫', action) => {
 const sub = {
   height,
   sex,
-  asyncGetHeight: (params = { height: 100 }) => () => {
+  asyncGetHeight: (params = { height: 100 }) => {
     setTimeout(() => {
       sub.height(params.height);
     }, 2000);

@@ -9,7 +9,11 @@ const name = gluer((state = 'Initial value', action) => {
 });
 
 const app = {
-  asyncGetName: (n = 'andrew') => () => app.name(n),
+  asyncGetName: (n = 'andrew') => {
+    setTimeout(() => {
+      app.name(n);
+    }, 2000);
+  },
   name,
   age: 10,
   sub,

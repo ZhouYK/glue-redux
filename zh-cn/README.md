@@ -118,7 +118,7 @@ const sub = {
   - a，reducer需要遵守：当action为undefined，返回默认值state的约定。此举是为了得到初始化的state。
   - b，gluer函数针对传入的reducer函数进行包装，区别于普通函数
   - c，经过destruct后数据模型对象节点的值将变为action creator，在内部被包装为(params) => dispatch({type, data: params})
-- 2，如果节点的值是函数fn，没有用gluer进行包装，那么将会被认为是一个action creator函数，经过destruct后会被包装成(...args) => dispatch(fn(...args));
+- 2，如果节点的值是函数fn，没有用gluer进行包装，<del>那么将会被认为是一个action creator函数，经过destruct后会被包装成(...args) => dispatch(fn(...args))</del><strong>不做任何处理</strong>;
 - 3，节点其他类型的值，将原样输出，不做任何处理 
 - 4，例子中sub经过destruct后，之前节点值为函数的，都可直接调用触发对应的action
 
