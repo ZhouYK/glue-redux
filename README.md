@@ -118,7 +118,7 @@ const sub = {
   - a，Reducer needs to follow the convention that returns the default state when action is undefined. This is to get the state initialized.
   - b，The gluer function is packaged for the incoming reducer function, unlike the regular function.
   - c，After the destruct, the value of the data model object node will become action creator, which is internally wrapped as (params) => dispatch({type, data: params}).
-- 2，If the value of the node is the function fn and not packed with gluer, it will be considered as an action creator function and will be packed with (... The args) = > dispatch (fn (... The args)).
+- 2，If the value of the node is the function fn and not packed with gluer, <del>it will be considered as an action creator function and will be packed with (... The args) = > dispatch (fn (... The args))</del><strong>it keeps</strong>.
 - 3，Values of other types of nodes will be output as is without any processing.
 - 4，In the example, after the sub passes the destruct, if the node value is a function before, the corresponding action can be triggered directly.
 

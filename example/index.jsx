@@ -1,16 +1,15 @@
 import React, { Fragment } from 'react';
 import { render } from 'react-dom';
 import {
-  createStore, combineReducers, applyMiddleware, compose,
+  createStore, combineReducers,
 } from 'redux';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
 import App from './App/index';
 import DevTool from './DevTool';
 import appGlue from './App/glue';
 import { destruct } from '../src';
 
-const store = createStore(() => {}, {}, compose(applyMiddleware(thunk), DevTool.instrument()));
+const store = createStore(() => {}, {}, DevTool.instrument());
 
 const { dispatch } = store;
 

@@ -62,24 +62,20 @@ const degrade = (dispatch) => {
       keys.forEach((key) => {
         const value = obj[key];
         keyStr.push(key);
-        // if (getType(value) === '[object Function]') {
-        // 如果是generator函数则检索中止
+        // 如果节点为function
         if (typeof value === 'function') {
           if (parent) {
             actionError(value, obj);
             const str = keyStr.join(uniqueTypeConnect);
-            let actionFn;
-            let reducerFn;
-            // generator函数是默认
+            // 如果改函数是节点维护函数，则获取对应的action creator和reducer function
+            // 其他函数不做处理
             if (value[forPurposeKey] === forPurposeValue) {
               const iterator = value();
               const stepOne = iterator.next();
               const stepTwo = iterator.next(stepOne.value);
               const stepThree = iterator.next(stepTwo.value);
-              const { action, reducer } = stepThree.value;
-              actionFn = action;
-              reducerFn = reducer;
-              if (typeof action !== 'function') {
+              const { action: actionFn, reducer: reducerFn } = stepThree.value;
+              if (typeof actionFn !== 'function') {
                 console.trace();
                 throw new Error('传入的action必须是函数');
               }
@@ -87,23 +83,18 @@ const degrade = (dispatch) => {
                 console.trace();
                 throw new Error('传入的reducer必须是函数');
               }
-            } else {
-              // 普通函数会被当成单纯的action
-              actionFn = value;
-            }
-            // 找到原始actions对象中，当前key值所在的对象
-            const upperNode = findActionParent(keyStr, parent);
-            // 如果为action，则进行类似bindActionCreators的动作
-            const action = glueAction((...args) => {
-              const actionEntity = actionFn(...args);
-              if (getType(actionEntity) === '[object Function]') {
-                return dispatch(actionEntity);
-              }
-              // 组装action实体，触发action
-              return dispatch({ type: str, data: actionEntity });
-            });
-            upperNode[key] = action;
-            if (reducerFn) {
+              // 找到原始actions对象中，当前key值所在的对象
+              const upperNode = findActionParent(keyStr, parent);
+              // 如果为action，则进行类似bindActionCreators的动作
+              const action = glueAction((...args) => {
+                const actionEntity = actionFn(...args);
+                if (getType(actionEntity) === '[object Function]') {
+                  return dispatch(actionEntity);
+                }
+                // 组装action实体，触发action
+                return dispatch({ type: str, data: actionEntity });
+              });
+              upperNode[key] = action;
               // 如果为reducer，则直接用属性联结行程的字符串作为对象键值赋值
               // parent为顶层对象引用
               /* eslint-disable no-param-reassign */
