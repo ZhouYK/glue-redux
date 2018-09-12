@@ -63,7 +63,7 @@ const config = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new CleanWebpackPlugin(['lib'], {
+    new CleanWebpackPlugin(['cj', 'es', 'umd'], {
       root: path.resolve(__dirname, '../'),
       exclude: [],
       verbose: true,

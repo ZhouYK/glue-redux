@@ -5,7 +5,7 @@ const packageObj = require('../package.json');
 
 const publicPath = '/'; // 可自定义
 const entry = Object.assign({
-  index: ['babel-polyfill', './example/index.jsx'],
+  index: ['./example/index.jsx'],
 }, commonConfig.entry);
 const config = {
   devtool: 'eval-source-map',
