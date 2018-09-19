@@ -16,19 +16,9 @@ composible model for redux
   // Define a data model of a Sub module
   import { gluer } from '../../../src/index';
   
-  const height = gluer((state = 100, action) => {
-    if (action) {
-      return Number(action.data);
-    }
-    return state;
-  });
+  const height = gluer(data => Number(data), 100);
   
-  const sex = gluer((state = '薛定谔的猫', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
+  const sex = gluer('薛定谔的猫');
   
   const sub = {
     height,
@@ -46,12 +36,7 @@ composible model for redux
   import { gluer } from '../../src/index';
   import sub from './Sub/glue';
   
-  const name = gluer((state = 'Initial value', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
+  const name = gluer('Initial value');
   
   const app = {
     name,
@@ -91,19 +76,8 @@ composible model for redux
 ## Some conventions of the data object model
 Take data model of Sub module as an example:
 ```jsx harmony
- const height = gluer((state = 100, action) => {
-    if (action) {
-      return Number(action.data);
-    }
-    return state;
-  });
-  
-  const sex = gluer((state = '薛定谔的猫', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
+  const height = gluer(data => Number(data), 100);
+  const sex = gluer('薛定谔的猫');
 const sub = {
     height,
     sex,

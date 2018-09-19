@@ -17,19 +17,9 @@
   // 定义一个Sub模块的数据模型
   import { gluer } from '../../../src/index';
   
-  const height = gluer((state = 100, action) => {
-    if (action) {
-      return Number(action.data);
-    }
-    return state;
-  });
-  
-  const sex = gluer((state = '薛定谔的猫', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
+  const height = gluer(data => Number(data), 100);
+    
+  const sex = gluer('薛定谔的猫');
   
   const sub = {
     height,
@@ -47,12 +37,7 @@
   import { gluer } from '../../src/index';
   import sub from './Sub/glue';
   
-  const name = gluer((state = 'Initial value', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
+  const name = gluer('Initial value');
   
   const app = {
     name,
@@ -87,24 +72,52 @@
     }
   }
 ```
+## gluer([callback, initialValue])
+> 根据入参会有不同的处理
+### 入参
+- callback (数据处理函数)
+  > 包含两个参数
+   
+   - data
+      > 用户传入的源数据
+   - state
+      > 当前节点的值
+   
+   返回值
+   > 经过处理后的当前节点的值
+   
+     
+      
+- initialValue (初始值)
+  > 当前节点的初始值
 
-## 数据对象模型的一些约定
+### 例子
+```js
+ // 不传参数
+ const name = gluer(); // 等价于 const name =  gluer(data => data)
+ 
+ // 只有一个入参，类型为函数，该函数会用于数据处理
+ const name = gluer((data, state) => data.substring(1,3));
+ 
+ // 只有一个入参，类型为非函数，该参数会被当做初始值
+ const name = gluer('initialValue'); // 等价于 const name = gluer(data => data, 'initialValue')
+ 
+ // 两个参数，第一个为数据处理函数，第二个为初始值
+ const name = gluer((data, state) => { ...state, ...data }, {name: 'initialValue'})
+ 
+```
+
+## 数据模型分析
 以Sub模块的数据模型为例：
 ```jsx harmony
- const height = gluer((state = 100, action) => {
-    if (action) {
-      return Number(action.data);
-    }
-    return state;
-  });
+// 定义一个Sub模块的数据模型
+  import { gluer } from '../../../src/index';
   
-  const sex = gluer((state = '薛定谔的猫', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
-const sub = {
+  const height = gluer(data => Number(data), 100);
+    
+  const sex = gluer('薛定谔的猫');
+  
+  const sub = {
     height,
     sex,
     asyncGetHeight: (params = { height: 100 }) => {
@@ -113,14 +126,15 @@ const sub = {
       }, 2000);
     },
   };
+  
+  export default sub;
 ```
-- 1，对象中某个节点需要进行数据维护，即需要有reducer来改变其值。那么可直接定义reducer函数，并且用gluer包装，赋值给该节点。
-  - a，reducer需要遵守：当action为undefined，返回默认值state的约定。此举是为了得到初始化的state。
-  - b，gluer函数针对传入的reducer函数进行包装，区别于普通函数
-  - c，经过destruct后数据模型对象节点的值将变为action creator，在内部被包装为(params) => dispatch({type, data: params})
-- 2，如果节点的值是函数fn，没有用gluer进行包装，<del>那么将会被认为是一个action creator函数，经过destruct后会被包装成(...args) => dispatch(fn(...args))</del><strong>不做任何处理</strong>;
-- 3，节点其他类型的值，将原样输出，不做任何处理 
-- 4，例子中sub经过destruct后，之前节点值为函数的，都可直接调用触发对应的action
+
+- 1，对象中某个节点需要进行数据维护，即需要有reducer来改变其值。那么可直接定义数据处理函数，并且用gluer包装，赋值给该节点。
+- 2，如果节点的值是函数fn，没有用gluer进行包装，不做任何处理(比如:sub.asyncGetHeight);
+- 3，节点其他类型的值，将原样输出，不做任何处理;
+- 4，例子中sub经过处理后，节点值为gluer返回值得，都可直接调用该节点(sub.height(100))触发action,内部会调用数据处理函数(gluer的入参),更新state;
+
 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
