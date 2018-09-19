@@ -1,12 +1,7 @@
 import { gluer } from '../../src/index';
 import sub from './Sub/glue';
 
-const name = gluer((state = 'Initial value', action) => {
-  if (action) {
-    return action.data;
-  }
-  return state;
-});
+const name = gluer('Initial value');
 
 const app = {
   asyncGetName: (n = 'andrew') => {

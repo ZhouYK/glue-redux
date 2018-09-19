@@ -1,7 +1,7 @@
 # glue-redux | [中文](https://github.com/ZhouYK/glue-redux/blob/master/zh-cn/README.md)
 
 composible model for redux
-> one model to one module
+> Each module corresponds to its own data model object
 
 ## Design principle
 
@@ -16,19 +16,9 @@ composible model for redux
   // Define a data model of a Sub module
   import { gluer } from '../../../src/index';
   
-  const height = gluer((state = 100, action) => {
-    if (action) {
-      return Number(action.data);
-    }
-    return state;
-  });
-  
-  const sex = gluer((state = '薛定谔的猫', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
+  const height = gluer(data => Number(data), 100);
+      
+  const sex = gluer('薛定谔的猫');
   
   const sub = {
     height,
@@ -46,12 +36,7 @@ composible model for redux
   import { gluer } from '../../src/index';
   import sub from './Sub/glue';
   
-  const name = gluer((state = 'Initial value', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
+  const name = gluer('Initial value');
   
   const app = {
     name,
@@ -87,23 +72,47 @@ composible model for redux
     }
   }
 ```
+## gluer([callback, initialValue])
+> There are different treatments depending on the participation
+### The ginseng
+- callback (data processing function)
+  > Contains two parameters
+   
+   - data
+      > Source data passed in by the user
+   - state
+      > The value of the current node
+   
+   The return value
+   > The value of the current node after processing
+   
+     
+      
+- initialValue (the initial value)
+  > The initial value of the current node
+
+### example
+```js
+ // no parameters
+ const name = gluer(); // 等价于 const name =  gluer(data => data)
+ 
+ // only one input parameter, type function, will be used for data processing
+ const name = gluer((data, state) => data.substring(1,3));
+ 
+ // only one input parameter, of a non-function type, which is treated as an initial value
+ const name = gluer('initialValue'); // 等价于 const name = gluer(data => data, 'initialValue')
+ 
+ // two parameters, the first for the data processing function, the second for the initial value
+ const name = gluer((data, state) => { ...state, ...data }, {name: 'initialValue'})
+ 
+```
+
 
 ## Some conventions of the data object model
 Take data model of Sub module as an example:
 ```jsx harmony
- const height = gluer((state = 100, action) => {
-    if (action) {
-      return Number(action.data);
-    }
-    return state;
-  });
-  
-  const sex = gluer((state = '薛定谔的猫', action) => {
-    if (action) {
-      return action.data;
-    }
-    return state;
-  });
+  const height = gluer(data => Number(data), 100);
+  const sex = gluer('薛定谔的猫');
 const sub = {
     height,
     sex,
@@ -115,12 +124,9 @@ const sub = {
   };
 ```
 - 1，A node in an object requires data maintenance, which requires the reducer to change its value. Then you can define the reducer function directly, and assign it to the node using the gluer wrapper.
-  - a，Reducer needs to follow the convention that returns the default state when action is undefined. This is to get the state initialized.
-  - b，The gluer function is packaged for the incoming reducer function, unlike the regular function.
-  - c，After the destruct, the value of the data model object node will become action creator, which is internally wrapped as (params) => dispatch({type, data: params}).
-- 2，If the value of the node is the function fn and not packed with gluer, <del>it will be considered as an action creator function and will be packed with (... The args) = > dispatch (fn (... The args))</del><strong>it keeps</strong>.
+- 2，If the value of the node is the function fn and not packed with gluer, do nothing(sub. AsyncGetHeight etc).
 - 3，Values of other types of nodes will be output as is without any processing.
-- 4，In the example, after the sub passes the destruct, if the node value is a function before, the corresponding action can be triggered directly.
+- 4， In the example, after sub is processed, if the node value is returned as gluer, it can be called directly (sub-height (100)) to trigger action.
 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
