@@ -71,18 +71,11 @@ const degrade = (dispatch) => {
             // 其他函数不做处理
             if (value[forPurposeKey] === forPurposeValue) {
               const iterator = value();
-              const stepOne = iterator.next();
-              const stepTwo = iterator.next(stepOne.value);
-              const stepThree = iterator.next(stepTwo.value);
-              const { action: actionFn, reducer: reducerFn } = stepThree.value;
-              if (typeof actionFn !== 'function') {
-                console.trace();
-                throw new Error('传入的action必须是函数');
-              }
-              if (typeof reducerFn !== 'function') {
-                console.trace();
-                throw new Error('传入的reducer必须是函数');
-              }
+              const reducerStatus = iterator.next();
+              const actionStatus = iterator.next(reducerStatus.value);
+              const initStateStatus = iterator.next(actionStatus.value);
+              const resultStatus = iterator.next(initStateStatus.value);
+              const { action: actionFn, reducer: reducerFn, initState } = resultStatus.value;
               // 找到原始actions对象中，当前key值所在的对象
               const upperNode = findActionParent(keyStr, parent);
               // 如果为action，则进行类似bindActionCreators的动作
@@ -95,10 +88,11 @@ const degrade = (dispatch) => {
                 return dispatch({ type: str, data: actionEntity });
               });
               upperNode[key] = action;
-              // 如果为reducer，则直接用属性联结行程的字符串作为对象键值赋值
-              // parent为顶层对象引用
               /* eslint-disable no-param-reassign */
-              df[key] = reducerFn();
+              // 设置初始值
+              df[key] = initState;
+              // parent为顶层对象引用
+              // 属性名连接形成的字符串作为对象键值赋值
               parent[str] = transformReducerToNestFnc(str, reducerFn);
             }
           }

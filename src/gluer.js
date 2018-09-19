@@ -1,30 +1,50 @@
 import { forPurposeKey, forPurposeValue } from './contants';
 
+const defaultReducer = (state, action) => action.data;
+const genReducer = rd => (state, action) => rd(action.data, state);
 /**
  * gluePair升级版
- * 生成一对action和reducer
- * @param reducerFnc 必需
- * @param actionCreator 非必需
- * @returns {function(): {action: *, reducer: *}}
+ * @param rd 非必需
+ * @param initialState 非必需
+ * @returns {function(): {action: *, reducer: *, initState: *}}
  */
-const gluer = (reducerFnc, actionCreator = data => data) => {
-  const gf = function* () {
-    let errorMsg = '';
-    if (typeof reducerFnc !== 'function') {
-      errorMsg = '第一个参数reducer必须为函数';
+const gluer = function (rd, initialState) {
+  // 默认生成action creator
+  const actionCreator = data => data;
+  let reducerFnc;
+  let inState = initialState;
+  // 没有传入任何参数则默认生成一个reducer
+  if (arguments.length === 0) {
+    // 默认值reducer
+    reducerFnc = defaultReducer;
+  } else if (arguments.length === 1) {
+    // 会被当做初始值处理
+    if (typeof rd !== 'function') {
+      // 默认生成一个reducer
+      reducerFnc = defaultReducer;
+      // 初始值
+      inState = rd;
+    } else {
+      reducerFnc = genReducer(rd);
     }
-    if (typeof actionCreator !== 'function') {
-      errorMsg = `${errorMsg}，第二个参数actionCreator必须为函数`;
-    }
-    if (errorMsg) {
+  } else if (arguments.length >= 2) {
+    if (typeof rd !== 'function') {
       console.trace();
-      throw new Error(errorMsg);
+      throw new Error('first argument must be function');
     }
+    reducerFnc = genReducer(rd);
+  } else if (initialState === undefined) {
+    console.warn('highly recommend setting initial state');
+  }
+  // rd不是reducer函数格式，尽量减少redux概念直接暴露给glue-redux使用者
+  const gf = function* () {
     const reducer = yield reducerFnc;
     const action = yield actionCreator;
+    const initState = yield inState;
     return {
       reducer,
       action,
+      initState,
     };
   };
   Object.defineProperty(gf, forPurposeKey, {
