@@ -94,13 +94,13 @@ composible model for redux
 ### example
 ```js
  // no parameters
- const name = gluer(); // 等价于 const name =  gluer(data => data)
+ const name = gluer(); // equivalent to: const name =  gluer(data => data)
  
  // only one input parameter, type function, will be used for data processing
  const name = gluer((data, state) => data.substring(1,3));
  
  // only one input parameter, of a non-function type, which is treated as an initial value
- const name = gluer('initialValue'); // 等价于 const name = gluer(data => data, 'initialValue')
+ const name = gluer('initialValue'); // equivalent to: const name = gluer(data => data, 'initialValue')
  
  // two parameters, the first for the data processing function, the second for the initial value
  const name = gluer((data, state) => { ...state, ...data }, {name: 'initialValue'})
