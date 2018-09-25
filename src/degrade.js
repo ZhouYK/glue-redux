@@ -33,7 +33,16 @@ const transformReducerToNestFnc = (k, redu) => {
   const kArr = k.split(uniqueTypeConnect);
   // 去除顶层节点，因为顶层节点会在 generateRealReducer进行函数包装
   kArr.shift();
-  return kArr.reduceRight((pre, cur) => (state, ac) => ({ ...state, [`${cur}`]: pre(state[`${cur}`], ac) }), redu);
+  return kArr.reduceRight((pre, cur) => (state, ac) => {
+    // 这里做了一个优化，如果节点返回值与传入state一致则不更新
+    // return { ...state, [`${cur}`]: pre(state[`${cur}`], ac) }
+    const curValue = state[cur];
+    const temp = pre(curValue, ac);
+    if (Object.is(temp, curValue)) {
+      return state;
+    }
+    return { ...state, [cur]: temp };
+  }, redu);
 };
 
 /**
