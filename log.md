@@ -9,3 +9,6 @@
 2.0.1
 > this major version aim to reduce the exposion of redux concept
 - gluer overload
+
+2.0.2
+- if the node data does not change, the state is not updated
