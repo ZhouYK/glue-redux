@@ -26,7 +26,7 @@ class Index extends PureComponent {
     const index = Math.floor(rn * 4);
     appGlue.sex(sexes[index]);
     appGlue.height(100 + window.parseInt(rn * 10));
-    // Sub
+    // Sub;
     subGlue.asyncGetHeight({ height: 160 + window.parseInt(rn * 10) });
     const r = Math.random();
     const i = Math.floor(r * 4);
