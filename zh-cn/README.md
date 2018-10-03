@@ -51,7 +51,7 @@
   
   // 把数据模型传入store中
   import appGlue from './App/glue';
-  const store = createStore(() => {}, {}, compose(applyMiddleware(thunk), DevTool.instrument()));
+  const store = createStore(() => {}, {}, DevTool.instrument());
   
   const { dispatch } = store;
   
