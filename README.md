@@ -50,7 +50,7 @@ composible model for redux
   
   // Pass the data model into the store
   import appGlue from './App/glue';
-  const store = createStore(() => {}, {}, compose(applyMiddleware(thunk), DevTool.instrument()));
+  const store = createStore(() => {}, {}, DevTool.instrument());
   
   const { dispatch } = store;
   
