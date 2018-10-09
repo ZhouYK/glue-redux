@@ -76,7 +76,7 @@ then visit http://localhost:8888
 ```
 
 
-## Some conventions of the data object model | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.jsx)
+## Some conventions of the data object model | [code](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.jsx)
 ```jsx harmony
 // 定义model
   import { gluer } from '../../src';
