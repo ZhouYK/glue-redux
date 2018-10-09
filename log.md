@@ -12,3 +12,6 @@
 
 2.0.2
 - if the node data does not change, the state is not updated
+
+2.0.3
+- the method of the model no longer returns the action object, but the data of the incoming method
