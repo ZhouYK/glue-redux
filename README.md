@@ -22,7 +22,7 @@ then visit http://localhost:8888
 
 ## It can be combined to realize the reuse of the same data structure
 
-> it is important to note that reuse here refers to structure, not to a specific object. An object can only be applied to one place, such as the data model object of the Sub module in the example below
+> it is important to note that reuse here refers to structure, not to a specific object. An object can only be applied to one place
 ## destruct({dispatch})({model}) | [code](https://github.com/ZhouYK/glue-redux/blob/master/example/index.jsx)
 > deconstruct the data object and connect with redux
 
