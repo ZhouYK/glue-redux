@@ -94,7 +94,8 @@ const degrade = (dispatch) => {
                   return dispatch(actionEntity);
                 }
                 // 组装action实体，触发action
-                return dispatch({ type: str, data: actionEntity });
+                dispatch({ type: str, data: actionEntity });
+                return actionEntity;
               });
               upperNode[key] = action;
               /* eslint-disable no-param-reassign */

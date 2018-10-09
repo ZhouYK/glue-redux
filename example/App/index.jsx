@@ -1,82 +1,79 @@
-import PT from 'prop-types';
-import { connect } from 'react-redux';
-import React, { PureComponent, Fragment } from 'react';
-import Sub from './Sub';
-import subGlue from './Sub/glue';
-import appGlue from './glue';
+import React, { Component } from 'react';
+import { service } from '../glue';
+import List from './UserList';
+import './style.less';
 
-const sexes = ['男', '女', '中性', '薛定谔的猫'];
-class Index extends PureComponent {
-  static propTypes = {
-    name: PT.string.isRequired,
-    sex: PT.string.isRequired,
-    height: PT.number.isRequired,
-  }
-
+class App extends Component {
   constructor(props) {
     super(props);
-    this.ref = React.createRef();
+    this.state = {
+      name: '',
+      profession: '',
+      pet: '',
+    };
   }
 
-  handleClick = (evt) => {
-    const rn = Math.random();
-    evt.preventDefault();
-    // App
-    appGlue.asyncGetName(this.ref.current.value);
-    const index = Math.floor(rn * 4);
-    appGlue.sex(sexes[index]);
-    appGlue.height(100 + window.parseInt(rn * 10));
-    // Sub;
-    subGlue.asyncGetHeight({ height: 160 + window.parseInt(rn * 10) });
-    const r = Math.random();
-    const i = Math.floor(r * 4);
-    subGlue.sex(sexes[i]);
+  handleOnChange = key => (e) => {
+    this.setState({
+      [key]: e.target.value,
+    });
+  }
+
+  handleAdd = (e) => {
+    e.preventDefault();
+    const { name, profession, pet } = this.state;
+    let str;
+    if (!name) {
+      str = '请输入名字[name]';
+    } else if (!profession) {
+      str = '请输入职业[profession]';
+    } else if (!pet) {
+      str = '请输入喜欢的宠物[pet]';
+    }
+    if (str) {
+      return window.alert(str);
+    }
+    const returnData = service.register({
+      name,
+      profession,
+      pet,
+    });
+    return returnData;
   }
 
   render() {
-    const { name, sex, height } = this.props;
+    const { name, profession, pet } = this.state;
     return (
-      <Fragment>
-        <form action="/" method="get">
-          <label htmlFor="name">
-            Input your name：
-            <input ref={this.ref} type="text" id="name" />
-          </label>
-          <button type="button" onClick={this.handleClick}>
-            Submit
-          </button>
-        </form>
-        <h4>
-        APP：
-        </h4>
-        your name is：
-        {name}
-        <div>
-          app的身高：
-          {height}
-          cm
-        </div>
-        <div>
-          app的性别：
-          {sex}
-        </div>
-        <h4>
-        SUB：
-        </h4>
-        <Sub />
-      </Fragment>
+      <div className="app">
+        <section>
+          <div className="row">
+            <label htmlFor="name">
+              姓名：
+              <input value={name} onChange={this.handleOnChange('name')} type="text" id="name" placeholder="请输入姓名" />
+            </label>
+          </div>
+          <div className="row">
+            <label htmlFor="profession">
+              职业：
+              <input value={profession} onChange={this.handleOnChange('profession')} type="text" id="profession" placeholder="请输入职业" />
+            </label>
+          </div>
+          <div className="row">
+            <label htmlFor="pet">
+              喜欢的宠物：
+              <input value={pet} onChange={this.handleOnChange('pet')} type="text" id="pet" placeholder="请输入你喜欢的宠物" />
+            </label>
+          </div>
+          <div className="row">
+            <button type="button" onClick={this.handleAdd}>
+              添加
+            </button>
+          </div>
+        </section>
+        <List />
+      </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  const { app } = state;
-  const { name, sex, height } = app;
-  return {
-    name,
-    sex,
-    height,
-  };
-};
-
-export default connect(mapStateToProps)(Index);
+export default App;
