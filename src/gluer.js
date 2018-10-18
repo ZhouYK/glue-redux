@@ -2,6 +2,7 @@ import { forPurposeKey, forPurposeValue } from './contants';
 
 const defaultReducer = (state, action) => action.data;
 const genReducer = rd => (state, action) => rd(action.data, state);
+const warning = 'highly recommend setting initial state';
 /**
  * gluePair升级版
  * @param rd 非必需
@@ -17,6 +18,7 @@ const gluer = function (rd, initialState) {
   if (arguments.length === 0) {
     // 默认值reducer
     reducerFnc = defaultReducer;
+    console.warn(warning);
   } else if (arguments.length === 1) {
     // 会被当做初始值处理
     if (typeof rd !== 'function') {
@@ -26,15 +28,17 @@ const gluer = function (rd, initialState) {
       inState = rd;
     } else {
       reducerFnc = genReducer(rd);
+      console.warn(warning);
     }
-  } else if (arguments.length >= 2) {
+  } else {
     if (typeof rd !== 'function') {
       console.trace();
       throw new Error('first argument must be function');
     }
     reducerFnc = genReducer(rd);
-  } else if (initialState === undefined) {
-    console.warn('highly recommend setting initial state');
+    if (initialState === undefined) {
+      console.warn(warning);
+    }
   }
   // rd不是reducer函数格式，尽量减少redux概念直接暴露给glue-redux使用者
   const gf = function* () {
