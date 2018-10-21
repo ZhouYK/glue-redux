@@ -15,3 +15,7 @@
 
 2.0.3
 - model的方法不再返回action对象，而返回传入方法的数据
+
+2.0.4
+> gluePair and createGlue 将在3.x中彻底删除
+- 为gluer方法返回的函数添加属性actionType

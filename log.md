@@ -15,3 +15,7 @@
 
 2.0.3
 - the method of the model no longer returns the action object, but the data of the incoming method
+
+2.0.4
+> gluePair and createGlue will be out of support in v3.x
+- add actionType property to gluer's returned function

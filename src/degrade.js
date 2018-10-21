@@ -84,26 +84,23 @@ const degrade = (dispatch) => {
               const actionStatus = iterator.next(reducerStatus.value);
               const initStateStatus = iterator.next(actionStatus.value);
               const resultStatus = iterator.next(initStateStatus.value);
-              const { action: actionFn, reducer: reducerFn, initState } = resultStatus.value;
+              const { action: actionFn, reducer, initState } = resultStatus.value;
               // 找到原始actions对象中，当前key值所在的对象
               const upperNode = findActionParent(keyStr, parent);
-              // 如果为action，则进行类似bindActionCreators的动作
-              const action = glueAction((...args) => {
-                const actionEntity = actionFn(...args);
-                if (getType(actionEntity) === '[object Function]') {
-                  return dispatch(actionEntity);
-                }
-                // 组装action实体，触发action
-                dispatch({ type: str, data: actionEntity });
-                return actionEntity;
+              // 进行类似bindActionCreators的动作
+              const action = glueAction({
+                type: str,
+                action: actionFn,
+                dispatch,
               });
+              // 此处向action函数添加其对应的type属性，以便可以和其他以type为判断条件的中间件协同工作，比如redux-saga
               upperNode[key] = action;
               /* eslint-disable no-param-reassign */
               // 设置初始值
               df[key] = initState;
               // parent为顶层对象引用
               // 属性名连接形成的字符串作为对象键值赋值
-              parent[str] = transformReducerToNestFnc(str, reducerFn);
+              parent[str] = transformReducerToNestFnc(str, reducer);
             }
           }
           // 中止后返回上一节点检索
