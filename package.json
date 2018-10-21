@@ -1,6 +1,6 @@
 {
   "name": "glue-redux",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "combination actions and reducers with the shape of object",
   "main": "./es/index.js",
   "types": "./index.d.ts",
@@ -11,8 +11,7 @@
     "build:cj": "cross-env BABEL_ENV=cj babel src --out-dir cj",
     "build": "webpack --config webpack/webpack.config.prod.js && npm run build:es && npm run build:cj"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-runtime": "^6.26.0",
     "babel-cli": "^6.23.0",
