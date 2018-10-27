@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import pt from 'prop-types';
 import { connect } from 'react-redux';
+import { referToState } from '../configStore';
+import model from '../glue/model';
 
 const mapStateToProps = (state) => {
   const { app: { users } } = state;
@@ -54,6 +56,7 @@ class UserList extends Component {
   }
 
   render() {
+    console.log('获取的数据结构为：', referToState(model));
     return (
       <section>
         { this.renderUsers() }

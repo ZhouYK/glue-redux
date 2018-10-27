@@ -1,21 +1,21 @@
-### update logs | [中文](https://github.com/ZhouYK/glue-redux/blob/master/zh-cn/log.md)
+### glue-redux更新日志 | [en](https://github.com/ZhouYK/glue-redux/blob/master/en/log.md)
 1.1.8
-- createGlue is deprecated
+- createGlue方法被废弃；
 
 1.1.9
-- Normal functions are no longer treated as asynchronous actions, but remain as they are. Since both data and data requests can be integrated into the glue object,
-  There is no need to go through the action processing flow at the bottom of redux to handle asynchronous action;
+- 普通函数不再被当成异步action处理，会保持原样。因为数据和数据请求都可以整合到glue对象中，
+没有必要再穿透到底部redux的action处理流中去处理异步action;
 
 2.0.1
-> this major version aim to reduce the exposion of redux concept
-- gluer overload
+> 这个主要版本旨在减少redux概念的暴露
+- gluer重载
 
 2.0.2
-- if the node data does not change, the state is not updated
+- 如果节点数据未发生变化，则不更新state
 
 2.0.3
-- the method of the model no longer returns the action object, but the data of the incoming method
+- model的方法不再返回action对象，而返回传入方法的数据
 
 2.0.4
-> gluePair and createGlue will be out of support in v3.x
-- add actionType property to gluer's returned function
+> gluePair and createGlue 将在3.x中彻底删除
+- 为gluer方法返回的函数添加属性actionType

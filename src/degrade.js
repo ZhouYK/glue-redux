@@ -8,7 +8,7 @@ import {
 } from './contants';
 import { getType } from './getType';
 import { glueAction } from './glueAction';
-
+import { genReferencesMap } from './genProxy';
 /**
  * 获取倒数第二层对象
  * @param keyStr
@@ -65,17 +65,20 @@ const actionError = (actionFn, obj) => {
  * @returns {function(*=, *=, *=): {}}
  */
 const degrade = (dispatch) => {
+  const referencesMap = genReferencesMap();
   const fn = (obj, keyStr = [], parent, df) => {
     if (getType(obj) === '[object Object]') {
       const keys = Object.keys(obj);
       keys.forEach((key) => {
         const value = obj[key];
         keyStr.push(key);
+        const str = keyStr.join(uniqueTypeConnect);
+        // 索引引用的键值路径
+        referencesMap.set(value, str);
         // 如果节点为function
         if (typeof value === 'function') {
           if (parent) {
             actionError(value, obj);
-            const str = keyStr.join(uniqueTypeConnect);
             // 如果改函数是节点维护函数，则获取对应的action creator和reducer function
             // 其他函数不做处理
             if (value[forPurposeKey] === forPurposeValue) {
@@ -147,7 +150,10 @@ const degrade = (dispatch) => {
     } else {
       throw new Error('传入的待处理数据必须是对象!');
     }
-    return obj;
+    return {
+      stagedStructure: obj,
+      referencesMap,
+    };
   };
   return fn;
 };
