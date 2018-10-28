@@ -8,7 +8,7 @@
           "> 1%",
           "last 5 versions"
         ]
-      },
+      }
     }]
   ],
   "plugins": [
@@ -25,8 +25,24 @@
     "cj": {
       "presets": [
         ["env", {
-          "modules": "commonjs"
+          "modules": "commonjs",
+          "targets": {
+            "browsers": [
+              "> 1%",
+              "last 5 versions"
+            ]
+          }
         }]
+      ],
+      "plugins": [
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        ["transform-runtime", {
+          "helpers": true,
+          "polyfill": true,
+          "regenerator": true,
+          "moduleName": "babel-runtime"
+        }] // polyfill新语法
       ]
     }
   }
