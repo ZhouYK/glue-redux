@@ -1,4 +1,4 @@
-# glue-redux | [中文](https://github.com/ZhouYK/glue-redux/blob/master)
+# glue-redux | [中文](https://github.com/ZhouYK/glue-redux)
 
 composible model for redux
 > each module corresponds to its own data model object
