@@ -7,7 +7,7 @@ import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 
 // createDevTools takes a monitor and produces a devTools component
-const DevTool = createDevTools(
+const DevTool = () => createDevTools(
   // Monitors are individually adjustable with props.
   // Consult their repositories to learn about those props.
   // Here, we put LogMonitor inside a DockMonitor.

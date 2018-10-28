@@ -1,54 +1,43 @@
-export interface Glue {
+interface Glue {
   [index:string]: any;
 }
 
-interface Action {
-  type: string,
-  data: any
+interface DestructResult {
+  reducers: {[index:string]: any},
+  actions: {[index:string]: any},
+  referToState: (model: { [index:string]: any }) => { [index:string]: any },
 }
 
 interface Dispatch {
   (p: any): any;
 }
 
+interface GetState {
+  (p?: any): any;
+}
+
 interface GluerReturn {
-  (p:any): any;
+  (data?: any): any;
 }
 
-type ActionCreator = (data: any) => any;
 
-type Reducer = (state: any, action:Action ) => any;
-
-interface CreateGlue<T> {
-  <T>(module: T, defaultValue?: T): T;
-}
-
-interface GluePair {
-  (actionCreator: ActionCreator, reducer: Reducer): GluerReturn;
-}
+type Handler = (data: any, state: {} ) => any;
 
 interface Gluer {
-  (reducer: Reducer, actionCreator?: ActionCreator): GluerReturn;
+  (fn?: Handler, initialState?: any): GluerReturn;
 }
 
 interface DestructParams {
   dispatch: Dispatch;
+  getState: GetState;
+  [index: string]: any;
 }
 interface DestructReturn {
-  (structure: Glue): Glue;
+  (structure: Glue): DestructResult;
 }
 interface Destruct {
   (p: DestructParams): DestructReturn;
 }
-
-/**
- * @deprecated
- */
-export const createGlue: CreateGlue<Glue>;
-/**
- * @deprecated
- */
-export const gluePair:GluePair;
 
 export const gluer:Gluer;
 
