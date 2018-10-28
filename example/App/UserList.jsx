@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
-import pt from 'prop-types';
-import { connect } from 'react-redux';
 import { referToState } from '../configStore';
 import model from '../glue/model';
 
-const mapStateToProps = (state) => {
-  const { app: { users } } = state;
-  return {
-    users,
-  };
-};
-
 class UserList extends Component {
-  static propTypes = {
-    users: pt.array.isRequired,
+  constructor(props) {
+    super(props);
+    const data = referToState(model);
+    this.state = {
+      ...data,
+    };
+  }
+
+  componentDidMount() {
+    // 由于没有监听store变化的钩子，用轮询模拟
+    // 针对react的钩子，有另外一个库 react-glue-redux
+    setInterval(() => {
+      this.setState(referToState(model));
+    }, 500);
   }
 
   renderUsers = () => {
-    const { users } = this.props;
+    const { users } = this.state;
     if (Object.is(users.length, 0)) {
       return (
         <section>
@@ -56,7 +59,6 @@ class UserList extends Component {
   }
 
   render() {
-    console.log('获取的数据结构为：', referToState(model));
     return (
       <section>
         { this.renderUsers() }
@@ -65,4 +67,4 @@ class UserList extends Component {
   }
 }
 
-export default connect(mapStateToProps)(UserList);
+export default UserList;
