@@ -1,4 +1,4 @@
-# glue-redux | [中文](https://github.com/ZhouYK/glue-redux/blob/master/zh-cn/README.md)
+# glue-redux | [中文](https://github.com/ZhouYK/glue-redux/blob/master)
 
 composible model for redux
 > each module corresponds to its own data model object
@@ -23,7 +23,7 @@ then visit http://localhost:8888
 ## It can be combined to realize the reuse of the same data structure
 
 > it is important to note that reuse here refers to structure, not to a specific object. An object can only be applied to one place
-## destruct(store)(model) | [code](https://github.com/ZhouYK/glue-redux/blob/master/example/index.jsx)
+## destruct(store)(model) | [code](https://github.com/ZhouYK/glue-redux/blob/master/example/configStore.js)
 > deconstruct the data object and connect with redux
 
 ### the ginseng

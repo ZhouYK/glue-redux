@@ -23,7 +23,7 @@ npm start
 
 > 需要注意的是，这里复用指的是结构，不是具体的某一个对象。一个对象只能被应用于一处。
 
-## destruct(store)(model) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/index.jsx)
+## destruct(store)(model) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/configStore.js)
 > 解构数据对象，与redux进行连接
 
 ### 入参
