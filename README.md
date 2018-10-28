@@ -4,7 +4,7 @@
 > 每个模块对应自身数据模型对象
 
 ## 查看示例
-```javascript
+```bash
 git clone https://github.com/ZhouYK/glue-redux.git
 npm install
 npm start
@@ -23,23 +23,25 @@ npm start
 
 > 需要注意的是，这里复用指的是结构，不是具体的某一个对象。一个对象只能被应用于一处。
 
-## destruct({dispatch})({model}) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/index.jsx)
+## destruct(store)(model) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/index.jsx)
 > 解构数据对象，与redux进行连接
 
 ### 入参
-- dispatch(必传)
+- store(必传)
   > store中的dispatch函数
 - model(必传)
   > 定义的数据对象，必须是对象类型
   
 ### 返回
-- { reducers, actions }
+- { reducers, actions, referToState }
   > 包含reducers和actions属性的对象
   
    - reducers
       > redux中的reducer函数的对象集合，可直接用户combineReducers
    - actions
       > model的一个对象集合
+   - referToState 
+      > 根据model的引用获取其在store对应的数据, 入参为model引用，返回对应的state数据   
       
 
 ## gluer([callback, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
@@ -62,7 +64,7 @@ npm start
   > 当前节点的初始值
 
 ### 例子
-```js
+```jsx
  // 不传参数
  const name = gluer(); // 等价于 const name =  gluer(data => data)
  

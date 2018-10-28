@@ -72,8 +72,6 @@ const destruct = store => (structure) => {
   };
 };
 
-export { default as createGlue } from './deprecated/createGlue';
-export { default as gluePair } from './deprecated/gluePair';
 export { default as gluer } from './gluer';
 export { destruct };
 export default destruct;

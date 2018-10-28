@@ -19,3 +19,7 @@
 2.0.4
 > gluePair and createGlue will be out of support in v3.x
 - add actionType property to gluer's returned function
+
+3.0.0
+- add referToState method in the return of destruct: index the data in store according to model object;
+- remove gluePair and createGlue

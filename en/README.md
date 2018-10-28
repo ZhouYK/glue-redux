@@ -5,7 +5,7 @@ composible model for redux
 
 
 ## check example
-```javascript
+```bash
 git clone https://github.com/ZhouYK/glue-redux.git
 npm install
 npm start
@@ -23,23 +23,24 @@ then visit http://localhost:8888
 ## It can be combined to realize the reuse of the same data structure
 
 > it is important to note that reuse here refers to structure, not to a specific object. An object can only be applied to one place
-## destruct({dispatch})({model}) | [code](https://github.com/ZhouYK/glue-redux/blob/master/example/index.jsx)
+## destruct(store)(model) | [code](https://github.com/ZhouYK/glue-redux/blob/master/example/index.jsx)
 > deconstruct the data object and connect with redux
 
 ### the ginseng
-- dispatch(necessary)
+- store(necessary)
   > the dispatch function in store
 - model(necessary)
   > the data object defined must be an object type
   
 ### return
-- { reducers, actions }
+- { reducers, actions, referToState }
   > object that contains the reducers and actions properties
    - reducers
       > object set for the reducer function in redux, which allows direct user combineReducers
    - actions
       > a collection of objects for the model
-      
+   - referToState 
+      > Get the data corresponding to the model in store according to the model reference, enter the parameter as the model reference and return the corresponding state data   
 ## gluer([callback, initialValue])
 > there are different treatments depending on the participation
 ### the ginseng
@@ -60,7 +61,7 @@ then visit http://localhost:8888
   > the initial value of the current node
 
 ### example
-```js
+```jsx harmony
  // no parameters
  const name = gluer(); // equivalent to: const name =  gluer(data => data)
  

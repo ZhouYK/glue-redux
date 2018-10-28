@@ -19,3 +19,7 @@
 2.0.4
 > gluePair and createGlue 将在3.x中彻底删除
 - 为gluer方法返回的函数添加属性actionType
+
+3.0.0
+- 在destruct返回中新增referToState方法：根据模型对象，索引出其在store中的数据；
+- 去除gluePair和createGlue
