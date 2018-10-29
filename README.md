@@ -79,7 +79,7 @@ npm start
  
 ```
 
-## 数据模型分析 | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.jsx)
+## 数据模型分析 | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
 ```jsx harmony
 // 定义model
   import { gluer } from '../../src';

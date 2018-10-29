@@ -68,3 +68,12 @@ class UserList extends Component {
 }
 
 export default UserList;
+// 你可以使用react-redux从store中获取数据
+// const mapStateToProps = (state) => {
+//  const { app } = state;
+//  return {
+//    ...app,
+//  },
+// };
+// 可从props中获取到 const { users } = this.props;
+// export default connect(mapStateToProps)(UserList);
