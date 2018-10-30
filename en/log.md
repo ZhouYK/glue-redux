@@ -27,3 +27,7 @@
 3.1.0
 - top-level node can maintain function of ambassador point;
 - get the entire state based on the index of the entire model
+
+3.2.0
+- new hasModel methods
+- when an unknown reference is passed in, the referToState returns undefined

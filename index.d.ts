@@ -5,7 +5,8 @@ interface Glue {
 interface DestructResult {
   reducers: {[index:string]: any},
   actions: {[index:string]: any},
-  referToState: (model: { [index:string]: any }) => { [index:string]: any },
+  referToState: (model: any) => any,
+  hasModel: (model: any) => boolean,
 }
 
 interface Dispatch {

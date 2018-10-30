@@ -27,3 +27,7 @@
 3.1.0
 - 顶层节点可以使节点维护函数；
 - 可根据整个model的索引，获取整个state
+
+3.2.0
+- 新增hasModel方法
+- 当传入未知引用时，referToState将返回undefined

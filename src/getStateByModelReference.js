@@ -1,6 +1,9 @@
 import { uniqueTypeConnect } from './contants';
 
 const getStateByModelReference = (referencesMap, getState) => (model) => {
+  if (!referencesMap.has(model)) {
+    return undefined;
+  }
   const pathStr = referencesMap.get(model);
   const currentState = getState();
   // 返回整个state

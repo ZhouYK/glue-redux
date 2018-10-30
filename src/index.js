@@ -75,10 +75,12 @@ const destruct = store => (structure) => {
   // 经过degrade的模型对象
   const actions = stagedStructure;
   const referToState = getStateByModelReference(referencesMap, getState);
+  const hasModel = model => referencesMap.has(model);
   return {
     reducers,
     actions,
     referToState,
+    hasModel,
   };
 };
 
