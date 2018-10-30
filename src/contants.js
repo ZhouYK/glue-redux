@@ -3,7 +3,8 @@ export const forPurposeValue = 'gluePair';
 export const forPurposeKey = 'handleActionAndReducer';
 export const glueActionFnFlag = 'glueActionFnFlag';
 export const glueActionFnFlagValue = 'glueActionFnFlagValue';
-export const defaultValueKey = '__initialDefaultValue__';
+export const defaultValueKey = '____initialDefaultValue____';
+export const distinguishPrefix = '<<<<<<<';
 export const actionType = 'actionType';
 
 export default {
@@ -14,4 +15,5 @@ export default {
   glueActionFnFlag,
   glueActionFnFlagValue,
   actionType,
+  distinguishPrefix,
 };

@@ -26,18 +26,26 @@ const generateRealReducer = originReducer => Object.keys(originReducer).reduce((
   // 原型上的属性无法扩展复制
   const targetGlue = originReducer[key];
   let fnc;
-  if (typeof targetGlue === 'function') {
-    // todo 顶层节点为函数时会被作为reducer，此reducer没有特定的action，会被所有的触发
-    fnc = targetGlue;
-  } else if (typeof targetGlue === 'object') {
-    const value = { ...targetGlue };
+  // 拥有默认标识的则为可处理节点
+  if (defaultValueKey in targetGlue) {
+    let value;
+    const getReducer = type => value[type];
     const defaultValue = targetGlue[defaultValueKey];
+    if (typeof targetGlue === 'function') {
+      value = targetGlue;
+    } else if (typeof targetGlue === 'object') {
+      // 如果不展开复制的话，会被deleteDerivedProps 删掉 reducer
+      value = { ...targetGlue };
+      deleteDerivedProps(targetGlue, key);
+    }
     // 定义顶层reducer，根据action type调用对应的子reducer
     fnc = (state = defaultValue, ac) => {
       const { type } = ac;
       // 顶层节点存储着每个叶子节点的reducer
       // 每个叶子节点的action保留着对应的type
-      const reducerFnc = value[type];
+      // 如果value为函数，那么需要用额外type去索引reducer
+
+      const reducerFnc = getReducer(type);
       if (reducerFnc) {
         // 一但调用，会返回新的值
         return reducerFnc(state, ac);
@@ -45,10 +53,12 @@ const generateRealReducer = originReducer => Object.keys(originReducer).reduce((
       // 没有对应的reducer，直接返回原值
       return state;
     };
+  } else if (typeof targetGlue === 'function') {
+    // 顶层节点为函数时会被作为reducer，此reducer没有特定的action，会被所有的触发
+    fnc = targetGlue;
   } else {
     fnc = () => targetGlue;
   }
-  deleteDerivedProps(targetGlue, key);
   return { ...pre, [`${key}`]: fnc };
 }, {});
 
