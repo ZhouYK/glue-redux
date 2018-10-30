@@ -70,6 +70,10 @@ const degrade = (dispatch) => {
   const referencesMap = genReferencesMap();
   const fn = (curObj, keyStr = [], topNode = curObj, df = {}) => {
     if (getType(curObj) === '[object Object]') {
+      // 设置整个对象的索引
+      if (curObj === topNode && keyStr.length === 0) {
+        referencesMap.set(curObj, '');
+      }
       const keys = Object.keys(curObj);
       keys.forEach((key) => {
         const value = curObj[key];

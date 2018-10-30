@@ -23,3 +23,7 @@
 3.0.0
 - add referToState method in the return of destruct: index the data in store according to model object;
 - remove gluePair and createGlue
+
+3.1.0
+- top-level node can maintain function of ambassador point;
+- get the entire state based on the index of the entire model

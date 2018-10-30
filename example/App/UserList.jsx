@@ -8,9 +8,11 @@ class UserList extends Component {
     super(props);
     const data = referToState(model);
     const wholeUsers = referToState(wholeModel.users);
+    const wholeState = referToState(wholeModel);
     this.state = {
       ...data,
       wholeUsers,
+      wholeState,
     };
   }
 
@@ -20,12 +22,13 @@ class UserList extends Component {
     setInterval(() => {
       const data = referToState(model);
       const wholeUsers = referToState(wholeModel.users);
-      this.setState({ ...data, wholeUsers });
+      const wholeState = referToState(wholeModel);
+      this.setState({ ...data, wholeUsers, wholeState });
     }, 500);
   }
 
   renderUsers = () => {
-    const { users, wholeUsers } = this.state;
+    const { users, wholeUsers, wholeState } = this.state;
     if (Object.is(users.length, 0)) {
       return (
         <section>
@@ -87,6 +90,7 @@ class UserList extends Component {
         </div>
       </section>
     ));
+    console.log(wholeState);
     return (
       <Fragment>
         {list}

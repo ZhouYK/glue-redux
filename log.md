@@ -23,3 +23,7 @@
 3.0.0
 - 在destruct返回中新增referToState方法：根据模型对象，索引出其在store中的数据；
 - 去除gluePair和createGlue
+
+3.1.0
+- 顶层节点可以使节点维护函数；
+- 可根据整个model的索引，获取整个state
