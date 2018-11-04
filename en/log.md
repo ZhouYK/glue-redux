@@ -31,3 +31,6 @@
 3.2.0
 - new hasModel methods
 - when an unknown reference is passed in, the referToState returns undefined
+
+3.2.1
+- fix the problem of missing nested objects

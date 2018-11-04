@@ -31,3 +31,6 @@
 3.2.0
 - 新增hasModel方法
 - 当传入未知引用时，referToState将返回undefined
+
+3.2.1
+- 修复嵌套对象丢失的问题
