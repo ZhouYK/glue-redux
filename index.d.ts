@@ -1,3 +1,5 @@
+type Gluer = (fn?: any, initialState?: any) => GluerReturn;
+
 interface Glue {
   [index:string]: any;
 }
@@ -21,13 +23,6 @@ interface GluerReturn {
   (data?: any): any;
 }
 
-
-type Handler = (data: any, state: {} ) => any;
-
-interface Gluer {
-  (fn?: Handler, initialState?: any): GluerReturn;
-}
-
 interface DestructParams {
   dispatch: Dispatch;
   getState: GetState;
@@ -40,6 +35,6 @@ interface Destruct {
   (p: DestructParams): DestructReturn;
 }
 
-export const gluer:Gluer;
+export const gluer: Gluer;
 
-export const destruct:Destruct;
+export const destruct: Destruct;

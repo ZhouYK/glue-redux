@@ -1,3 +1,4 @@
-import { model as app } from './glue';
+import app from './glue/model';
+import test from './glue/modelTest';
 
-export default { app, ...app };
+export default { app, test };

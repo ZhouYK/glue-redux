@@ -137,7 +137,7 @@ const degrade = (dispatch) => {
           let deValue = df;
           let nextDefaultValue;
           // 如果是第一层键值
-          if (p === curObj) {
+          if (p === curObj && keyStr.length === 1) {
             // 顶层节点引用
             p = value;
             // 顶层节点的默认值
@@ -151,8 +151,8 @@ const degrade = (dispatch) => {
             nextDefaultValue = deValue[key];
           }
           fn(value, [...keyStr], p, nextDefaultValue);
-          // 返回到顶层节点后，推出节点重新检索兄弟顶层节点
-          keyStr.shift();
+          // 当前节点已经被遍历完
+          keyStr.pop();
         } else {
           // 索引引用的键值路径
           referencesMap.set(value, str);

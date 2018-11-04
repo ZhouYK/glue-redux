@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { service } from '../glue';
 import List from './UserList';
-import wholeModel from '../model';
 import './style.less';
 
 class App extends Component {
@@ -38,11 +37,6 @@ class App extends Component {
       name,
       profession,
       pet,
-    });
-    wholeModel.users({
-      name: `${name}---123`,
-      profession: `${profession}---123`,
-      pet: `${pet}---123`,
     });
     return returnData;
   }
