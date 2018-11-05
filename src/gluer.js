@@ -4,7 +4,6 @@ const defaultReducer = (state, action) => action.data;
 const genReducer = rd => (state, action) => rd(action.data, state);
 const warning = 'highly recommend setting initial state';
 /**
- * gluePair升级版
  * @param rd 非必需
  * @param initialState 非必需
  * @returns {function(): {action: *, reducer: *, initState: *}}

@@ -127,8 +127,6 @@ const degrade = (dispatch) => {
           }
           // 索引引用的键值路径
           referencesMap.set(newValue, str);
-          // 中止后返回上一节点检索
-          keyStr.pop();
         } else if (getType(value) === '[object Object]') {
           // 索引引用的键值路径
           referencesMap.set(value, str);
@@ -151,8 +149,6 @@ const degrade = (dispatch) => {
             nextDefaultValue = deValue[key];
           }
           fn(value, [...keyStr], p, nextDefaultValue);
-          // 当前节点已经被遍历完
-          keyStr.pop();
         } else {
           // 索引引用的键值路径
           referencesMap.set(value, str);
@@ -160,8 +156,9 @@ const degrade = (dispatch) => {
           if (df) {
             df[key] = value;
           }
-          keyStr.pop();
         }
+        // 中止后返回上一节点检索
+        keyStr.pop();
       });
     } else {
       throw new Error('传入的待处理数据必须是对象!');
