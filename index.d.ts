@@ -1,5 +1,3 @@
-type Gluer = (fn?: any, initialState?: any) => GluerReturn;
-
 interface Glue {
   [index:string]: any;
 }
@@ -35,6 +33,7 @@ interface Destruct {
   (p: DestructParams): DestructReturn;
 }
 
-export const gluer: Gluer;
-
+declare function gluer(fn: (data: any, state: any) => any) : GluerReturn;
+declare function gluer(initialState: any) : GluerReturn;
+declare function gluer(fn: (data: any, state: any) => any, initialState: any) : GluerReturn;
 export const destruct: Destruct;
