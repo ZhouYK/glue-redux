@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { referToState, hasModel } from '../configStore';
+import { referToState, hasModel, wholeModel } from '../store';
 import model from '../glue/model';
-import wholeModel from '../model';
 // import test from '../glue/modelTest';
 
 class UserList extends Component {
@@ -18,7 +17,10 @@ class UserList extends Component {
     // 针对react的钩子，有另外一个库 react-glue-redux
     setInterval(() => {
       console.log('引用model：', hasModel(model));
-      console.log('引用wholeModel.users：', hasModel(wholeModel.users));
+      console.log('引用wholeModel.users：', referToState(wholeModel.users));
+      this.setState({
+        users: referToState(model.users),
+      });
       console.log('引用wholeModel：', hasModel(wholeModel));
       console.log('未知的引用返回值：', referToState({}));
       console.log('引用profile：', referToState(model.profile));

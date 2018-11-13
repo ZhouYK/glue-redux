@@ -6,11 +6,19 @@ import { destruct } from '../src';
 import model from './model';
 
 const store = createStore(() => {}, {}, DevTool().instrument());
-const { reducers, referToState, hasModel } = destruct(store)(model);
+const wholeModel = {
+  users: ['小明'],
+  siblings: {
+    person: '小红',
+  },
+  model,
+};
+const { reducers, referToState, hasModel } = destruct(store)(wholeModel);
 store.replaceReducer(combineReducers(reducers));
 
 export {
   store,
   referToState,
   hasModel,
+  wholeModel,
 };
