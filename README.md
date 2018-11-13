@@ -1,7 +1,7 @@
 # glue-redux | [en](https://github.com/ZhouYK/glue-redux/blob/master/en)
 
-可组合的redux数据模型
-> 每个模块对应自身数据模型对象
+基于redux的应用层
+> 简单、友好、内聚，让相关代码在相近的位置出现
 
 ## 查看示例
 ```bash

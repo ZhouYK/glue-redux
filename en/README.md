@@ -1,8 +1,7 @@
 # glue-redux | [中文](https://github.com/ZhouYK/glue-redux)
 
-composible model for redux
-> each module corresponds to its own data model object
-
+application layer based on redux
+> simple, friendly, cohesive. make relevant code appear in close proximity
 
 ## check example
 ```bash
