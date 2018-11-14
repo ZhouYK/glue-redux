@@ -139,7 +139,7 @@ console.log('app model中的users为：', referToState(app.users));
 // [{name: '小明', age: 18, pet: '猫'}]
 ```
 
-### [与react搭配](https://github.com/ZhouYK/react-glux
+### [与react搭配](https://github.com/ZhouYK/react-glux)
 
 <strong>详情请见[react-glux](https://github.com/ZhouYK/react-glux)</strong>  
 
