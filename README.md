@@ -15,10 +15,10 @@ npm start
 * gluer
 * destruct
 
-## gluer([callback, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
+## gluer([updater, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
 > 根据入参会有不同的处理
 ### 入参
-- callback (数据处理函数)
+- updater (数据处理函数)
   > 包含两个参数
    
    - data
@@ -79,7 +79,7 @@ npm start
   > 包含reducers和actions属性的对象
   
    - reducers
-      > redux中的reducer函数的对象集合，可直接用户combineReducers
+      > redux中的reducer函数的对象集合，可直接用于combineReducers
    - actions
       > model的一个对象集合
    - referToState 
