@@ -15,10 +15,10 @@ npm start
 * gluer
 * destruct
 
-## gluer([callback, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
+## gluer([updater, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
 > 根据入参会有不同的处理
 ### 入参
-- callback (数据处理函数)
+- updater (数据处理函数)
   > 包含两个参数
    
    - data
