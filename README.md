@@ -79,7 +79,7 @@ npm start
   > 包含reducers和actions属性的对象
   
    - reducers
-      > redux中的reducer函数的对象集合，可直接用户combineReducers
+      > redux中的reducer函数的对象集合，可直接用于combineReducers
    - actions
       > model的一个对象集合
    - referToState 
