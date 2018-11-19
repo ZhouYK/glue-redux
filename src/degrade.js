@@ -21,7 +21,7 @@ const defineTopNodeDefaultValue = (topNode, defaultValue) => {
     });
   } catch (e) {
     console.trace();
-    throw new Error('该对象已被引用，请勿将同一对象应用到两个或者两个以上地方');
+    throw new Error(`the defaultValue of "${topNode}" is duplicated defined!`);
   }
 };
 
@@ -53,11 +53,11 @@ const transformReducerToNestFnc = (k, redu) => {
  * @returns {boolean}
  */
 const isGlueAction = actionFn => actionFn[glueActionFnFlag] === glueActionFnFlagValue;
-const actionError = (actionFn, obj) => {
+const actionError = (actionFn, obj, key) => {
   if (isGlueAction(actionFn)) {
     console.trace();
     console.error(obj);
-    throw new Error('action creator 重复处理，请勿将同一对象应用到两个或者两个以上地方');
+    throw new Error(`the "${key}" of ${obj}, which only can be processed only once, is already processed`);
   }
 };
 /**
@@ -82,7 +82,7 @@ const degrade = (dispatch) => {
         // 如果节点为function
         if (typeof value === 'function') {
           let newValue = value;
-          actionError(value, curObj);
+          actionError(value, curObj, key);
           // 如果该函数是节点维护函数，则获取对应的action creator和reducer function
           // 其他函数不做处理
           if (value[forPurposeKey] === forPurposeValue) {
@@ -161,7 +161,7 @@ const degrade = (dispatch) => {
         keyStr.pop();
       });
     } else {
-      throw new Error('传入的待处理数据必须是对象!');
+      throw new Error('the argument muse be plain object!');
     }
     return {
       stagedStructure: curObj,

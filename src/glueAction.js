@@ -2,7 +2,7 @@ import { glueActionFnFlag, glueActionFnFlagValue, actionType } from './contants'
 
 export const glueAction = (params) => {
   const { action, dispatch, type } = params;
-  if (typeof action !== 'function') throw new Error('请传入action生成函数');
+  if (typeof action !== 'function') throw new Error('please transfer "action function"!');
   const actionDispatch = function (...args) {
     const actionEntity = action(...args);
     // 组装action实体，触发action
