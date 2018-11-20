@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { hasModel, wholeModel } from '../example/store';
 import appModel from '../example/glue/model';
 import testModel from '../example/glue/modelTest';
@@ -16,4 +15,3 @@ test('hasModel test', () => {
   const tempModel = {};
   expect(hasModel(tempModel)).toBe(false);
 });
-
