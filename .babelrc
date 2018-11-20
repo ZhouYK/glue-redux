@@ -44,6 +44,22 @@
           "moduleName": "babel-runtime"
         }] // polyfill新语法
       ]
+    },
+    "test": {
+      "presets": [
+        ["env"],
+        "react"
+      ],
+      "plugins": [
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        ["transform-runtime", {
+          "helpers": true,
+          "polyfill": true,
+          "regenerator": true,
+          "moduleName": "babel-runtime"
+        }] // polyfill新语法
+      ]
     }
   }
 }
