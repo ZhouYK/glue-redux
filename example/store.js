@@ -3,7 +3,7 @@ import {
 } from 'redux';
 import DevTool from './DevTool';
 import { destruct } from '../src';
-import model from './model';
+import model from './models';
 
 const store = createStore(() => {}, {}, DevTool().instrument());
 const wholeModel = {

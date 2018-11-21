@@ -1,6 +1,6 @@
 import { referToState, wholeModel } from '../example/store';
-import appModel from '../example/glue/model';
-import testModel from '../example/glue/modelTest';
+import appModel from '../example/models/app/model';
+import testModel from '../example/models/test/model';
 
 test('referToState test', () => {
   expect(referToState(appModel)).toEqual({

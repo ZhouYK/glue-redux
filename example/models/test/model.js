@@ -1,4 +1,4 @@
-import { gluer } from '../../src';
+import { gluer } from '../../../src/index';
 
 const test = gluer(['test']);
 

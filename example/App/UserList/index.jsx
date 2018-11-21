@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { referToState, store } from '../store';
-import model from '../glue/model';
+import { referToState, store } from '../../store';
+import model from '../../models/app/model';
 // import test from '../glue/modelTest';
 
-class UserList extends Component {
+class Index extends Component {
   constructor(props) {
     super(props);
     const data = referToState(model);
@@ -71,7 +71,7 @@ class UserList extends Component {
   }
 }
 
-export default UserList;
+export default Index;
 // 你可以使用react-redux从store中获取数据
 // const mapStateToProps = (state) => {
 //  const { app } = state;
