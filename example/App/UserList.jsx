@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { referToState, hasModel, wholeModel } from '../store';
+import { referToState, store } from '../store';
 import model from '../glue/model';
 // import test from '../glue/modelTest';
 
@@ -7,25 +7,16 @@ class UserList extends Component {
   constructor(props) {
     super(props);
     const data = referToState(model);
-    this.state = {
-      ...data,
-    };
-  }
-
-  componentDidMount() {
-    // 由于没有监听store变化的钩子，用轮询模拟
-    // 针对react的钩子，有另外一个库 react-glue-redux
-    setInterval(() => {
-      console.log('引用model：', hasModel(model));
-      console.log('引用wholeModel.users：', referToState(wholeModel.users));
+    // subscribe
+    // here just setState on every dispatch
+    store.subscribe(() => {
       this.setState({
         users: referToState(model.users),
       });
-      console.log('引用wholeModel：', hasModel(wholeModel));
-      console.log('未知的引用返回值：', referToState({}));
-      console.log('引用profile：', referToState(model.profile));
-      console.log('test值：', referToState(wholeModel.test));
-    }, 1000);
+    });
+    this.state = {
+      ...data,
+    };
   }
 
   renderUsers = () => {
