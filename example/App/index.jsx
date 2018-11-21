@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { service } from '../glue';
-import List from './UserList';
+import service from '../models/app/service';
+import List from './UserList/index';
 import './style.less';
 
 class App extends Component {
