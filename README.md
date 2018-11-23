@@ -64,6 +64,10 @@ npm start
   export default app;
 
 ```
+### 注意
+<strong>gluer定义的节点是一种抽象，可以进行复用。其生效并能使用需要满足两个条件：</strong>
+* 1，节点需要挂载在某个对象上传入destruct
+* 2，经过destruct处理后，只能通过被挂载的对象来使用节点函数
 
 ## destruct(store)(model)
 > 解构数据对象，与redux进行连接
@@ -138,12 +142,6 @@ console.log('app model的数据为：', referToState(app));
 console.log('app model中的users为：', referToState(app.users));
 // [{name: '小明', age: 18, pet: '猫'}]
 ```
-
-### 注意
-<strong>gluer定义的节点是一种抽象，可以进行复用。其生效并能使用需要满足两个条件：</strong>
-* 1，节点需要挂载在某个对象上传入destruct
-* 2，经过destruct处理后，只能通过被挂载的对象来使用节点函数
-
 ### [与react搭配](https://github.com/ZhouYK/react-glux)
 
 <strong>详情请见[react-glux](https://github.com/ZhouYK/react-glux)</strong>  
