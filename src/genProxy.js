@@ -12,6 +12,9 @@ export const genReferencesMap = () => {
           return target.set(key, value);
         };
       }
+      if (typeof target[prop] === 'function') {
+        return target[prop].bind(target);
+      }
       return target[prop];
     },
   };

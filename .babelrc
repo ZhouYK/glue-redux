@@ -1,63 +1,52 @@
 {
   "presets": [
-    "react",
-    ["env", {
+    "@babel/preset-react",
+    ["@babel/preset-env", {
       "modules": false,
-      "targets": {
-        "browsers": [
-          "> 1%",
-          "last 5 versions"
-        ]
-      }
+      "targets": "> 1%, not dead"
     }]
   ],
   "plugins": [
-    "transform-object-rest-spread",
-    "transform-class-properties",
-    ["transform-runtime", {
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    ["@babel/plugin-transform-runtime", {
       "helpers": true,
-      "polyfill": true,
       "regenerator": true,
-      "moduleName": "babel-runtime"
+      "useESModules": false
     }] // polyfill新语法
   ],
   "env": {
     "cj": {
       "presets": [
-        ["env", {
-          "modules": "commonjs",
-          "targets": {
-            "browsers": [
-              "> 1%",
-              "last 5 versions"
-            ]
-          }
+        "@babel/preset-react",
+        ["@babel/preset-env", {
+          "modules": false,
+          "targets": "> 1%, not dead"
         }]
       ],
       "plugins": [
-        "transform-object-rest-spread",
-        "transform-class-properties",
-        ["transform-runtime", {
+        "@babel/plugin-proposal-object-rest-spread",
+        ["@babel/plugin-transform-runtime", {
           "helpers": true,
-          "polyfill": true,
           "regenerator": true,
-          "moduleName": "babel-runtime"
+          "useESModules": false
         }] // polyfill新语法
       ]
     },
     "test": {
       "presets": [
-        ["env"],
-        "react"
+        "@babel/preset-react",
+        ["@babel/preset-env", {
+          "modules": "commonjs",
+          "targets": "> 1%, not dead"
+        }]
       ],
       "plugins": [
-        "transform-object-rest-spread",
-        "transform-class-properties",
-        ["transform-runtime", {
+        "@babel/plugin-proposal-object-rest-spread",
+        ["@babel/plugin-transform-runtime", {
           "helpers": true,
-          "polyfill": true,
           "regenerator": true,
-          "moduleName": "babel-runtime"
+          "useESModules": false
         }] // polyfill新语法
       ]
     }
