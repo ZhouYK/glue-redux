@@ -42,10 +42,6 @@ const config = {
     ],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-  },
   plugins,
 };
 module.exports = { commonConfig: config, contentPath };
