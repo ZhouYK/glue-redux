@@ -22,11 +22,11 @@ interface GluerReturn {
 }
 
 interface GasReturn {
-  async (...restParams: any[]): Promise<any>;
+  (...restParams: any[]): Promise<any>;
 }
 
-interface GasAsyncParam {
-  async (...restParams: any[]): Promise<any>;
+interface AsyncFunc {
+  (...restParams: any[]): Promise<any>;
 }
 
 interface DestructParams {
@@ -44,6 +44,6 @@ interface Destruct {
 declare function gluer(fn: (data: any, state: any) => any) : GluerReturn;
 declare function gluer(initialState: string | number | null | {} | boolean | undefined) : GluerReturn;
 declare function gluer(fn: (data: any, state: any) => any, initialState: any) : GluerReturn;
-declare function gas(fn: GasAsyncParam) : GasReturn;
-declare function gas(fn: GasAsyncParam, GluerReturn) : GasReturn;
+declare function gas(fn: AsyncFunc) : GasReturn;
+declare function gas(fn: AsyncFunc, node: GluerReturn) : GasReturn;
 export const destruct: Destruct;
