@@ -3,7 +3,6 @@ import {
   gasUniqueFlagValue,
   gluerUniqueFlagKey,
   gluerUniqueFlagValue,
-  development,
 } from './contants';
 
 /**
@@ -16,10 +15,8 @@ const gas = function (asyncFnc, gluerReturn) {
   if (arguments.length === 0) {
     throw new Error('at least one param needed');
   } else {
-    if (process.env.NODE_ENV === development) {
-      if (typeof asyncFnc !== 'function') {
-        console.warn('the first param should be a function');
-      }
+    if (typeof asyncFnc !== 'function') {
+      throw new Error('Warning: the first param should be a function');
     }
     if (gluerReturn && (typeof gluerReturn !== 'function' || gluerReturn[gluerUniqueFlagKey] !== gluerUniqueFlagValue)) {
       throw new Error('the second param should be the return of "gluer"');
