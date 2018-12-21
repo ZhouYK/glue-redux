@@ -1,8 +1,7 @@
-import { glueActionFnFlag, glueActionFnFlagValue, actionType } from './contants';
+import { syncActionFnFlag, syncActionFnFlagValue, actionType } from './contants';
 
 export const glueAction = (params) => {
   const { action, dispatch, type } = params;
-  if (typeof action !== 'function') throw new Error('please transfer "action function"!');
   const actionDispatch = function (...args) {
     const actionEntity = action(...args);
     // 组装action实体，触发action
@@ -10,8 +9,8 @@ export const glueAction = (params) => {
     return actionEntity;
   };
   Object.defineProperties(actionDispatch, {
-    [glueActionFnFlag]: {
-      value: glueActionFnFlagValue,
+    [syncActionFnFlag]: {
+      value: syncActionFnFlagValue,
       configurable: false,
       writable: false,
       enumerable: false,

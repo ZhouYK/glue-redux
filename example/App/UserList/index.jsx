@@ -12,6 +12,7 @@ class Index extends Component {
     store.subscribe(() => {
       this.setState({
         users: referToState(model.users),
+        country: referToState(model.country),
       });
     });
     this.state = {
@@ -65,6 +66,9 @@ class Index extends Component {
   render() {
     return (
       <section>
+        <h4>
+          {this.state.country}
+        </h4>
         { this.renderUsers() }
       </section>
     );

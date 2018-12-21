@@ -13,10 +13,11 @@ npm start
 
 ## Api
 * gluer
+* gas
 * destruct
 
 ## gluer([updater, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
-> 根据入参会有不同的处理
+> 声明同步节点，根据入参会有不同的处理
 ### 入参
 - updater (数据处理函数)
   > 包含两个参数
@@ -50,24 +51,59 @@ npm start
  
 ```
 
-### 如何使用 | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
+### 使用 | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
 
 ```js
 // 定义model
   import { gluer } from 'glue-redux';
   
   const users = gluer((data, state) => [data, ...state], []);
+  const profile = {
+    date: gluer(1),
+  };
+  
+  const country = gas(async count => count, gluer(''));
   
   const app = {
     users,
+    country,
+    profile,
   };
   export default app;
 
 ```
+## gas(asyncFunction, [syncNode])
+> 声明异步节点
+
+### 入参
+- asyncFunction
+  > 必需是async函数，处理异步逻辑。返回值将传入的同步节点，如果有同步节点的话
+
+- syncNode
+  > 同步节点，负责处理异步asyncFunction传入的值，必须由gluer生成。如果没有同步节点，那么该异步节点将不会在store中有数据留存；
+
+### 使用 | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
+
+```js
+  const users = gluer((data, state) => [data, ...state], []);
+  const profile = {
+    date: gluer(1),
+  };
+  
+  const country = gas(async count => count, gluer(''));
+  
+  const app = {
+    users,
+    country,
+    profile,
+  };
+  export default app;
+```
+
 ### 注意
-<strong>gluer定义的节点是一种抽象，可以进行复用。其生效并能使用需要满足两个条件：</strong>
+<strong>gluer和gas声明的节点是一种抽象，可以进行复用。要能使用需要满足两个条件：</strong>
 * 1，节点需要挂载在某个对象上传入destruct
-* 2，经过destruct处理后，只能通过被挂载的对象来使用节点函数
+* 2，经过destruct处理后，通过第1步被挂载的对象即可引用到节点
 
 ## destruct(store)(model)
 > 解构数据对象，与redux进行连接

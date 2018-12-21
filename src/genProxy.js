@@ -7,6 +7,7 @@ export const genReferencesMap = () => {
       if (prop === 'set') {
         return function set(key, value) {
           if (target.has(key)) {
+            console.trace();
             throw new Error(`reference: the value of "${value}" is duplicated.please confirm the reference is applied in only one place!`);
           }
           return target.set(key, value);

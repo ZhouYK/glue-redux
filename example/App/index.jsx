@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import service from '../models/app/service';
 import List from './UserList/index';
+import appModel from '../models/app/model';
 import './style.less';
 
 class App extends Component {
@@ -10,6 +10,7 @@ class App extends Component {
       name: '',
       profession: '',
       pet: '',
+      country: '',
     };
   }
 
@@ -17,6 +18,11 @@ class App extends Component {
     this.setState({
       [key]: e.target.value,
     });
+  }
+
+  addCountry = () => {
+    const { country } = this.state;
+    appModel.country(country);
   }
 
   handleAdd = (e) => {
@@ -33,7 +39,7 @@ class App extends Component {
     if (str) {
       return window.alert(str);
     }
-    const returnData = service.register({
+    const returnData = appModel.users({
       name,
       profession,
       pet,
@@ -42,9 +48,20 @@ class App extends Component {
   }
 
   render() {
-    const { name, profession, pet } = this.state;
+    const {
+      name, profession, pet, country,
+    } = this.state;
     return (
       <div className="app">
+        <div className="row">
+          <label htmlFor="country">
+            国家：
+            <input value={country} onChange={this.handleOnChange('country')} type="text" id="country" placeholder="请输入国家" />
+          </label>
+          <button onClick={this.addCountry} type="button">
+            修改
+          </button>
+        </div>
         <section>
           <div className="row">
             <label htmlFor="name">

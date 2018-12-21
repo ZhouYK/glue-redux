@@ -1,9 +1,10 @@
-import { forPurposeKey, forPurposeValue } from './contants';
+import { gluerUniqueFlagKey, gluerUniqueFlagValue, development } from './contants';
 
 const defaultReducer = (state, action) => action.data;
 const genReducer = rd => (state, action) => rd(action.data, state);
 const warning = 'highly recommend setting initial state';
 /**
+ * 同步节点生成函数
  * @param rd 非必需
  * @param initialState 非必需
  * @returns {function(): {action: *, reducer: *, initState: *}}
@@ -35,23 +36,21 @@ const gluer = function (rd, initialState) {
       throw new Error('first argument must be function');
     }
     reducerFnc = genReducer(rd);
-    if (initialState === undefined) {
-      console.warn(warning);
+    if (process.env.NODE_ENV === development) {
+      if (initialState === undefined) {
+        console.warn(warning);
+      }
     }
   }
   // rd不是reducer函数格式，尽量减少redux概念直接暴露给glue-redux使用者
-  const gf = function* () {
-    const reducer = yield reducerFnc;
-    const action = yield actionCreator;
-    const initState = yield inState;
-    return {
-      reducer,
-      action,
-      initState,
-    };
-  };
-  Object.defineProperty(gf, forPurposeKey, {
-    value: forPurposeValue,
+  // 为了和最终的使用行为保持一致，所以返回一个普通函数
+  const gf = () => ({
+    reducer: reducerFnc,
+    action: actionCreator,
+    initState: inState,
+  });
+  Object.defineProperty(gf, gluerUniqueFlagKey, {
+    value: gluerUniqueFlagValue,
     writable: false,
     configurable: false,
     enumerable: false,
