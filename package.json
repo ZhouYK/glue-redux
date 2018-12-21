@@ -1,6 +1,6 @@
 {
   "name": "glue-redux",
-  "version": "3.4.0-alpha.0",
+  "version": "3.4.1-alpha.0",
   "description": "redux-based state maintainer,mutate & retrieve store by model schema",
   "main": "./cj/index.js",
   "types": "./index.d.ts",
