@@ -18,8 +18,8 @@ const gas = function (asyncFnc, gluerReturn) {
     throw new Error('at least one param needed');
   } else {
     if (process.env.NODE_ENV === development) {
-      if (getType(asyncFnc) !== '[object AsyncFunction]') {
-        console.warn('the first param should be AsyncFunction');
+      if (getType(asyncFnc) !== '[object Function]') {
+        console.warn('the first param should be a function returned Promise');
       }
     }
     if (gluerReturn && (typeof gluerReturn !== 'function' || gluerReturn[gluerUniqueFlagKey] !== gluerUniqueFlagValue)) {
