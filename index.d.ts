@@ -26,7 +26,7 @@ interface GasReturn {
 }
 
 interface AsyncFunc {
-  (...restParams: any[]): Promise<any>;
+  (...restParams: any[]): any;
 }
 
 interface DestructParams {
