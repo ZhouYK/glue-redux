@@ -16,10 +16,12 @@ const gas = function (asyncFnc, gluerReturn) {
     throw new Error('at least one param needed');
   } else {
     if (typeof asyncFnc !== 'function') {
-      throw new Error('Warning: the first param should be a function');
+      throw new Error('Error: the first param should be a function');
+    } else if (asyncFnc[gluerUniqueFlagKey] === gluerUniqueFlagValue) {
+      throw new Error('Error：the return of "gluer" should be placed in second param');
     }
-    if (gluerReturn && (typeof gluerReturn !== 'function' || gluerReturn[gluerUniqueFlagKey] !== gluerUniqueFlagValue)) {
-      throw new Error('the second param should be the return of "gluer"');
+    if (gluerReturn && gluerReturn[gluerUniqueFlagKey] !== gluerUniqueFlagValue) {
+      throw new Error('Error：the second param should be the return of "gluer"');
     }
   }
   // 为了和最终的使用行为保持一致，所以返回一个函数

@@ -30,3 +30,14 @@ test('gas test', () => {
     expect(referToState(user.name)).toBe('小刚');
   });
 });
+
+test('gas exception test', () => {
+  const wrap = fn => (...args) => () => fn(...args);
+  const testedGas = wrap(gas);
+  expect(testedGas()).toThrow('at least one param needed');
+  expect(testedGas(gluer('123'))).toThrow('Error：the return of "gluer" should be placed in second param');
+  expect(testedGas('123')).toThrow('Error: the first param should be a function');
+  expect(testedGas('123', gluer('12'))).toThrow('Error: the first param should be a function');
+  expect(testedGas(() => ({}), () => {})).toThrow('Error：the second param should be the return of "gluer"');
+  expect(testedGas('123', () => {})).toThrow('Error: the first param should be a function');
+});
