@@ -77,7 +77,7 @@ npm start
 
 ### 入参
 - asyncFunction
-  > 可以是普通函数或者async函数，处理异步逻辑。返回值将传入的同步节点，如果有同步节点的话
+  > 可以是普通函数或者async函数，处理异步逻辑。返回值将传入同步节点(syncNode)函数，如果有同步节点的话
 
 - syncNode
   > 同步节点，负责处理异步asyncFunction传入的值，必须由gluer生成。如果没有同步节点，那么该异步节点将不会在store中有数据留存；
