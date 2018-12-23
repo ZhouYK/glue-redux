@@ -4,6 +4,7 @@ import testModel from '../example/models/test/model';
 
 test('referToState test', () => {
   expect(referToState(appModel)).toEqual({
+    country: '',
     users: [],
     profile: {
       date: 1,

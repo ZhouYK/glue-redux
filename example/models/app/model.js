@@ -1,4 +1,4 @@
-import { gluer, gas } from '../../../cj';
+import { gluer, gas } from '../../../src';
 
 const users = gluer((data, state) => [data, ...state], []);
 const profile = {
