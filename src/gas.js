@@ -3,7 +3,7 @@ import {
   gasUniqueFlagValue,
   gluerUniqueFlagKey,
   gluerUniqueFlagValue,
-} from './contants';
+} from './constants';
 
 /**
  * 异步节点生成函数

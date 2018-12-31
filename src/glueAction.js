@@ -1,4 +1,4 @@
-import { syncActionFnFlag, syncActionFnFlagValue, actionType } from './contants';
+import { syncActionFnFlag, syncActionFnFlagValue, actionType } from './constants';
 
 export const glueAction = (params) => {
   const { action, dispatch, type } = params;

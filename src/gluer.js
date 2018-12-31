@@ -1,4 +1,4 @@
-import { gluerUniqueFlagKey, gluerUniqueFlagValue, development } from './contants';
+import { gluerUniqueFlagKey, gluerUniqueFlagValue, development } from './constants';
 
 const defaultReducer = (state, action) => action.data;
 const genReducer = rd => (state, action) => rd(action.data, state);

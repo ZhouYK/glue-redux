@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux';
 import { gas, gluer, destruct } from '../src';
-import { asyncActionTypeSuffix, distinguishPrefix } from '../src/contants';
+import { asyncActionTypeSuffix, distinguishPrefix } from '../src/constants';
 
 const name = gas(async newName => newName, gluer('小明'));
 const age = gas(async a => a);

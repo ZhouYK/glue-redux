@@ -1,4 +1,4 @@
-import { uniqueTypeConnect } from './contants';
+import { uniqueTypeConnect } from './constants';
 
 const getStateByModelReference = (referencesMap, getState) => (model) => {
   if (!referencesMap.has(model)) {

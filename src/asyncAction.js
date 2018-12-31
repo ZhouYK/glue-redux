@@ -1,4 +1,4 @@
-import { asyncActionFnFlag, asyncActionFnFlagValue, actionType } from './contants';
+import { asyncActionFnFlag, asyncActionFnFlagValue, actionType } from './constants';
 
 export const asyncAction = ({
   sync, async, dispatch,

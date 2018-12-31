@@ -12,7 +12,7 @@ import {
   asyncActionFnFlag,
   asyncActionFnFlagValue,
   development,
-} from './contants';
+} from './constants';
 import { getType } from './getType';
 import { glueAction } from './glueAction';
 import { genReferencesMap } from './genProxy';

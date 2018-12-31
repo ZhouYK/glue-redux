@@ -1,6 +1,6 @@
 import {
   uniqueTypeConnect, defaultValueKey, asyncActionFnFlag, asyncActionFnFlagValue,
-} from './contants';
+} from './constants';
 import getStateByModelReference from './getStateByModelReference';
 import { degrade } from './degrade';
 
