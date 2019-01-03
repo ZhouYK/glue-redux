@@ -1,6 +1,6 @@
-import { hasModel, wholeModel } from '../example/store';
-import appModel from '../example/models/app/model';
-import testModel from '../example/models/test/model';
+import { hasModel, wholeModel } from '../../example/store';
+import appModel from '../../example/models/app/model';
+import testModel from '../../example/models/test/model';
 
 test('hasModel test', () => {
   expect(hasModel(appModel)).toBe(true);

@@ -1,8 +1,8 @@
 import {
   referToState, wholeModel, store,
-} from '../example/store';
-import appModel from '../example/models/app/model';
-import testModel from '../example/models/test/model';
+} from '../../example/store';
+import appModel from '../../example/models/app/model';
+import testModel from '../../example/models/test/model';
 
 test('state test', () => {
   const initialState = store.getState();
