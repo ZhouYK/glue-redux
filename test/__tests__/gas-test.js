@@ -32,8 +32,7 @@ test('gas test', () => {
 });
 
 test('gas exception test', () => {
-  const wrap = fn => (...args) => () => fn(...args);
-  const testedGas = wrap(gas);
+  const testedGas = (...args) => () => gas(...args);
   expect(testedGas()).toThrow('at least one param needed');
   expect(testedGas(gluer('123'))).toThrow('Error：the return of "gluer" should be placed in second param');
   expect(testedGas('123')).toThrow('Error: the first param should be a function');

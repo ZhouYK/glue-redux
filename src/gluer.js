@@ -32,7 +32,6 @@ const gluer = function (rd, initialState) {
     }
   } else {
     if (typeof rd !== 'function') {
-      console.trace();
       throw new Error('first argument must be function');
     }
     reducerFnc = genReducer(rd);
