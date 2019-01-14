@@ -1,22 +1,16 @@
 import {
   gluerUniqueFlagKey,
   gluerUniqueFlagValue,
-  gasUniqueFlagKey,
-  gasUniqueFlagValue,
   uniqueTypeConnect,
   defaultValueKey,
   syncActionFnFlag,
   syncActionFnFlagValue,
   distinguishPrefix,
-  asyncActionTypeSuffix,
-  asyncActionFnFlag,
-  asyncActionFnFlagValue,
   development,
 } from './constants';
 import { getType } from './getType';
 import { glueAction } from './glueAction';
 import { genReferencesMap } from './genProxy';
-import { asyncAction } from './asyncAction';
 
 const defineTopNodeDefaultValue = (topNode, defaultValue) => {
   try {
@@ -59,8 +53,7 @@ const transformReducerToNestFnc = (k, redu) => {
  * @param actionFn
  * @returns {boolean}
  */
-const isGlueAction = actionFn => (actionFn[syncActionFnFlag] === syncActionFnFlagValue
-  || actionFn[asyncActionFnFlag] === asyncActionFnFlagValue);
+const isGlueAction = actionFn => (actionFn[syncActionFnFlag] === syncActionFnFlagValue);
 const actionError = (actionFn, obj, key) => {
   if (isGlueAction(actionFn)) {
     console.trace();
@@ -127,72 +120,6 @@ const degrade = (dispatch) => {
           }
           // 索引引用的键值路径
           referencesMap.set(action, str);
-        } else if (value[gasUniqueFlagKey] === gasUniqueFlagValue) {
-          const result = value();
-          const asyncFnc = result.asyncHandler;
-          const gluerModel = result.modelSettings;
-          let sync;
-          let initialState;
-          let modelReducer;
-          let syncTempType;
-          // 判断是否有对应的同步action
-          if (gluerModel) {
-            const { action: actionFn, reducer, initState } = gluerModel;
-            initialState = initState;
-            modelReducer = reducer;
-            syncTempType = key === str ? `${distinguishPrefix}${key}` : str;
-            // 进行类似bindActionCreators的动作
-            // 此处向action函数添加其对应的type属性，以便可以和其他以type为判断条件的中间件协同工作，比如redux-saga
-            const action = glueAction({
-              type: syncTempType,
-              action: actionFn,
-              dispatch,
-            });
-            sync = {
-              action,
-            };
-            /* eslint-disable no-param-reassign */
-            // 有同步action才设置初始值，才代表该异步节点在state中有数据
-            df[key] = initialState;
-          }
-          const asyncTempType = key === str ? `${distinguishPrefix}${key}${asyncActionTypeSuffix}` : `${str}${asyncActionTypeSuffix}`;
-          const async = {
-            type: asyncTempType,
-            function: asyncFnc,
-          };
-          // 异步节点最终会是一个async Function
-          const asyncActionFn = asyncAction({
-            dispatch,
-            sync,
-            async,
-          });
-          // 重新赋值
-          /* eslint no-param-reassign:0 */
-          curObj[key] = asyncActionFn;
-          // 如果存在同步action，进行绑定reducer的操作
-          // topNode为顶层对象引用
-          // 属性名连接形成的字符串作为对象键值赋值
-          // 这里如果为第一级，curObj和topNode为同一个，则action和reducer相互覆盖了
-          // 所以需要加以区分
-          // 如果相等，则把reducer定义到action函数上
-          // 顶层节点处，索引action的reducer都是通过type来的，定义在action上达到了统一
-          if (modelReducer) {
-            const nodeReducer = transformReducerToNestFnc(str, modelReducer);
-            if (key === str) {
-              defineTopNodeDefaultValue(asyncActionFn, initialState);
-              Object.defineProperty(asyncActionFn, syncTempType, {
-                value: nodeReducer,
-                writable: false,
-                enumerable: false,
-                configurable: false,
-              });
-            } else {
-              topNode[syncTempType] = nodeReducer;
-            }
-            // 索引引用的键值路径
-            // 出于性能考虑，只有绑定了同步处理的异步action，才会被追踪
-            referencesMap.set(asyncActionFn, str);
-          }
         } else if (getType(value) === '[object Object]') {
           // 索引引用的键值路径
           referencesMap.set(value, str);
