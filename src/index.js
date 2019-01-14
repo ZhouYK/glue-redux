@@ -1,5 +1,5 @@
 import {
-  uniqueTypeConnect, defaultValueKey, asyncActionFnFlag, asyncActionFnFlagValue,
+  uniqueTypeConnect, defaultValueKey,
 } from './constants';
 import getStateByModelReference from './getStateByModelReference';
 import { degrade } from './degrade';
@@ -57,10 +57,7 @@ const generateRealReducer = originReducer => Object.keys(originReducer).reduce((
     };
   } else if (typeof targetGlue === 'function') {
     // 顶层节点为函数时会被作为reducer，此reducer没有特定的action，会被所有的触发
-    // 除了顶层节点为异步action节点且没有对应数据的
-    if (targetGlue[asyncActionFnFlag] !== asyncActionFnFlagValue) {
-      fnc = targetGlue;
-    }
+    fnc = targetGlue;
   } else {
     fnc = () => targetGlue;
   }
@@ -90,6 +87,5 @@ const destruct = store => (structure) => {
 };
 
 export { default as gluer } from './gluer';
-export { default as gas } from './gas';
 export { destruct };
 export default destruct;

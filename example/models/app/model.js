@@ -1,11 +1,11 @@
-import { gluer, gas } from '../../../src';
+import { gluer } from '../../../src';
 
 const users = gluer((data, state) => [data, ...state], []);
 const profile = {
   date: gluer(1),
 };
 
-const country = gas(async count => count, gluer(''));
+const country = gluer('');
 
 const app = {
   users,
