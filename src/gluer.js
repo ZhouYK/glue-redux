@@ -9,17 +9,18 @@ const warning = 'highly recommend setting initial state';
  * @param initialState 非必需
  * @returns {function(): {action: *, reducer: *, initState: *}}
  */
-const gluer = function (rd, initialState) {
+const gluer = (...args) => {
+  const [rd, initialState] = args;
   // 默认生成action creator
   const actionCreator = data => data;
   let reducerFnc;
   let inState = initialState;
   // 没有传入任何参数则默认生成一个reducer
-  if (arguments.length === 0) {
+  if (args.length === 0) {
     // 默认值reducer
     reducerFnc = defaultReducer;
     console.warn(warning);
-  } else if (arguments.length === 1) {
+  } else if (args.length === 1) {
     // 会被当做初始值处理
     if (typeof rd !== 'function') {
       // 默认生成一个reducer

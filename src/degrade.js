@@ -57,7 +57,6 @@ const isGlueAction = actionFn => (actionFn[syncActionFnFlag] === syncActionFnFla
 const actionError = (actionFn, obj, key) => {
   if (isGlueAction(actionFn)) {
     console.trace();
-    console.error(obj);
     throw new Error(`the "${key}" of ${obj}, which only can be processed only once, is already processed`);
   }
 };
@@ -78,80 +77,87 @@ const degrade = (dispatch) => {
       const keys = Object.keys(curObj);
       keys.forEach((key) => {
         const value = curObj[key];
-        if (process.env.NODE_ENV === development) {
-          // ⚠️
-          actionError(value, curObj, key);
-        }
-        keyStr.push(key);
-        const str = keyStr.join(uniqueTypeConnect);
-        // 如果是同步节点，则获取对应的action creator和reducer function
-        if (value[gluerUniqueFlagKey] === gluerUniqueFlagValue) {
-          const { action: actionFn, reducer, initState } = value();
-          const syncActionType = key === str ? `${distinguishPrefix}${key}` : str;
-          // 进行类似bindActionCreators的动作
-          // 此处向action函数添加其对应的type属性，以便可以和其他以type为判断条件的中间件协同工作，比如redux-saga
-          const action = glueAction({
-            type: syncActionType,
-            action: actionFn,
-            dispatch,
-          });
-          // 重新赋值
-          /* eslint no-param-reassign:0 */
-          curObj[key] = action;
-          /* eslint-disable no-param-reassign */
-          // 设置初始值
-          df[key] = initState;
-          // topNode为顶层对象引用
-          // 属性名连接形成的字符串作为对象键值赋值
-          // 这里如果为第一级，curObj和topNode为同一个，则action和reducer相互覆盖了
-          // 所以需要加以区分
-          // 如果相等，则把reducer定义到action函数上
-          const nodeReducer = transformReducerToNestFnc(str, reducer);
-          if (key === str) {
-            defineTopNodeDefaultValue(action, initState);
-            Object.defineProperty(action, syncActionType, {
-              value: nodeReducer,
-              writable: false,
-              enumerable: false,
-              configurable: false,
+        if (!Object.is(value, undefined) && !Object.is(value, null)) {
+          if (process.env.NODE_ENV === development) {
+            // ⚠️
+            actionError(value, curObj, key);
+          }
+          keyStr.push(key);
+          const str = keyStr.join(uniqueTypeConnect);
+          // 如果是同步节点，则获取对应的action creator和reducer function
+          if (value[gluerUniqueFlagKey] === gluerUniqueFlagValue) {
+            const { action: actionFn, reducer, initState } = value();
+            const syncActionType = key === str ? `${distinguishPrefix}${key}` : str;
+            // 进行类似bindActionCreators的动作
+            // 此处向action函数添加其对应的type属性，以便可以和其他以type为判断条件的中间件协同工作，比如redux-saga
+            const action = glueAction({
+              type: syncActionType,
+              action: actionFn,
+              dispatch,
             });
-          } else {
-            topNode[syncActionType] = nodeReducer;
-          }
-          // 索引引用的键值路径
-          referencesMap.set(action, str);
-        } else if (getType(value) === '[object Object]') {
-          // 索引引用的键值路径
-          referencesMap.set(value, str);
-          // p在此处作为是否为顶层节点的属性的标识
-          let p = topNode;
-          let deValue = df;
-          let nextDefaultValue;
-          // 如果是第一层键值
-          if (p === curObj && keyStr.length === 1) {
-            // 顶层节点引用
-            p = value;
-            // 顶层节点的默认值
-            deValue = {};
-            defineTopNodeDefaultValue(p, deValue);
-            nextDefaultValue = deValue;
-          } else {
-            if (!deValue[key]) {
-              deValue[key] = {};
+            // 重新赋值
+            /* eslint no-param-reassign:0 */
+            curObj[key] = action;
+            /* eslint-disable no-param-reassign */
+            // 设置初始值
+            df[key] = initState;
+            // topNode为顶层对象引用
+            // 属性名连接形成的字符串作为对象键值赋值
+            // 这里如果为第一级，curObj和topNode为同一个，则action和reducer相互覆盖了
+            // 所以需要加以区分
+            // 如果相等，则把reducer定义到action函数上
+            const nodeReducer = transformReducerToNestFnc(str, reducer);
+            if (key === str) {
+              defineTopNodeDefaultValue(action, initState);
+              Object.defineProperty(action, syncActionType, {
+                value: nodeReducer,
+                writable: false,
+                enumerable: false,
+                configurable: false,
+              });
+            } else {
+              topNode[syncActionType] = nodeReducer;
             }
-            nextDefaultValue = deValue[key];
+            // 索引引用的键值路径
+            referencesMap.set(action, str);
+          } else if (getType(value) === '[object Object]') {
+            // 索引引用的键值路径
+            referencesMap.set(value, str);
+            // p在此处作为是否为顶层节点的属性的标识
+            let p = topNode;
+            let deValue = df;
+            let nextDefaultValue;
+            // 如果是第一层键值
+            if (p === curObj && keyStr.length === 1) {
+              // 顶层节点引用
+              p = value;
+              // 顶层节点的默认值
+              deValue = {};
+              defineTopNodeDefaultValue(p, deValue);
+              nextDefaultValue = deValue;
+            } else {
+              if (!deValue[key]) {
+                deValue[key] = {};
+              }
+              nextDefaultValue = deValue[key];
+            }
+            fn(value, [...keyStr], p, nextDefaultValue);
+          } else {
+            if (process.env.NODE_ENV === development) {
+              console.error('Warning: the constant node: state.%s, %O.Directly placing constants in model is discouraged, because this leads data management to be confused. Leaf nodes except defined By "gluer" will not be traced. So please wrap it with "gluer".', keyStr.join('.'), value);
+            }
+            // 不追踪非普通对象且非gluer声明的叶子节点
+            // 索引引用的键值路径
+            // referencesMap.set(value, str);
+
+            // 这里如果是顶层节点，会交给generateRealReducer包装成对应的顶层reducer
+            if (df) {
+              df[key] = value;
+            }
           }
-          fn(value, [...keyStr], p, nextDefaultValue);
-        } else {
-          // 索引引用的键值路径
-          referencesMap.set(value, str);
-          // 这里如果是顶层节点，会交给generateRealReducer包装成对应的顶层reducer
-          if (df) {
-            df[key] = value;
-          }
+          // 中止后返回上一节点检索
+          keyStr.pop();
         }
-        // 中止后返回上一节点检索
-        keyStr.pop();
       });
     } else {
       throw new Error('the argument muse be plain object!');
