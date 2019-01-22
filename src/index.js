@@ -3,6 +3,7 @@ import {
 } from './constants';
 import getStateByModelReference from './getStateByModelReference';
 import { degrade } from './degrade';
+import validateInOperator from './validate/inOperatorValidate';
 
 /**
  * 复制并删除原始对象中的衍生属性，保留原生属性
@@ -29,7 +30,7 @@ const generateRealReducer = originReducer => Object.keys(originReducer).reduce((
   const targetGlue = originReducer[key];
   let fnc;
   // 拥有默认标识的则为可处理节点
-  if (defaultValueKey in targetGlue) {
+  if (validateInOperator(defaultValueKey, targetGlue)) {
     let value;
     const getReducer = type => value[type];
     const defaultValue = targetGlue[defaultValueKey];

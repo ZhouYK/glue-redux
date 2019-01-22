@@ -18,6 +18,6 @@ test('referToState test', () => {
   expect(referToState(wholeModel.siblings)).toEqual({
     person: '小红',
   });
-  expect(referToState(wholeModel.siblings.person)).toBe('小红');
-  expect(referToState(wholeModel.users)).toEqual(['小明']);
+  expect(referToState(wholeModel.siblings.person)).toBeUndefined();
+  expect(referToState(wholeModel.users)).toBeUndefined();
 });

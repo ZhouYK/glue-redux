@@ -10,8 +10,8 @@ test('hasModel test', () => {
   expect(hasModel(wholeModel.model.test)).toBe(true);
 
   expect(hasModel(wholeModel.siblings)).toBe(true);
-  expect(hasModel(wholeModel.siblings.person)).toBe(true);
-  expect(hasModel(wholeModel.users)).toBe(true);
+  expect(hasModel(wholeModel.siblings.person)).toBe(false);
+  expect(hasModel(wholeModel.users)).toBe(false);
   const tempModel = {};
   expect(hasModel(tempModel)).toBe(false);
 });
