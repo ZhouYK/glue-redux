@@ -8,7 +8,7 @@
     "test": "jest",
     "start": "webpack-dev-server --config webpack/webpack.config.dev.js",
     "build:es": "babel src --out-dir es",
-    "build:cj": "cross-env BABEL_ENV=cj babel src --out-dir cj",
+    "build:cj": "cross-env BABEL_ENV=test babel src --out-dir cj",
     "build": "webpack --config webpack/webpack.config.prod.js && npm run build:es && npm run build:cj"
   },
   "dependencies": {
@@ -74,13 +74,7 @@
     ],
     "moduleDirectories": [
       "node_modules"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!(glue-redux)/)"
-    ],
-    "globals": {
-      "BABEL_ENV": "test"
-    }
+    ]
   },
   "files": [
     "umd",

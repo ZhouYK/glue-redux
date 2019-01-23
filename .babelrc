@@ -16,23 +16,9 @@
     }] // polyfill新语法
   ],
   "env": {
-    "cj": {
-      "presets": [
-        "@babel/preset-react",
-        ["@babel/preset-env", {
-          "modules": "commonjs",
-          "targets": "> 1%, not dead"
-        }]
-      ],
-      "plugins": [
-        "@babel/plugin-proposal-object-rest-spread",
-        ["@babel/plugin-transform-runtime", {
-          "helpers": true,
-          "regenerator": true,
-          "useESModules": false
-        }] // polyfill新语法
-      ]
-    },
+    // jest会默认设置process.env.NODE_ENV为test
+    // 优先读BABEL_ENV，然后NODE_ENV，如果都没有babel会设置为development
+    // 构建cjs和jest共用一套配置
     "test": {
       "presets": [
         "@babel/preset-react",
