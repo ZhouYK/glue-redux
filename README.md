@@ -15,7 +15,7 @@ npm start
 * gluer
 * destruct
 
-## gluer([updater, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/glue/model.js)
+## gluer([updater, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
 > 声明同步节点，根据入参会有不同的处理
 ### 入参
 - updater (数据处理函数)
@@ -155,6 +155,8 @@ console.log('app model中的users为：', referToState(app.users));
 
 <strong>详情请见[react-glux](https://github.com/ZhouYK/react-glux)</strong>  
 
+## [说明文档](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3)
+## [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
 

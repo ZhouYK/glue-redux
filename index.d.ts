@@ -44,6 +44,4 @@ interface Destruct {
 declare function gluer(fn: (data: any, state: any) => any) : GluerReturn;
 declare function gluer(initialState: string | number | null | {} | boolean | undefined) : GluerReturn;
 declare function gluer(fn: (data: any, state: any) => any, initialState: any) : GluerReturn;
-declare function gas(fn: AsyncFunc) : GasReturn;
-declare function gas(fn: AsyncFunc, node: GluerReturn) : GasReturn;
 export const destruct: Destruct;
