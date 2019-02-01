@@ -2,6 +2,7 @@
 基于redux的应用层
 > 简单、友好、内聚，让相关代码在相近的位置出现
 
+
 ## 查看示例
 ```bash
 git clone https://github.com/ZhouYK/glue-redux.git
@@ -11,7 +12,10 @@ npm start
 然后访问 http://localhost:8888
 ```
 
-## Api
+## [说明文档](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3)
+## [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
+
+## API
 * gluer
 * destruct
 
@@ -155,8 +159,6 @@ console.log('app model中的users为：', referToState(app.users));
 
 <strong>详情请见[react-glux](https://github.com/ZhouYK/react-glux)</strong>  
 
-## [说明文档](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3)
-## [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
 
