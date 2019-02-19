@@ -157,7 +157,7 @@ console.log('app model中的users为：', referToState(app.users));
 
 ### [与react搭配](https://github.com/ZhouYK/react-glux)
 
-<strong>详情请见[react-glux](https://github.com/ZhouYK/react-glux)</strong>  
+<strong>详情请见[react-glue-redux](https://github.com/ZhouYK/react-glux)</strong>  
 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
