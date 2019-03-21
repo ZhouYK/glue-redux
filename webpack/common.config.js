@@ -37,9 +37,6 @@ const config = {
     rules,
   },
   resolve: {
-    modules: [
-      'node_modules',
-    ],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
   plugins,
