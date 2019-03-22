@@ -40,8 +40,7 @@ interface DestructReturn {
 interface Destruct {
   (p: DestructParams): DestructReturn;
 }
-
-declare function gluer(fn: (data: any, state: any) => any) : GluerReturn;
-declare function gluer(initialState: string | number | null | {} | boolean | undefined) : GluerReturn;
-declare function gluer(fn: (data: any, state: any) => any, initialState: any) : GluerReturn;
+export declare function gluer(fn: (data: any, state: any) => any) : GluerReturn;
+export declare function gluer(initialState: string | number | null | {} | boolean | undefined) : GluerReturn;
+export declare function gluer(fn: (data: any, state: any) => any, initialState: any) : GluerReturn;
 export const destruct: Destruct;
