@@ -7,6 +7,7 @@ import testModel from '../../example/models/test/model';
 import { createStore } from 'redux';
 import gluer from '../../src/gluer';
 import destruct from '../../src/index';
+import { duplicatedError } from '../constants';
 
 describe('state normal test',  () => {
   test('the state of example', () => {
@@ -74,7 +75,7 @@ describe('state edge case test', () => {
       name: undefined
     };
     model.person = model;
-    expect(() => destruct(store)(model)).toThrow(/^this node \[path: .*, value: .*\] had been traced, please check it whether it is used in more than one place or it is circular reference!$/);
+    expect(() => destruct(store)(model)).toThrow(duplicatedError);
   });
   //
   test('one model is used more than one place', () => {
@@ -91,6 +92,6 @@ describe('state edge case test', () => {
       person
     };
     const wholeModel = { model, human };
-    expect(() => destruct(store)(wholeModel)).toThrow(/^this node \[path: .*, value: .*\] had been traced, please check it whether it is used in more than one place or it is circular reference!$/);
+    expect(() => destruct(store)(wholeModel)).toThrow(duplicatedError);
   });
 });
