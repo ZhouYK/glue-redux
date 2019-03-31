@@ -1,4 +1,6 @@
-# glue-redux
+<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg"></a>
+
+#glue-redux
 基于redux的应用层
 > 简单、友好、内聚，让相关代码在相近的位置出现
 
