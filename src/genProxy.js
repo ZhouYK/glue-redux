@@ -22,12 +22,18 @@ export const genReferencesMap = () => {
     };
     return genProxy(map, handler);
   }
-  const wrapMap = Object.create(map);
+  const wrapMap = {};
   wrapMap.set = function (key, value) {
     if (map.has(key)) {
       throw new Error(errorTips(key, value));
     }
     return map.set(key, value);
+  };
+  wrapMap.get = function (key) {
+    return map.get(key);
+  };
+  wrapMap.has = function (key) {
+    return map.has(key);
   };
   return wrapMap;
 };
