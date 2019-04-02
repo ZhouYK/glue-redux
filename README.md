@@ -21,9 +21,6 @@ npm start
 然后访问 http://localhost:8888
 ```
 
-## [说明文档](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3)
-## [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
-
 ## API
 * gluer
 * destruct
@@ -164,9 +161,12 @@ console.log('app model中的users为：', referToState(app.users));
 // [{name: '小明', age: 18, pet: '猫'}]
 ```
 
-### [与react搭配](https://github.com/ZhouYK/react-glux)
+## 其他
 
-<strong>详情请见[react-glue-redux](https://github.com/ZhouYK/react-glux)</strong>  
+
+### [说明文档](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3)
+### [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
+### [与react搭配](https://github.com/ZhouYK/react-glux)
 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
