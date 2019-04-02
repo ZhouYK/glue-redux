@@ -44,22 +44,6 @@ npm start
 - initialValue (初始值)
   > 当前节点的初始值
 
-### 重载
-```jsx
- // 不传参数
- const name = gluer(); // 等价于 const name =  gluer(data => data)
- 
- // 只有一个入参，类型为函数，该函数会用于数据处理
- const name = gluer((data, state) => data.substring(1,3));
- 
- // 只有一个入参，类型为非函数，该参数会被当做初始值
- const name = gluer('initialValue'); // 等价于 const name = gluer(data => data, 'initialValue')
- 
- // 两个参数，第一个为数据处理函数，第二个为初始值
- const name = gluer((data, state) => { ...state, ...data }, {name: 'initialValue'})
- 
-```
-
 ### 使用 | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
 
 ```js
@@ -81,11 +65,22 @@ npm start
   export default app;
 
 ```
+关于gluer的入参选择，可以有多种模式
 
-### 注意
-<strong>gluer声明的节点是一种抽象，可以进行复用。要能使用需要满足两个条件：</strong>
-* 1，节点需要挂载在某个对象上传入destruct
-* 2，经过destruct处理后，通过第1步被挂载的对象即可引用到节点
+```jsx
+ // 不传参数
+ const name = gluer(); // 等价于 const name =  gluer(data => data)
+ 
+ // 只有一个入参，类型为函数，该函数会用于数据处理
+ const name = gluer((data, state) => data.substring(1,3));
+ 
+ // 只有一个入参，类型为非函数，该参数会被当做初始值
+ const name = gluer('initialValue'); // 等价于 const name = gluer(data => data, 'initialValue')
+ 
+ // 两个参数，第一个为数据处理函数，第二个为初始值
+ const name = gluer((data, state) => { ...state, ...data }, {name: 'initialValue'})
+ 
+```
 
 ## destruct(store)(model)
 > 解构数据对象，与redux进行连接
