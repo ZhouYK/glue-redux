@@ -6,7 +6,7 @@
 [![package size](https://img.shields.io/bundlephobia/minzip/glue-redux.svg)]()
 [![license](https://img.shields.io/github/license/ZhouYK/glue-redux.svg)]()
 
-#glue-redux
+# glue-redux
 基于redux的应用层
 > 简单、友好、内聚，让相关代码在相近的位置出现
 
