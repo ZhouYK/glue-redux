@@ -5,10 +5,12 @@
 [![NPM downloads](http://img.shields.io/npm/dm/glue-redux.svg?style=flat)](https://www.npmjs.com/package/glue-redux)
 [![package size](https://img.shields.io/bundlephobia/minzip/glue-redux.svg)]()
 [![license](https://img.shields.io/github/license/ZhouYK/glue-redux.svg)]()
+
 #glue-redux
 基于redux的应用层
 > 简单、友好、内聚，让相关代码在相近的位置出现
 
+---
 
 ## 查看示例
 ```bash
