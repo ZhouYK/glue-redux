@@ -5,7 +5,7 @@ node_js:
   - "8"
   - "10"
 install:
-  - npm install -g codecov
+  - npm install -g codecov jest
 script:
   - jest
   - codecov -t 7e6a8044-fb67-48f8-b2ad-82614a56c8d2
