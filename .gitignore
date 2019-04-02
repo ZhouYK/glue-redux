@@ -7,4 +7,5 @@ package-lock.json
 stat.json
 es/
 cj/
+coverage/
 .npmrc
