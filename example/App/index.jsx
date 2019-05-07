@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import List from './UserList/index';
-import appModel from '../models/app/model';
+import { wholeModel } from '../store';
 import './style.less';
+
 
 class App extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class App extends Component {
 
   addCountry = () => {
     const { country } = this.state;
-    appModel.country(country);
+    wholeModel.model.app.country(country);
   }
 
   handleAdd = (e) => {
@@ -39,7 +40,7 @@ class App extends Component {
     if (str) {
       return window.alert(str);
     }
-    const returnData = appModel.users({
+    const returnData = wholeModel.model.app.users({
       name,
       profession,
       pet,
