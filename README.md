@@ -79,7 +79,7 @@ npm start
 | 参数名 | 类型 | 用途 | 示例
 | :----: | :----: | :----: | :----:
 | store | redux的store | 供数据模型使用 | - 
-| models | object | 数据模型 | { [index: string]: any | GluerReturn } 
+| models | object | 数据模型 | { [index: string]: GluerReturn or any} 
   
 ### 返回
 - { reducers, actions, referToState, hasModel }
