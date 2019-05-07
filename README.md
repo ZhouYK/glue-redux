@@ -28,21 +28,11 @@ npm start
 ## gluer([updater, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
 > 声明同步节点，根据入参会有不同的处理
 ### 入参
-- updater (数据处理函数)
-  > 包含两个参数
-   
-   - data
-      > 用户传入的源数据
-   - state
-      > 当前节点的值
-   
-   返回值
-   > 经过处理后的当前节点的值
-   
-     
-      
-- initialValue (初始值)
-  > 当前节点的初始值
+
+| 参数名 | 类型 | 用途 | 示例
+| :---- | :---- | :---- | :----
+| updater | 函数 | 用于处理数据，强烈建议数据处理的情况不要有超过两种，超过了应提取出来放置别处 | function (data, state) {}
+| initialValue | 任意值 | 节点初始值，表明节点的数据结构和数据类型 | any
 
 ### 使用 | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
 
@@ -82,27 +72,25 @@ npm start
  
 ```
 
-## destruct(store)(model)
+## destruct(store)(models)
 > 解构数据对象，与redux进行连接
 
 ### 入参
-- store(必传)
-  > store中的dispatch函数
-- model(必传)
-  > 定义的数据对象，必须是对象类型
+| 参数名 | 类型 | 用途 | 示例
+| :----: | :----: | :----: | :----:
+| store | redux的store | 供数据模型使用 | - 
+| models | object | 数据模型 | { [index: string]: any | GluerReturn } 
   
 ### 返回
-- { reducers, actions, referToState }
+- { reducers, actions, referToState, hasModel }
   > 包含reducers和actions属性的对象
   
-   - reducers
-      > redux中的reducer函数的对象集合，可直接用于combineReducers
-   - actions
-      > model的一个对象集合
-   - referToState 
-      > 根据model的引用获取其在store对应的数据, 入参为model引用，返回对应的state数据
-   - hasModel
-      > 判断传入的reference是否存在于store中            
+| 属性名 | 类型 | 用途 | 示例
+| :----: | :----: | :----: | :----:
+| reducers | object | reducer组成的对象 | { name: (state, action) => {}, ... } 
+| actions | object | dispatcher组成的对象 | { name: GluerReturn, ... }
+| referToState | function | 用于从state中索引出数据 | referToState(index:any)
+| hasModel | function | 用于判断传入的内容是否被索引了 | hasModel(index: any)
       
 ### 如何使用  | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/store.js)
 ```js
@@ -156,12 +144,14 @@ console.log('app model中的users为：', referToState(app.users));
 // [{name: '小明', age: 18, pet: '猫'}]
 ```
 
-## 其他
+## 扩展文档
 
-
-### [说明文档](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3)
-### [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
-### [与react搭配](https://github.com/ZhouYK/react-glux)
+| 地址 | 摘要
+| :----: | :----:
+| [说明文档](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3) | 更加详细说明glue-redux的原理
+| [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97) | 处理异步问题以及如何组织代码
+| [react-glux](https://github.com/ZhouYK/react-glux) | 与react的连接库，HOC方式
+| [react-glue-redux-hook](https://github.com/ZhouYK/react-glue-redux-hook) | 与react的连接库，包含HOC和hook两种方式
 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)

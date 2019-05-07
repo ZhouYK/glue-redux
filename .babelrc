@@ -14,7 +14,7 @@
       "regenerator": true,
       "useESModules": false,
       "corejs": 2
-    }] // polyfill新语法
+    }]
   ],
   "env": {
     // jest会默认设置process.env.NODE_ENV为test

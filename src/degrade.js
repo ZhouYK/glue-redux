@@ -62,9 +62,8 @@ const actionError = (actionFn, obj, key) => {
 };
 /**
  * 递归对象，生成标准的action以及链接reducer对象的键值与action的type
- * @param msg
- * @param target
  * @returns {function(*=, *=, *=): {}}
+ * @param dispatch
  */
 const degrade = (dispatch) => {
   const referencesMap = genReferencesMap();

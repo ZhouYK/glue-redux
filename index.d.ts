@@ -17,16 +17,8 @@ interface GetState {
   (p?: any): any;
 }
 
-interface GluerReturn {
-  (data?: any): any;
-}
-
-interface GasReturn {
-  (...restParams: any[]): Promise<any>;
-}
-
-interface AsyncFunc {
-  (...restParams: any[]): any;
+interface GluerReturn<T = any> {
+  (data?: T): T;
 }
 
 interface DestructParams {
