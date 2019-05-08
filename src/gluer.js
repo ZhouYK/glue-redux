@@ -12,7 +12,16 @@ const warning = 'highly recommend setting initial state';
 const gluer = (...args) => {
   const [rd, initialState] = args;
   // 默认生成action creator
-  const actionCreator = data => data;
+  const actionCreator = (...params) => {
+    if (process.env.NODE_ENV === development) {
+      if (params.length === 0) {
+        console.warn('you have dispatched an action whose data is undefined！');
+      } else if (params.length > 1) {
+        console.warn(`you have passed "${params}" into the action, only the first param is in need`);
+      }
+    }
+    return params[0];
+  };
   let reducerFnc;
   let inState = initialState;
   // 没有传入任何参数则默认生成一个reducer
