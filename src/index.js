@@ -5,20 +5,16 @@ import getStateByModelReference from './getStateByModelReference';
 import { degrade } from './degrade';
 import validateInOperator from './validate/inOperatorValidate';
 
-/**
- * 复制并删除原始对象中的衍生属性，保留原生属性
- * 这里衍生属性主要是type和对应的reducer
- * @param obj
- * @param tk
- * @returns {*}
- */
-const deleteDerivedProps = (obj, tk) => {
-  /* eslint-disable no-param-reassign */
-  Object.keys(obj).forEach((key) => {
+const shallowCopyReducers = (target, tk) => {
+  const obj = {};
+  Object.keys(target).forEach((key) => {
     if (key.startsWith(`${tk}${uniqueTypeConnect}`)) {
-      delete obj[key];
+      obj[key] = target[key];
+      // eslint-disable-next-line no-param-reassign
+      delete target[key];
     }
   });
+  return obj;
 };
 /**
  * 根据原始的reducer对象去生成函数reducer，处理顶层节点
@@ -37,9 +33,8 @@ const generateRealReducer = originReducer => Object.keys(originReducer).reduce((
     if (typeof targetGlue === 'function') {
       value = targetGlue;
     } else if (typeof targetGlue === 'object') {
-      // 如果不展开复制的话，会被deleteDerivedProps 删掉 reducer
-      value = { ...targetGlue };
-      deleteDerivedProps(targetGlue, key);
+      // 复制定义在顶层节点的reducer
+      value = shallowCopyReducers(targetGlue, key);
     }
     // 定义顶层reducer，根据action type调用对应的子reducer
     fnc = (state = defaultValue, ac) => {

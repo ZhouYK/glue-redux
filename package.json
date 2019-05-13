@@ -5,7 +5,8 @@
   "main": "./cj/index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "test": "jest && codecov -t 7e6a8044-fb67-48f8-b2ad-82614a56c8d2",
+    "codecov": "codecov -t 7e6a8044-fb67-48f8-b2ad-82614a56c8d2",
+    "test": "jest",
     "start": "webpack-dev-server --config webpack/webpack.config.dev.js",
     "build:es": "babel src --out-dir es",
     "build:cj": "cross-env BABEL_ENV=test babel src --out-dir cj",

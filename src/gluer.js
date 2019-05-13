@@ -17,13 +17,13 @@ const gluer = (...args) => {
       if (params.length === 0) {
         console.warn('you have dispatched an action whose data is undefined！');
       } else if (params.length > 1) {
-        console.warn(`you have passed "${params}" into the action, only the first param is in need`);
+        console.warn(`you have passed "${params}" into the action, only the first param is needed`);
       }
     }
     return params[0];
   };
   let reducerFnc;
-  let inState = initialState;
+  let initState = initialState;
   // 没有传入任何参数则默认生成一个reducer
   if (args.length === 0) {
     // 默认值reducer
@@ -35,7 +35,7 @@ const gluer = (...args) => {
       // 默认生成一个reducer
       reducerFnc = defaultReducer;
       // 初始值
-      inState = rd;
+      initState = rd;
     } else {
       reducerFnc = genReducer(rd);
       console.warn(warning);
@@ -56,7 +56,7 @@ const gluer = (...args) => {
   const gf = () => ({
     reducer: reducerFnc,
     action: actionCreator,
-    initState: inState,
+    initState,
   });
   Object.defineProperty(gf, gluerUniqueFlagKey, {
     value: gluerUniqueFlagValue,
