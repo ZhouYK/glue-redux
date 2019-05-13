@@ -33,7 +33,7 @@ describe('gluer normal test',  () => {
     const mockReducer = jest.fn(result.reducer);
     mockReducer(100, {
       data: 10,
-      type: 'test'
+      type: 'model.js'
     });
 
     expect(mockReducer).toBeCalledWith(expect.anything(), {

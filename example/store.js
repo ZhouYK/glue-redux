@@ -3,7 +3,7 @@ import {
 } from 'redux';
 import DevTool from './DevTool';
 import { destruct } from '../src';
-import model, { hello } from './models';
+import model from './models';
 
 const store = createStore(() => {}, {}, DevTool().instrument());
 const wholeModel = {
@@ -12,7 +12,6 @@ const wholeModel = {
     person: '小红',
   },
   model,
-  hello,
 };
 const { reducers, referToState, hasModel } = destruct(store)(wholeModel);
 store.replaceReducer(combineReducers(reducers));

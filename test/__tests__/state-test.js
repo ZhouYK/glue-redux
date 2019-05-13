@@ -15,26 +15,45 @@ describe('state normal test',  () => {
     const initialApp = referToState(appModel);
     const initialProfile = referToState(appModel.profile);
     const initialUsers = referToState(appModel.users);
+    const initialPeople = referToState(wholeModel.model.people);
     let tempState = referToState(wholeModel);
     expect(initialState).toBe(tempState);
 
-    store.subscribe(() => {
-      expect(referToState(appModel.users)).toEqual([{
-        name: '小红',
-      }]);
-    });
-
     appModel.users({
       name: '小红',
+    });
+    expect(referToState(appModel.users)).toEqual([{
+      name: '小红',
+    }]);
+
+    expect(initialPeople).toEqual({
+      name: '小明',
+      hobby: '敲代码',
+      age: undefined
+    });
+
+    wholeModel.model.people({
+      name: '娃哈哈',
+      hobby: '哈哈哈',
+      age: 8
+    });
+
+    expect(referToState(wholeModel.model.people)).toEqual({
+      name: '我是娃哈哈',
+      hobby: '哈哈哈',
+      age: 80
     });
 
     const state = store.getState();
     tempState = referToState(wholeModel);
     expect(state).toBe(tempState);
 
+
     const currentApp = referToState(appModel);
     const currentProfilx = referToState(appModel.profile);
     const currentUsers = referToState(appModel.users);
+    const currentPeople = referToState(wholeModel.model.people);
+    expect(Object.is(initialPeople, currentPeople)).toBe(false);
     expect(Object.is(currentApp, initialApp)).toBe(false);
     expect(currentProfilx).toBe(initialProfile);
     expect(Object.is(currentUsers, initialUsers)).toBe(false);

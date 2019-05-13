@@ -3,7 +3,7 @@ import {
 } from './constants';
 import getStateByModelReference from './getStateByModelReference';
 import { degrade } from './degrade';
-import validateInOperator from './validate/inOperatorValidate';
+import validateInOperator from './tools/inOperatorValidate';
 
 const shallowCopyReducers = (target, tk) => {
   const obj = {};

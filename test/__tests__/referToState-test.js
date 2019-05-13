@@ -1,6 +1,7 @@
 import { referToState, wholeModel } from '../../example/store';
 import appModel from '../../example/models/app/model';
 import testModel from '../../example/models/test/model';
+import peopleModel from '../../example/models/people/model';
 
 test('referToState test', () => {
   expect(referToState(appModel)).toEqual({
@@ -20,4 +21,10 @@ test('referToState test', () => {
   });
   expect(referToState(wholeModel.siblings.person)).toBeUndefined();
   expect(referToState(wholeModel.users)).toBeUndefined();
+
+  expect(referToState(wholeModel.model.people)).toEqual({
+    name: '小明'
+  });
+
+  expect(referToState(wholeModel.model.people.name)).toEqual('小明');
 });

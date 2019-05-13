@@ -1,6 +1,5 @@
 import app from './app/model';
 import test from './test/model';
+import people from './people/model';
 
-export { hello } from './hello/model';
-
-export default { app, test };
+export default { app, test, people };

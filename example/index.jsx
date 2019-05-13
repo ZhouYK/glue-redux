@@ -4,8 +4,12 @@ import App from './App/index';
 import DevTool from './DevTool';
 import { store, wholeModel, referToState } from './store';
 
-wholeModel.hello('hello, this is glue-redux');
-window.alert(referToState(wholeModel.hello));
+wholeModel.model.people({
+  name: '娃哈哈',
+  hobby: '哈哈哈',
+});
+console.log(referToState(wholeModel.model.people));
+
 const DT = DevTool();
 const root = document.getElementById('bd');
 render(

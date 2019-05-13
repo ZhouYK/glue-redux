@@ -2,7 +2,8 @@ import { gluerUniqueFlagKey, gluerUniqueFlagValue, development } from './constan
 
 const defaultReducer = (state, action) => action.data;
 const genReducer = rd => (state, action) => rd(action.data, state);
-const warning = 'highly recommend setting initial state';
+const warning = 'highly recommend setting initial state with the reducer：';
+const getWarning = rd => `${warning}${rd.toString()}`;
 /**
  * 同步节点生成函数
  * @param rd 非必需
@@ -28,7 +29,7 @@ const gluer = (...args) => {
   if (args.length === 0) {
     // 默认值reducer
     reducerFnc = defaultReducer;
-    console.warn(warning);
+    console.warn(getWarning(reducerFnc));
   } else if (args.length === 1) {
     // 会被当做初始值处理
     if (typeof rd !== 'function') {
@@ -38,7 +39,7 @@ const gluer = (...args) => {
       initState = rd;
     } else {
       reducerFnc = genReducer(rd);
-      console.warn(warning);
+      console.warn(getWarning(rd));
     }
   } else {
     if (typeof rd !== 'function') {
@@ -47,7 +48,7 @@ const gluer = (...args) => {
     reducerFnc = genReducer(rd);
     if (process.env.NODE_ENV === development) {
       if (initialState === undefined) {
-        console.warn(warning);
+        console.warn(getWarning(rd));
       }
     }
   }

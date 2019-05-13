@@ -8,9 +8,9 @@ import {
   glueStatePrefix,
   development,
 } from './constants';
-import { getType } from './getType';
 import { glueAction } from './glueAction';
 import { genReferencesMap } from './genProxy';
+import isPlainObject from './tools/isPlainObject';
 
 const defineTopNodeDefaultValue = (topNode, defaultValue) => {
   try {
@@ -25,6 +25,30 @@ const defineTopNodeDefaultValue = (topNode, defaultValue) => {
     throw new Error(`the defaultValue of "${topNode}" is duplicated defined!`);
   }
 };
+/**
+ * 从action.data中筛选出，kes对应的数据
+ * @param actionData
+ * @param kes
+ * @returns {{result: null, flag: boolean}}
+ */
+const getSubState = (actionData, kes) => {
+  let result = actionData;
+  const final = {
+    flag: false,
+    result: null,
+  };
+  const { length } = kes;
+  for (let i = 0; i < length; i += 1) {
+    if (isPlainObject(result)) {
+      result = result[kes[i]];
+      if (i === length - 1) {
+        final.flag = true;
+        final.result = result;
+      }
+    }
+  }
+  return final;
+};
 
 /**
  * 生成顶层节点的reducer函数：将叶子节点的fnc进行重新包装成返回相应嵌套结构的state
@@ -32,10 +56,12 @@ const defineTopNodeDefaultValue = (topNode, defaultValue) => {
  * @param redu
  * @returns {function(*, *=): {[p: string]: *}}
  */
-const transformReducerToNestFnc = (k, redu) => {
+const transformReducerToNestFnc = (k, redu, shift = true) => {
   const kArr = k.split(uniqueTypeConnect);
-  // 去除顶层节点，因为顶层节点会在 generateRealReducer进行函数包装
-  kArr.shift();
+  if (shift) {
+    // 去除顶层节点，因为顶层节点会在 generateRealReducer进行函数包装
+    kArr.shift();
+  }
   return kArr.reduceRight((pre, cur) => (state, ac) => {
     // 这里做了一个优化，如果节点返回值与传入state一致则不更新
     // return { ...state, [`${cur}`]: pre(state[`${cur}`], ac) }
@@ -67,9 +93,11 @@ const actionError = (actionFn, obj, key) => {
  */
 const degrade = (dispatch) => {
   const referencesMap = genReferencesMap();
-  const fn = (curObj, keyStr = [], topNode = curObj, df = {}) => {
-    if (getType(curObj) === '[object Object]') {
+  const fn = (curObj, keyStr = [], topNode = curObj, df = {}, originalTopNode = null, originalAcType = '') => {
+    if (isPlainObject(curObj)) {
       // 设置整个对象的索引
+      // 整个model的引用
+      // 第一次执行时
       if (curObj === topNode && keyStr.length === 0) {
         referencesMap.set(curObj, '');
       }
@@ -115,12 +143,40 @@ const degrade = (dispatch) => {
                 enumerable: false,
                 configurable: false,
               });
-            } else {
+            } else if (!originalTopNode) {
               topNode[acType] = nodeReducer;
+            } else {
+              originalTopNode[acType] = nodeReducer;
+              const originalNodeReducer = originalTopNode[originalAcType];
+              // eslint-disable-next-line no-useless-escape
+              const subKeysStr = acType.replace(new RegExp(`${originalAcType}\.`), '');
+              const keyArr = subKeysStr.split(uniqueTypeConnect);
+              // 重写reducer
+              originalTopNode[originalAcType] = (state, ac) => {
+                const { flag, result } = getSubState(ac.data, keyArr);
+                let stateInit = state;
+                if (flag) {
+                  stateInit = nodeReducer(state, { ...ac, data: result });
+                }
+                return originalNodeReducer(stateInit, ac);
+              };
             }
             // 索引引用的键值路径
             referencesMap.set(action, str);
-          } else if (getType(value) === '[object Object]') {
+            // 遍历初始值，获取初始值中的结构信息
+            // eslint-disable-next-line max-len
+            const initStateDestructure = fn(initState, [...keyStr], initState, initState, topNode, acType);
+            if (initStateDestructure) {
+              Object.keys(initState).forEach((propName) => {
+                Object.defineProperty(action, propName, {
+                  value: initState[propName],
+                  writable: false,
+                  enumerable: false,
+                  configurable: false,
+                });
+              });
+            }
+          } else if (isPlainObject(value)) {
             // 索引引用的键值路径
             referencesMap.set(value, str);
             // p在此处作为是否为顶层节点的属性的标识
@@ -149,8 +205,6 @@ const degrade = (dispatch) => {
             // 不追踪非普通对象且非gluer声明的叶子节点
             // 索引引用的键值路径
             // referencesMap.set(value, str);
-
-            // 这里如果是顶层节点，会交给generateRealReducer包装成对应的顶层reducer
             if (df) {
               df[key] = value;
             }
@@ -159,8 +213,11 @@ const degrade = (dispatch) => {
           keyStr.pop();
         }
       });
-    } else {
+    } else if (!originalTopNode) {
       throw new Error('the argument muse be plain object!');
+    } else {
+      // todo 暂时先注释掉非对象数据的解构
+      return null;
     }
     return {
       stagedStructure: curObj,
