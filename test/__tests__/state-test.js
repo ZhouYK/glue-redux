@@ -3,6 +3,7 @@ import {
 } from '../../example/store';
 import appModel from '../../example/models/app/model';
 import testModel from '../../example/models/test/model';
+import people from '../../example/models/people/model';
 
 import { createStore } from 'redux';
 import gluer from '../../src/gluer';
@@ -10,6 +11,7 @@ import destruct from '../../src/index';
 import { duplicatedError } from '../constants';
 
 describe('state normal test',  () => {
+  // state的常见情况测试
   test('the state of example', () => {
     const initialState = store.getState();
     const initialApp = referToState(appModel);
@@ -29,7 +31,17 @@ describe('state normal test',  () => {
     expect(initialPeople).toEqual({
       name: '小明',
       hobby: '敲代码',
-      age: undefined
+      age: undefined,
+      family: {
+        papa: '你的老爸',
+        mama: '你的老妈',
+        count: 3,
+        child: {
+          name: '小明',
+          age: undefined,
+          nickeyName: '小小'
+        }
+      }
     });
 
     wholeModel.model.people({
@@ -39,10 +51,19 @@ describe('state normal test',  () => {
     });
 
     expect(referToState(wholeModel.model.people)).toEqual({
+      ...initialPeople,
       name: '我是娃哈哈',
       hobby: '哈哈哈',
-      age: 80
+      age: 80,
     });
+
+    wholeModel.model.people.family({
+      papa: '夸父'
+    });
+
+    expect(referToState(wholeModel.model.people.family.papa)).toBe('你的夸父');
+
+    expect(referToState(wholeModel.model.people.family.child.name)).toBe('我是小绵羊');
 
     const state = store.getState();
     tempState = referToState(wholeModel);
@@ -95,8 +116,18 @@ describe('state edge case test', () => {
     };
     model.person = model;
     expect(() => destruct(store)(model)).toThrow(duplicatedError);
+
+    const peopleModel = {
+      people
+    };
+    const model_1 = {
+      people: peopleModel
+    };
+
+    model_1.shadow = peopleModel;
+    expect(() => destruct(store)(model_1)).toThrow(duplicatedError);
   });
-  //
+  // 两个或两个以上的地方使用了同一个model的reference
   test('one model is used more than one place', () => {
     const store = createStore(() => ({}));
     const person = {

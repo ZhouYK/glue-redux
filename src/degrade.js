@@ -40,10 +40,13 @@ const getSubState = (actionData, kes) => {
   const { length } = kes;
   for (let i = 0; i < length; i += 1) {
     if (isPlainObject(result)) {
-      result = result[kes[i]];
-      if (i === length - 1) {
-        final.flag = true;
-        final.result = result;
+      const keys = Object.keys(result);
+      if (keys.includes(kes[i])) {
+        result = result[kes[i]];
+        if (i === length - 1) {
+          final.flag = true;
+          final.result = result;
+        }
       }
     }
   }
@@ -67,6 +70,11 @@ const transformReducerToNestFnc = (k, redu, shift = true) => {
     // return { ...state, [`${cur}`]: pre(state[`${cur}`], ac) }
     const curValue = state[cur];
     const temp = pre(curValue, ac);
+    if (process.env.NODE_ENV === development) {
+      if (Object.is(temp, undefined)) {
+        console.error(`Warning：the reducer handling "${ac.type}" has returned "undefined"！`);
+      }
+    }
     if (Object.is(temp, curValue)) {
       return state;
     }
@@ -128,7 +136,8 @@ const degrade = (dispatch) => {
             curObj[key] = action;
             /* eslint-disable no-param-reassign */
             // 设置初始值
-            df[key] = initState;
+            // 当初始值作为数据来源时，引用会冲突，需要进行复制
+            df[key] = isPlainObject(initState) ? { ...initState } : initState;
             // topNode为顶层对象引用
             // 属性名连接形成的字符串作为对象键值赋值
             // 这里如果为第一级，curObj和topNode为同一个，则action和reducer相互覆盖了
@@ -136,7 +145,7 @@ const degrade = (dispatch) => {
             // 如果相等，则把reducer定义到action函数上
             const nodeReducer = transformReducerToNestFnc(str, reducer);
             if (key === str) {
-              defineTopNodeDefaultValue(action, initState);
+              defineTopNodeDefaultValue(action, df[key]);
               Object.defineProperty(action, acType, {
                 value: nodeReducer,
                 writable: false,
@@ -165,14 +174,15 @@ const degrade = (dispatch) => {
             referencesMap.set(action, str);
             // 遍历初始值，获取初始值中的结构信息
             // eslint-disable-next-line max-len
-            const initStateDestructure = fn(initState, [...keyStr], initState, initState, topNode, acType);
+            const initStateDestructure = fn(initState, [...keyStr], initState, df[key], originalTopNode || topNode, acType);
             if (initStateDestructure) {
+              // 在gluer中已经进行了一次赋值，这次是真的生效
               Object.keys(initState).forEach((propName) => {
                 Object.defineProperty(action, propName, {
                   value: initState[propName],
                   writable: false,
-                  enumerable: false,
-                  configurable: false,
+                  enumerable: true,
+                  configurable: true,
                 });
               });
             }
@@ -216,7 +226,7 @@ const degrade = (dispatch) => {
     } else if (!originalTopNode) {
       throw new Error('the argument muse be plain object!');
     } else {
-      // todo 暂时先注释掉非对象数据的解构
+      // 非普通对象的initialState暂不处理
       return null;
     }
     return {

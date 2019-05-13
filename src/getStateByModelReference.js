@@ -11,7 +11,13 @@ const getStateByModelReference = (referencesMap, getState) => (model) => {
     return currentState;
   }
   const keys = pathStr.split(uniqueTypeConnect);
-  return keys.reduce((pre, cur) => pre[cur], currentState);
+  return keys.reduce((pre, cur) => {
+    try {
+      return pre[cur];
+    } catch (e) {
+      return pre;
+    }
+  }, currentState);
 };
 
 export default getStateByModelReference;

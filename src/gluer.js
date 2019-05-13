@@ -59,6 +59,15 @@ const gluer = (...args) => {
     action: actionCreator,
     initState,
   });
+  // 为了增加代码提示，故添加此循环
+  Object.keys(initState).forEach((propName) => {
+    Object.defineProperty(gf, propName, {
+      value: initState[propName],
+      writable: false,
+      enumerable: true,
+      configurable: true,
+    });
+  });
   Object.defineProperty(gf, gluerUniqueFlagKey, {
     value: gluerUniqueFlagValue,
     writable: false,

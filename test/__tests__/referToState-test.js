@@ -1,9 +1,12 @@
 import { referToState, wholeModel } from '../../example/store';
 import appModel from '../../example/models/app/model';
 import testModel from '../../example/models/test/model';
-import peopleModel from '../../example/models/people/model';
+import people from '../../example/models/people/model';
 
 test('referToState test', () => {
+
+  expect(referToState(people)).toBe(undefined);
+
   expect(referToState(appModel)).toEqual({
     country: '',
     users: [],
@@ -23,7 +26,25 @@ test('referToState test', () => {
   expect(referToState(wholeModel.users)).toBeUndefined();
 
   expect(referToState(wholeModel.model.people)).toEqual({
-    name: '小明'
+    name: '小明',
+    age: undefined,
+    hobby: '敲代码',
+    family: {
+      papa: '你的老爸',
+      mama: '你的老妈',
+      count: 3,
+      child: {
+        name: '小明',
+        age: undefined,
+        nickeyName: '小小'
+      }
+    }
+  });
+
+  expect(referToState(wholeModel.model.people.family.child)).toEqual({
+    name: '小明',
+    age: undefined,
+    nickeyName: '小小'
   });
 
   expect(referToState(wholeModel.model.people.name)).toEqual('小明');
