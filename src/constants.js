@@ -4,7 +4,7 @@ export const gluerUniqueFlagKey = Symbol('gluerUniqueFlagKey');
 export const syncActionFnFlag = Symbol('syncActionFnFlag');
 export const syncActionFnFlagValue = Symbol('syncActionFnFlagValue');
 export const defaultValueKey = Symbol('____initialDefaultValue____');
-export const distinguishPrefix = '<<<<<<<';
+export const glueStatePrefix = `state${uniqueTypeConnect}`;
 export const actionType = 'actionType';
 export const development = 'development';
 
@@ -16,6 +16,6 @@ export default {
   syncActionFnFlag,
   syncActionFnFlagValue,
   actionType,
-  distinguishPrefix,
+  glueStatePrefix,
   development,
 };

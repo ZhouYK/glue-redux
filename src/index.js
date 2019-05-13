@@ -1,5 +1,5 @@
 import {
-  uniqueTypeConnect, defaultValueKey,
+  uniqueTypeConnect, defaultValueKey, glueStatePrefix,
 } from './constants';
 import getStateByModelReference from './getStateByModelReference';
 import { degrade } from './degrade';
@@ -8,7 +8,7 @@ import validateInOperator from './validate/inOperatorValidate';
 const shallowCopyReducers = (target, tk) => {
   const obj = {};
   Object.keys(target).forEach((key) => {
-    if (key.startsWith(`${tk}${uniqueTypeConnect}`)) {
+    if (key.startsWith(`${glueStatePrefix}${tk}${uniqueTypeConnect}`)) {
       obj[key] = target[key];
       // eslint-disable-next-line no-param-reassign
       delete target[key];

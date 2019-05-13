@@ -5,7 +5,7 @@ import {
   defaultValueKey,
   syncActionFnFlag,
   syncActionFnFlagValue,
-  distinguishPrefix,
+  glueStatePrefix,
   development,
 } from './constants';
 import { getType } from './getType';
@@ -86,11 +86,12 @@ const degrade = (dispatch) => {
           // 如果是同步节点，则获取对应的action creator和reducer function
           if (value[gluerUniqueFlagKey] === gluerUniqueFlagValue) {
             const { action: actionFn, reducer, initState } = value();
-            const syncActionType = key === str ? `${distinguishPrefix}${key}` : str;
+            const syncActionType = key === str ? key : str;
             // 进行类似bindActionCreators的动作
             // 此处向action函数添加其对应的type属性，以便可以和其他以type为判断条件的中间件协同工作，比如redux-saga
+            const acType = `${glueStatePrefix}${syncActionType}`;
             const action = glueAction({
-              type: syncActionType,
+              type: acType,
               action: actionFn,
               dispatch,
             });
@@ -108,14 +109,14 @@ const degrade = (dispatch) => {
             const nodeReducer = transformReducerToNestFnc(str, reducer);
             if (key === str) {
               defineTopNodeDefaultValue(action, initState);
-              Object.defineProperty(action, syncActionType, {
+              Object.defineProperty(action, acType, {
                 value: nodeReducer,
                 writable: false,
                 enumerable: false,
                 configurable: false,
               });
             } else {
-              topNode[syncActionType] = nodeReducer;
+              topNode[acType] = nodeReducer;
             }
             // 索引引用的键值路径
             referencesMap.set(action, str);
