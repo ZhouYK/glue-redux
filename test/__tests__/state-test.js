@@ -31,14 +31,14 @@ describe('state normal test',  () => {
     expect(initialPeople).toEqual({
       name: '小明',
       hobby: '敲代码',
-      age: undefined,
+      age: 10,
       family: {
         papa: '我的父亲',
         mama: '我的母亲',
         count: 3,
         child: {
           name: '小明',
-          age: undefined,
+          age: 10,
           nickeyName: '小小'
         }
       }

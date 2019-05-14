@@ -27,7 +27,7 @@ test('referToState test', () => {
 
   expect(referToState(wholeModel.model.people)).toEqual({
     name: '小明',
-    age: undefined,
+    age: 10,
     hobby: '敲代码',
     family: {
       papa: '我的父亲',
@@ -35,7 +35,7 @@ test('referToState test', () => {
       count: 3,
       child: {
         name: '小明',
-        age: undefined,
+        age: 10,
         nickeyName: '小小'
       }
     }
@@ -43,9 +43,13 @@ test('referToState test', () => {
 
   expect(referToState(wholeModel.model.people.family.child)).toEqual({
     name: '小明',
-    age: undefined,
+    age: 10,
     nickeyName: '小小'
   });
 
   expect(referToState(wholeModel.model.people.name)).toEqual('小明');
+
+  expect(referToState(wholeModel.model.people.hobby)).toBe(undefined);
+
+  expect(referToState(wholeModel.model.family.count)).toBe(undefined);
 });

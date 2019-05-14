@@ -216,7 +216,10 @@ const degrade = (dispatch) => {
             fn(value, [...keyStr], p, nextDefaultValue);
           } else {
             if (process.env.NODE_ENV === development) {
-              console.error('Warning: the constant node: state.%s, %O.Directly placing constants in model is discouraged, because this leads data management to be confused. Leaf nodes except defined By "gluer" will not be traced. So please wrap it with "gluer".', keyStr.join('.'), value);
+              // 模型来自initialState时，不提示
+              if (!originalTopNode) {
+                console.error('Warning: the constant node: state.%s, %O.Directly placing constants in model is discouraged, because this leads data management to be confused. Leaf nodes except defined By "gluer" will not be traced. So please wrap it with "gluer".', keyStr.join('.'), value);
+              }
             }
             // 不追踪非普通对象且非gluer声明的叶子节点
             // 索引引用的键值路径

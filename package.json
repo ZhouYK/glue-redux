@@ -10,7 +10,7 @@
     "start": "webpack-dev-server --config webpack/webpack.config.dev.js",
     "build:es": "babel src --out-dir es",
     "build:cj": "cross-env BABEL_ENV=test babel src --out-dir cj",
-    "build": "webpack --config webpack/webpack.config.prod.js && npm run build:es && npm run build:cj"
+    "build": "npm run test && webpack --config webpack/webpack.config.prod.js && npm run build:es && npm run build:cj && npm run codecov"
   },
   "dependencies": {
     "@babel/runtime": "~7.2.0",

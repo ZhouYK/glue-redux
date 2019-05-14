@@ -8,7 +8,8 @@
 
 # glue-redux
 基于redux的应用层
-> 简单、友好、内聚，让相关代码在相近的位置出现
+
+*简单、友好、内聚，让相关代码在相近的位置出现*
 
 ---
 
@@ -22,8 +23,12 @@ npm start
 ```
 
 ## API
-* gluer
-* destruct
+
+| 名称 | 用途
+| :--- | :---:
+| gluer | 定义可维护节点
+| destruct | 解构由可维护节点组成的普通对象
+
 
 ## gluer([updater, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
 > 声明同步节点，根据入参会有不同的处理
@@ -32,10 +37,9 @@ npm start
 | 参数名 | 类型 | 用途 | 示例
 | :---- | :---- | :---- | :----
 | updater | 函数 | 用于处理数据，强烈建议数据处理的情况不要有超过两种，超过了应提取出来放置别处 | function (data, state) {}
-| initialValue | 任意值 | 节点初始值，表明节点的数据结构和数据类型 | any
+| initialValue | 任意值 | 节点初始值，表明节点的数据结构和数据类型（开发模式下要求必填） | any
 
-### 使用 | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
-
+### [栗子](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
 ```js
 // 定义model
   import { gluer } from 'glue-redux';
@@ -55,6 +59,9 @@ npm start
   export default app;
 
 ```
+👆上面的栗子是gluer的基本用法，如果想进一步**细致地控制数据**可以看这里[gluer的高级用法](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3#gluer)
+
+
 关于gluer的入参选择，可以有多种模式
 
 ```jsx
@@ -92,7 +99,7 @@ npm start
 | referToState | function | 用于从state中索引出数据 | referToState(index:any)
 | hasModel | function | 用于判断传入的内容是否被索引了 | hasModel(index: any)
       
-### 如何使用  | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/store.js)
+### [栗子](https://github.com/ZhouYK/glue-redux/blob/master/example/store.js)
 ```js
 // store.js
 import {
