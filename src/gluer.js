@@ -4,6 +4,8 @@ const defaultReducer = (state, action) => action.data;
 const genReducer = rd => (state, action) => rd(action.data, state);
 const warning = 'highly recommend setting initial state with the reducer：';
 const getWarning = rd => `${warning}${rd.toString()}`;
+
+
 /**
  * 同步节点生成函数
  * @param rd 非必需
@@ -29,7 +31,9 @@ const gluer = (...args) => {
   if (args.length === 0) {
     // 默认值reducer
     reducerFnc = defaultReducer;
-    console.warn(getWarning(reducerFnc));
+    if (process.env.NODE_ENV === development) {
+      throw new Error(getWarning(rd));
+    }
   } else if (args.length === 1) {
     // 会被当做初始值处理
     if (typeof rd !== 'function') {
@@ -39,7 +43,9 @@ const gluer = (...args) => {
       initState = rd;
     } else {
       reducerFnc = genReducer(rd);
-      console.warn(getWarning(rd));
+      if (process.env.NODE_ENV === development) {
+        throw new Error(getWarning(rd));
+      }
     }
   } else {
     if (typeof rd !== 'function') {
@@ -48,7 +54,7 @@ const gluer = (...args) => {
     reducerFnc = genReducer(rd);
     if (process.env.NODE_ENV === development) {
       if (initialState === undefined) {
-        console.warn(getWarning(rd));
+        throw new Error(getWarning(rd));
       }
     }
   }
@@ -59,21 +65,13 @@ const gluer = (...args) => {
     action: actionCreator,
     initState,
   });
-  // 为了增加代码提示，故添加此循环
-  Object.keys(initState).forEach((propName) => {
-    Object.defineProperty(gf, propName, {
-      value: initState[propName],
-      writable: false,
-      enumerable: true,
-      configurable: true,
-    });
-  });
   Object.defineProperty(gf, gluerUniqueFlagKey, {
     value: gluerUniqueFlagValue,
     writable: false,
-    configurable: false,
-    enumerable: false,
+    configurable: true,
+    enumerable: true,
   });
   return gf;
 };
+
 export default gluer;

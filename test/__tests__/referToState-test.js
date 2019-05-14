@@ -30,8 +30,8 @@ test('referToState test', () => {
     age: undefined,
     hobby: '敲代码',
     family: {
-      papa: '你的老爸',
-      mama: '你的老妈',
+      papa: '我的父亲',
+      mama: '我的母亲',
       count: 3,
       child: {
         name: '小明',

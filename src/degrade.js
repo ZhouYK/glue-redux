@@ -12,6 +12,19 @@ import { glueAction } from './glueAction';
 import { genReferencesMap } from './genProxy';
 import isPlainObject from './tools/isPlainObject';
 
+const defineInitStatePropsToFnc = (fnc, initState) => {
+  if (isPlainObject(initState)) {
+    Object.keys(initState).forEach((propName) => {
+      Object.defineProperty(fnc, propName, {
+        value: initState[propName],
+        writable: false,
+        enumerable: true,
+        configurable: false,
+      });
+    });
+  }
+};
+
 const defineTopNodeDefaultValue = (topNode, defaultValue) => {
   try {
     Object.defineProperty(topNode, defaultValueKey, {
@@ -22,7 +35,7 @@ const defineTopNodeDefaultValue = (topNode, defaultValue) => {
     });
   } catch (e) {
     console.trace();
-    throw new Error(`the defaultValue of "${topNode}" is duplicated defined!`);
+    throw new Error(`the defaultValue of "${topNode}" is duplicated defined! ${e}`);
   }
 };
 /**
@@ -136,7 +149,7 @@ const degrade = (dispatch) => {
             curObj[key] = action;
             /* eslint-disable no-param-reassign */
             // 设置初始值
-            // 当初始值作为数据来源时，引用会冲突，需要进行复制
+            // 当初始值作为数据来源时，引用会冲突（因为它还做action触发），需要进行复制
             df[key] = isPlainObject(initState) ? { ...initState } : initState;
             // topNode为顶层对象引用
             // 属性名连接形成的字符串作为对象键值赋值
@@ -177,14 +190,7 @@ const degrade = (dispatch) => {
             const initStateDestructure = fn(initState, [...keyStr], initState, df[key], originalTopNode || topNode, acType);
             if (initStateDestructure) {
               // 在gluer中已经进行了一次赋值，这次是真的生效
-              Object.keys(initState).forEach((propName) => {
-                Object.defineProperty(action, propName, {
-                  value: initState[propName],
-                  writable: false,
-                  enumerable: true,
-                  configurable: true,
-                });
-              });
+              defineInitStatePropsToFnc(action, initState);
             }
           } else if (isPlainObject(value)) {
             // 索引引用的键值路径

@@ -10,7 +10,6 @@ import { store, wholeModel, referToState } from './store';
 //  age: 8,
 // });
 console.log(referToState(wholeModel.model.people));
-
 wholeModel.model.people.family({
   papa: '夸父',
 });

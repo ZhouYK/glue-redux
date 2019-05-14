@@ -33,8 +33,8 @@ describe('state normal test',  () => {
       hobby: '敲代码',
       age: undefined,
       family: {
-        papa: '你的老爸',
-        mama: '你的老妈',
+        papa: '我的父亲',
+        mama: '我的母亲',
         count: 3,
         child: {
           name: '小明',
@@ -61,8 +61,9 @@ describe('state normal test',  () => {
       papa: '夸父'
     });
 
-    expect(referToState(wholeModel.model.people.family.papa)).toBe('你的夸父');
+    expect(referToState(wholeModel.model.people.family.papa)).toBe('我的夸父');
 
+    wholeModel.model.people.family.child.name('小绵羊');
     expect(referToState(wholeModel.model.people.family.child.name)).toBe('我是小绵羊');
 
     const state = store.getState();
