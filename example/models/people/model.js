@@ -1,7 +1,7 @@
 import { gluer } from '../../../src';
 
 const name = gluer(data => `我是${data}`, '小明');
-const age = gluer(data => 10 * data);
+const age = gluer(data => 10 * data, 10);
 
 const papa = gluer(data => `我的${data}`, '我的父亲');
 const mama = gluer(data => `我的${data}`, '我的母亲');

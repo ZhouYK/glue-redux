@@ -1,18 +1,17 @@
 import React, { Component, Fragment } from 'react';
-import { referToState, store } from '../../store';
-import model from '../../models/app/model';
+import { referToState, store, wholeModel } from '../../store';
 // import test from '../glue/modelTest';
 
 class Index extends Component {
   constructor(props) {
     super(props);
-    const data = referToState(model);
+    const data = referToState(wholeModel.model.app);
     // subscribe
     // here just setState on every dispatch
     store.subscribe(() => {
       this.setState({
-        users: referToState(model.users),
-        country: referToState(model.country),
+        users: referToState(wholeModel.model.app.users),
+        country: referToState(wholeModel.model.app.country),
       });
     });
     this.state = {

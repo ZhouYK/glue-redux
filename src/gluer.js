@@ -2,7 +2,7 @@ import { gluerUniqueFlagKey, gluerUniqueFlagValue, development } from './constan
 
 const defaultReducer = (state, action) => action.data;
 const genReducer = rd => (state, action) => rd(action.data, state);
-const warning = 'highly recommend setting initial state with the reducer：';
+const warning = 'highly recommend setting the initial state with the reducer：';
 const getWarning = rd => `${warning}${rd.toString()}`;
 
 
