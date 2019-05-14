@@ -31,7 +31,7 @@ npm start
 
 
 ## gluer([updater, initialValue]) | [代码](https://github.com/ZhouYK/glue-redux/blob/master/example/models/app/model.js)
-> 声明同步节点，根据入参会有不同的处理
+> 定义可维护节点，根据入参会有不同的处理
 ### 入参
 
 | 参数名 | 类型 | 用途 | 示例
@@ -97,7 +97,7 @@ npm start
 | reducers | object | reducer组成的对象 | { name: (state, action) => {}, ... } 
 | actions | object | dispatcher组成的对象 | { name: GluerReturn, ... }
 | referToState | function | 用于从state中索引出数据 | referToState(index:any)
-| hasModel | function | 用于判断传入的内容是否被索引了 | hasModel(index: any)
+| hasModel | function | 用于判断传入的内容是否被索引了(model中如果有直接量，这些直接量将不会被索引) | hasModel(index: any)
       
 ### [栗子](https://github.com/ZhouYK/glue-redux/blob/master/example/store.js)
 ```js
