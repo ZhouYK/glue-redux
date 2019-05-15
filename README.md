@@ -159,6 +159,7 @@ console.log('app model中的users为：', referToState(app.users));
 | [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97) | 处理异步问题以及如何组织代码
 | [react-glux](https://github.com/ZhouYK/react-glux) | 与react的连接库，HOC方式
 | [react-glue-redux-hook](https://github.com/ZhouYK/react-glue-redux-hook) | 与react的连接库，包含HOC和hook两种方式
+| [设计一个前端数据模型，让数据操作更简单可靠](https://zhuanlan.zhihu.com/p/65322881) | 代码结构设计说明
 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
