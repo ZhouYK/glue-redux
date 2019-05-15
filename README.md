@@ -96,8 +96,8 @@ npm start
 | :----: | :----: | :----: | :----:
 | reducers | object | reducer组成的对象 | { name: (state, action) => {}, ... } 
 | actions | object | dispatcher组成的对象 | { name: GluerReturn, ... }
-| referToState | function | 用于从state中索引出数据 | referToState(index:any)
-| hasModel | function | 用于判断传入的内容是否被索引了(model中如果有直接量，这些直接量将不会被索引) | hasModel(index: any)
+| referToState | function | 用于从state中索引出数据 | [referToState(index:any)](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3#refertostate)
+| hasModel | function | 用于判断传入的内容是否被索引了 | [hasModel(index: any)](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3#refertostate)（和referToState使用一套索引原则，可查看referToState的使用）
       
 ### [栗子](https://github.com/ZhouYK/glue-redux/blob/master/example/store.js)
 ```js
@@ -159,6 +159,7 @@ console.log('app model中的users为：', referToState(app.users));
 | [实践说明](https://github.com/ZhouYK/glue-redux/wiki/%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97) | 处理异步问题以及如何组织代码
 | [react-glux](https://github.com/ZhouYK/react-glux) | 与react的连接库，HOC方式
 | [react-glue-redux-hook](https://github.com/ZhouYK/react-glue-redux-hook) | 与react的连接库，包含HOC和hook两种方式
+| [设计一个前端数据模型，让数据操作更简单可靠](https://zhuanlan.zhihu.com/p/65322881) | 代码结构设计说明
 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
