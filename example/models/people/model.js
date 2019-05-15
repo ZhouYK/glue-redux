@@ -11,11 +11,29 @@ const child = gluer({
   nickeyName: '小小',
 });
 
-const family = gluer((data, state) => state, {
+const family = gluer((data, state) => {
+  let result = state;
+  if ('count' in data && data.count !== state.count) {
+    result = {
+      ...result,
+      count: data.count,
+    };
+  }
+  if ('address' in data && data.address !== state.address) {
+    result = {
+      ...result,
+      address: data.address,
+    };
+  }
+  return result;
+}, {
   papa,
   mama,
   child,
   count: 3,
+  address: {
+    street: '东城根街',
+  },
 });
 
 const people = gluer((data, state) => ({

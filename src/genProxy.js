@@ -1,5 +1,5 @@
 const genProxy = (obj, handler) => new Proxy(obj, handler);
-const errorTips = (key, value) => `this node [path: ${value}, value: ${key}] had been traced, please check it whether it is used in more than one place or it is circular reference!`;
+const errorTips = (key, value) => `this node [path: ${value}, value: ${key}] had been traced！the [value: ${key}] as a key in the inner map already exists! please check it whether it is used in more than one place`;
 
 export const genReferencesMap = () => {
   const map = new Map();

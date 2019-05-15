@@ -25,7 +25,7 @@ test('referToState test', () => {
   expect(referToState(wholeModel.siblings.person)).toBeUndefined();
   expect(referToState(wholeModel.users)).toBeUndefined();
 
-  expect(referToState(wholeModel.model.people)).toEqual({
+  const peopleData = {
     name: '小明',
     age: 10,
     hobby: '敲代码',
@@ -37,15 +37,38 @@ test('referToState test', () => {
         name: '小明',
         age: 10,
         nickeyName: '小小'
+      },
+      address: {
+        street: '东城根街'
       }
-    }
-  });
+    },
+  }
+  expect(referToState(wholeModel.model.people)).toEqual(peopleData);
 
   expect(referToState(wholeModel.model.people.family.child)).toEqual({
     name: '小明',
     age: 10,
     nickeyName: '小小'
   });
+
+  expect(referToState(wholeModel.model.people.family.address.street)).toBe(undefined);
+  expect(referToState(wholeModel.model.people.family.address)).toEqual({
+    street: '东城根街'
+  });
+
+  wholeModel.model.people.family({ count: 4, address: { street: '大田路' } });
+
+  expect(referToState(wholeModel.model.people.family.address)).toEqual({
+    street: '大田路'
+  });
+
+  expect(referToState(wholeModel.model.people.family)).toEqual({
+    ...peopleData.family,
+    count: 4,
+    address: {
+      street: '大田路'
+    }
+  })
 
   expect(referToState(wholeModel.model.people.name)).toEqual('小明');
 

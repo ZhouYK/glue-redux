@@ -40,6 +40,9 @@ describe('state normal test',  () => {
           name: '小明',
           age: 10,
           nickeyName: '小小'
+        },
+        address: {
+          street: '东城根街'
         }
       }
     });
