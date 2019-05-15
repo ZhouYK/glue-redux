@@ -96,7 +96,7 @@ npm start
 | :----: | :----: | :----: | :----:
 | reducers | object | reducer组成的对象 | { name: (state, action) => {}, ... } 
 | actions | object | dispatcher组成的对象 | { name: GluerReturn, ... }
-| referToState | function | 用于从state中索引出数据 | referToState(index:any)
+| referToState | function | 用于从state中索引出数据 | [referToState(index:any)](https://github.com/ZhouYK/glue-redux/wiki/%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3#refertostate)
 | hasModel | function | 用于判断传入的内容是否被索引了(model中如果有直接量，这些直接量将不会被索引) | hasModel(index: any)
       
 ### [栗子](https://github.com/ZhouYK/glue-redux/blob/master/example/store.js)
