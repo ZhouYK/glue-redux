@@ -13,6 +13,29 @@
 
 ---
 
+*数据模型*
+
+![model](./example/assets/model.jpg)
+
+模型和state的结构是一一对应的.
+
+*获取数据源state中的p3节点*
+```js
+referToState(model.p1.p3)
+```
+![retrieve](./example/assets/retrieve.jpg)
+
+*更新数据源state中的p3节点*
+```js
+model.p1.p3(data)
+```
+![update](example/assets/update.jpg)
+
+红色节点代表被更新的节点
+
+
+---
+
 ## 查看示例
 ```bash
 git clone https://github.com/ZhouYK/glue-redux.git
