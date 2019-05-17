@@ -1,21 +1,10 @@
 import {
-  uniqueTypeConnect, defaultValueKey, glueStatePrefix,
+  defaultValueKey,
 } from './constants';
 import getStateByModelReference from './getStateByModelReference';
 import { degrade } from './degrade';
 import validateInOperator from './tools/inOperatorValidate';
 
-const shallowCopyReducers = (target, tk) => {
-  const obj = {};
-  Object.keys(target).forEach((key) => {
-    if (key.startsWith(`${glueStatePrefix}${tk}${uniqueTypeConnect}`)) {
-      obj[key] = target[key];
-      // eslint-disable-next-line no-param-reassign
-      delete target[key];
-    }
-  });
-  return obj;
-};
 /**
  * 根据原始的reducer对象去生成函数reducer，处理顶层节点
  * @param originReducer
@@ -27,15 +16,7 @@ const generateRealReducer = originReducer => Object.keys(originReducer).reduce((
   let fnc;
   // 拥有默认标识的则为可处理节点
   if (validateInOperator(defaultValueKey, targetGlue)) {
-    let value;
-    const getReducer = type => value[type];
     const defaultValue = targetGlue[defaultValueKey];
-    if (typeof targetGlue === 'function') {
-      value = targetGlue;
-    } else if (typeof targetGlue === 'object') {
-      // 复制定义在顶层节点的reducer
-      value = shallowCopyReducers(targetGlue, key);
-    }
     // 定义顶层reducer，根据action type调用对应的子reducer
     fnc = (state = defaultValue, ac) => {
       const { type } = ac;
@@ -43,7 +24,7 @@ const generateRealReducer = originReducer => Object.keys(originReducer).reduce((
       // 每个叶子节点的action保留着对应的type
       // 如果value为函数，那么需要用额外type去索引reducer
 
-      const reducerFnc = getReducer(type);
+      const reducerFnc = targetGlue[type];
       if (reducerFnc) {
         // 一但调用，会返回新的值
         return reducerFnc(state, ac);

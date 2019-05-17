@@ -107,6 +107,7 @@ const actionError = (actionFn, obj, key) => {
     throw new Error(`the "${key}" of ${obj}, which only can be processed only once, is already processed`);
   }
 };
+
 /**
  * 递归对象，生成标准的action以及链接reducer对象的键值与action的type
  * @returns {function(*=, *=, *=): {}}
@@ -159,12 +160,7 @@ const degrade = (dispatch) => {
             const nodeReducer = transformReducerToNestFnc(str, reducer);
             if (key === str) {
               defineTopNodeDefaultValue(action, df[key]);
-              Object.defineProperty(action, acType, {
-                value: nodeReducer,
-                writable: false,
-                enumerable: false,
-                configurable: false,
-              });
+              action[acType] = nodeReducer;
             } else if (!originalTopNode) {
               topNode[acType] = nodeReducer;
             } else {
@@ -178,7 +174,8 @@ const degrade = (dispatch) => {
                 const { flag, result } = getSubState(ac.data, keyArr);
                 let stateInit = state;
                 if (flag) {
-                  stateInit = nodeReducer(state, { ...ac, data: result });
+                  const subReducer = originalTopNode[acType];
+                  stateInit = subReducer(state, { ...ac, data: result });
                 }
                 return originalNodeReducer(stateInit, ac);
               };

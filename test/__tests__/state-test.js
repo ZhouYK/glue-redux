@@ -60,6 +60,14 @@ describe('state normal test',  () => {
       age: 80,
     });
 
+    wholeModel.model.people({
+      family: {
+        papa: '小次郎'
+      }
+    });
+
+    expect(referToState(wholeModel.model.people.family.papa)).toBe('我的小次郎');
+
     wholeModel.model.people.family({
       papa: '夸父'
     });
