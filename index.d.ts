@@ -28,16 +28,16 @@ interface DestructReturn {
 interface Destruct {
   (p: DestructParams): DestructReturn;
 }
-type HandleFunc<T> = (data: any, state: T) => T;
 
-type fnc<T> = (data?: T) => T;
-type GluerReturn<T>  = {
-  readonly [P in keyof T]: T[P];
-} & fnc<T> & {
+type HandleFunc<S, D = S> = (data: D, state: S) => S;
+
+type fnc<D> = (data?: D) => D;
+export type GluerReturn<S, D = S>  = {
+  readonly [P in keyof S]: S[P];
+} & fnc<D> & {
   actionType: string
 };
 
-export declare function gluer(fn: HandleFunc<any> ) : GluerReturn<{}>;
-export declare function gluer<T>(initialState: T) : GluerReturn<T>;
-export declare function gluer<T>(fn: HandleFunc<T>, initialState: T) : GluerReturn<T>;
+export function gluer<S, D = S>(onlyOne: HandleFunc<S, D> | S) : GluerReturn<S, D>;
+export function gluer<S, D = S>(fn: HandleFunc<S, D>, initialState: S) : GluerReturn<S, D>;
 export const destruct: Destruct;

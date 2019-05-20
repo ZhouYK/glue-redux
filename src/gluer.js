@@ -32,7 +32,7 @@ const gluer = (...args) => {
     // 默认值reducer
     reducerFnc = defaultReducer;
     if (process.env.NODE_ENV === development) {
-      throw new Error(getWarning(rd));
+      console.error(getWarning(rd));
     }
   } else if (args.length === 1) {
     // 会被当做初始值处理
@@ -44,7 +44,7 @@ const gluer = (...args) => {
     } else {
       reducerFnc = genReducer(rd);
       if (process.env.NODE_ENV === development) {
-        throw new Error(getWarning(rd));
+        console.error(getWarning(rd));
       }
     }
   } else {
@@ -54,7 +54,7 @@ const gluer = (...args) => {
     reducerFnc = genReducer(rd);
     if (process.env.NODE_ENV === development) {
       if (initialState === undefined) {
-        throw new Error(getWarning(rd));
+        console.error(getWarning(rd));
       }
     }
   }

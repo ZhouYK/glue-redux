@@ -164,7 +164,7 @@ const degrade = (dispatch) => {
             if (key === str) {
               defineTopNodeDefaultValue(action, df[key]);
               action[acType] = nodeReducer;
-            } else if (!originalTopNode) {
+            } else if (!originalAcType) {
               topNode[acType] = nodeReducer;
             } else {
               originalTopNode[acType] = nodeReducer;
@@ -234,9 +234,6 @@ const degrade = (dispatch) => {
       });
     } else if (!originalTopNode) {
       throw new Error('the argument muse be plain object!');
-    } else {
-      // 非普通对象的initialState暂不处理
-      return null;
     }
     return {
       stagedStructure: curObj,
