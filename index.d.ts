@@ -38,6 +38,6 @@ export type GluerReturn<S, D = S>  = {
   actionType: string
 };
 
-export function gluer<S, D = S>(onlyOne: HandleFunc<S, D> | S) : GluerReturn<S, D>;
+export function gluer<S, D = S>(onlyOne?: HandleFunc<S, D> | S) : GluerReturn<S, D>;
 export function gluer<S, D = S>(fn: HandleFunc<S, D>, initialState: S) : GluerReturn<S, D>;
 export const destruct: Destruct;
