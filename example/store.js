@@ -14,6 +14,7 @@ const wholeModel = {
   model,
 };
 const { reducers, referToState, hasModel } = destruct(store)(wholeModel);
+
 store.replaceReducer(combineReducers(reducers));
 
 export {

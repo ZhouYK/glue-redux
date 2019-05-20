@@ -127,10 +127,8 @@ const degrade = (dispatch) => {
       keys.forEach((key) => {
         const value = curObj[key];
         if (!Object.is(value, undefined) && !Object.is(value, null)) {
-          if (process.env.NODE_ENV === development) {
-            // ⚠️
-            actionError(value, curObj, key);
-          }
+          // ⚠️
+          actionError(value, curObj, key);
           keyStr.push(key);
           const str = keyStr.join(uniqueTypeConnect);
           // 如果是同步节点，则获取对应的action creator和reducer function
@@ -148,10 +146,15 @@ const degrade = (dispatch) => {
             // 重新赋值
             /* eslint no-param-reassign:0 */
             curObj[key] = action;
-            /* eslint-disable no-param-reassign */
-            // 设置初始值
-            // 当初始值作为数据来源时，引用会冲突（因为它还做action触发），需要进行复制
-            df[key] = isPlainObject(initState) ? { ...initState } : initState;
+            const isPlainObjectflag = isPlainObject(initState);
+            if (isPlainObjectflag) {
+              /* eslint-disable no-param-reassign */
+              // 设置初始值
+              // 当初始值作为数据结构时，引用会冲突（因为它还做action触发），需要进行复制
+              df[key] = { ...initState };
+            } else {
+              df[key] = initState;
+            }
             // topNode为顶层对象引用
             // 属性名连接形成的字符串作为对象键值赋值
             // 这里如果为第一级，curObj和topNode为同一个，则action和reducer相互覆盖了
@@ -182,12 +185,12 @@ const degrade = (dispatch) => {
             }
             // 索引引用的键值路径
             referencesMap.set(action, str);
-            // 遍历初始值，获取初始值中的结构信息
-            // eslint-disable-next-line max-len
-            const initStateDestructure = fn(initState, [...keyStr], initState, df[key], originalTopNode || topNode, acType);
-            if (initStateDestructure) {
-              // 在gluer中已经进行了一次赋值，这次是真的生效
-              defineInitStatePropsToFnc(action, initState);
+            if (isPlainObjectflag) {
+              const asModel = { ...initState };
+              // 遍历初始值，获取初始值中的结构信息
+              // eslint-disable-next-line max-len
+              fn(asModel, [...keyStr], asModel, df[key], originalTopNode || topNode, acType);
+              defineInitStatePropsToFnc(action, asModel);
             }
           } else if (isPlainObject(value)) {
             // 索引引用的键值路径

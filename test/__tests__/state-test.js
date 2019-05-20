@@ -8,7 +8,8 @@ import people from '../../example/models/people/model';
 import { createStore } from 'redux';
 import gluer from '../../src/gluer';
 import destruct from '../../src/index';
-import { duplicatedError } from '../constants';
+import { mapTracedError } from '../constants';
+import family from '../../example/models/wiki/model';
 
 describe('state normal test',  () => {
   // state的常见情况测试
@@ -27,7 +28,6 @@ describe('state normal test',  () => {
     expect(referToState(appModel.users)).toEqual([{
       name: '小红',
     }]);
-
     expect(initialPeople).toEqual({
       name: '小明',
       hobby: '敲代码',
@@ -127,7 +127,7 @@ describe('state edge case test', () => {
       name: undefined
     };
     model.person = model;
-    expect(() => destruct(store)(model)).toThrow(duplicatedError);
+    expect(() => destruct(store)(model)).toThrow(mapTracedError);
 
     const peopleModel = {
       people
@@ -137,7 +137,7 @@ describe('state edge case test', () => {
     };
 
     model_1.shadow = peopleModel;
-    expect(() => destruct(store)(model_1)).toThrow(duplicatedError);
+    expect(() => destruct(store)(model_1)).toThrow(mapTracedError);
   });
   // 两个或两个以上的地方使用了同一个model的reference
   test('one model is used more than one place', () => {
@@ -154,6 +154,12 @@ describe('state edge case test', () => {
       person
     };
     const wholeModel = { model, human };
-    expect(() => destruct(store)(wholeModel)).toThrow(duplicatedError);
+    expect(() => destruct(store)(wholeModel)).toThrow(mapTracedError);
+  });
+
+  test('initialState as model, used in more than one state', () => {
+    const store = createStore(() => ({}));
+    destruct(store)({ family });
+    destruct(store)({ family })
   });
 });

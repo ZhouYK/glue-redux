@@ -76,3 +76,4 @@ test('referToState test', () => {
 
   expect(referToState(wholeModel.model.family.count)).toBe(undefined);
 });
+
