@@ -183,7 +183,7 @@ console.log('app model中的users为：', referToState(app.users));
 | [react-glux](https://github.com/ZhouYK/react-glux) | 与react的连接库，HOC方式
 | [react-glue-redux-hook](https://github.com/ZhouYK/react-glue-redux-hook) | 与react的连接库，包含HOC和hook两种方式
 | [设计一个前端数据模型，让数据操作更简单可靠](https://zhuanlan.zhihu.com/p/65322881) | 代码结构设计说明
-
+| [独立数据管理库femo](https://github.com/ZhouYK/femo) | 独立的数据管理库，思路继承于glue-redux 
 ## Author
 [ZhouYK](https://github.com/ZhouYK)
 
