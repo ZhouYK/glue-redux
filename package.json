@@ -29,7 +29,7 @@
     "babel-jest": "~23.6.0",
     "babel-loader": "~8.0.4",
     "clean-webpack-plugin": "~0.1.19",
-    "codecov": "~3.2.0",
+    "codecov": "~3.6.5",
     "cross-env": "~5.2.0",
     "css-loader": "~0.28.11",
     "eslint": "~5.16.0",
